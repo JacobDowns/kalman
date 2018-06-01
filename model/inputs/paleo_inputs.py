@@ -45,19 +45,6 @@ class PaleoInputs(CommonInputs):
         self.pdd_calc = PDDCalculator(5.5)
 
 
-        ### Load isotope record used to scale temperature
-        ########################################################################
-
-        isotope_data = np.loadtxt('paleo_inputs/d180.csv')
-        # Year before present
-        years = isotope_data[:,0]
-        # Isotope concentration or something
-        d180 = isotope_data[:,1]
-        # Interpolate the isotope record
-        self.dpermil = 2.4
-        self.delta_temp_interp = interp1d(years, self.dpermil*(d180 + 34.83), kind = 'linear')
-
-
         ### Create monthly reference temperatures for the start year
         ########################################################################
 
@@ -86,7 +73,7 @@ class PaleoInputs(CommonInputs):
         ### Compute monthly pdd's and precip.
         ########################################################################
 
-        # Accumulated snowpack for the year accumulation - ablation
+        # Accumulated snowpack for the year in m.w.e.
         snowpack = np.zeros_like(self.input_functions['S_ref'].vector().get_local())
         # Yearly ice ablation
         ablation = np.zeros_like(self.input_functions['S_ref'].vector().get_local())
@@ -99,16 +86,16 @@ class PaleoInputs(CommonInputs):
 
         for i in range(12):
             # Compute the delta temp. adjusted / lapse rate corrected temp. for this month
+            # Modern temp.  and precip. for a given month are computed as a 30 year modern average from Box
             modern_temp_vec = self.input_functions['T' + str(i)].vector().get_local()
             temp_vec = modern_temp_vec + delta_temp + lapse_correction
             # Compute the delta temp. adjusted precip.
             modern_precip_vec = self.input_functions['P' + str(i)].vector().get_local()
             # Temp. corrected precip. rate in m.w.e./a
             precip_vec = modern_precip_vec*np.e**(0.07*(temp_vec - modern_temp_vec))
-            #precip_vec = modern_precip_vec*np.e**(0.4*(temp_vec - modern_temp_vec))
             # Compute pdd's for this month
             pdds = self.pdd_calc.get_pdd(temp_vec)
-            # Compute snowfall for this month
+            # Fraction of precip. that falls as snow
             snowfall_frac = self.pdd_calc.get_acc_frac(temp_vec)
             # Compute snowfall for the month in m.w.e
             monthly_snowfall = precip_vec * (1./12.) * snowfall_frac
@@ -120,7 +107,7 @@ class PaleoInputs(CommonInputs):
             if (snowpack - monthly_snowmelt).min() < 0.:
                 # Number of pdd's required to melt the snow
                 snow_pdds = snowpack / self.lambda_snow
-                # PDD's that go to melting ice
+                # Excess PDD's that go to melting ice
                 ice_pdds = pdds - snow_pdds
                 ice_pdds[ice_pdds < 0.] = 0.
                 # Ablation m.w.e
@@ -130,7 +117,7 @@ class PaleoInputs(CommonInputs):
             snowpack -= monthly_snowmelt
             snowpack[snowpack < 0.] = 0.
 
-        # Total mass balance in m.i.e. assuming snowpack turns to ice at end of year
+        # Total yearly mass balance in m.i.e. assuming snowpack turns to ice at end of year
         smb = (snowpack - ablation) * (10./9.)
         self.adot.vector()[:] = smb
 
