@@ -45,6 +45,7 @@ delta_temps = []
 Ls = []
 ages = []
 sigma2s = []
+adot_ints = []
 
 
 for i in range(N):
@@ -65,11 +66,15 @@ for i in range(N):
     print "opt delta temp", delta_temp, delta_temp_sigma2
     L = model.step(delta_temp, accept = True)
     Ls.append(L)
+
+    adot_int = assemble(model.adot_prime_func*dx)
+    adot_ints.append(adot_int)
+    print "adot_int", adot_int
     print "dif", L - L_mu
 
 
 np.savetxt('filter/delta_temps1.txt', np.array(delta_temps))
 np.savetxt('filter/Ls1.txt', np.array(Ls))
-
+np.savetxt('filter/adot_ints1.txt', np.array(adot_ints))
 plt.plot(delta_temps)
 plt.show()
