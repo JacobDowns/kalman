@@ -6,7 +6,7 @@ from scipy.interpolate import interp1d
 
 class KalmanUpdate(object):
 
-    def __init__(self, prior_m, prior_P, X, Y, kappa):
+    def __init__(self, prior_m, prior_P, X, Y, m_weights, c_weights, obs_indexes):
 
         # Prior mean
         self.m = prior_m
@@ -16,68 +16,44 @@ class KalmanUpdate(object):
         self.X = X
         # Sigma points passed through forward model
         self.Y = Y
+        # Mean weights
+        self.m_weights = m_weights
+        # Covariance weights
+        self.c_weights = c_weights
 
 
     # Do a Kalman update step incorporating an measurement y, with
     # covariance R
-    def update(y, R):
+    def update(self, y, R):
 
         ### Unscented transform computations
         ######################################################################
         
         # Compute predicted mean
-        mu = np.dot(points.weights()[0], Y)
+        mu = np.dot(self.m_weights, self.Y)
+
 
         # Compute predicted measurement covariance
-        S = np.zeros((Y.shape[1], Y.shape[1]))
-        for i in range(len(points.weights()[1])):
+        S = np.zeros((self.Y.shape[1], self.Y.shape[1]))
+        for i in range(len(self.c_weights)):
             print i
-            S += points.weights()[1][i]*np.outer(Y[i] - mu, Y[i] - mu)
+            S += self.c_weights[i]*np.outer(self.Y[i] - mu, self.Y[i] - mu)
         S += R
 
+ 
         # Compute predicted measurement covariance
-        C = np.zeros((X.shape[1], Y.shape[1]))
-        for i in range(len(points.weights()[1])):
+        C = np.zeros((self.X.shape[1], self.Y.shape[1]))
+        for i in range(len(self.c_weights)):
             print i
-            C += points.weights()[1][i]*np.outer(X[i] - m, Y[i] - mu)
+            C += self.c_weights[i]*np.outer(self.X[i] - self.m, self.Y[i] - mu)
 
 
         ### Compute Kalman gain, revised mean, and covariance
         ######################################################################
 
         K = np.dot(C, np.linalg.inv(S))
-        m_p = m + np.dot(K, L_obs - mu)
-        P_p = P - np.dot(np.dot(K, S), K.T)
+        m_p = self.m + np.dot(K, y - mu)
+        P_p = self.P - np.dot(np.dot(K, S), K.T)
 
         return m_p, P_p, mu, K
 
-
-# delta T sigma points
-X = np.loadtxt('jensen_sigma_points.txt')
-N = X.shape[0]
-# Sigma points run through the forward model F(X)
-Y = np.loadtxt('filter/jensen_sigmas/all_Ls.txt')
-# Prior mean and covariance
-m = np.loadtxt('filter/jensen_sigmas/prior_m.txt')
-P = np.loadtxt('filter/jensen_sigmas/prior_P.txt')
-# Observed lengths
-obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
-obs_Ls = [406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725]
-L_interp = interp1d(obs_ages, obs_Ls, kind = 'linear')
-model_ages = np.loadtxt('filter/jensen_sigmas/ages_0.txt')
-L_obs = L_interp(model_ages[::5])
-# Assumed observation covariance
-R = 500.**2*np.identity(len(L_obs))
-# Sigma points
-points = JulierSigmaPoints(429, kappa=-300.)
-
-np.savetxt('opt_m.txt', m_p)
-
-plt.subplot(3,1,2)
-plt.plot(model_ages, np.repeat(m_p, 30))
-plt.plot(model_ages, np.repeat(m, 30))
-
-plt.subplot(3,1,3)
-v = P[range(len(P)), range(len(P))]
-plt.plot(v)
-plt.show()

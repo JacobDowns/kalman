@@ -3,7 +3,7 @@ import numpy as np
 from scipy.interpolate import interp1d
 from kalman_update import *
 
-in_dir = 'filter/prior1/'
+in_dir = 'filter/prior3/'
 
 ### Observations 
 #############################################################
@@ -17,7 +17,7 @@ L_interp = interp1d(obs_ages, obs_Ls, kind = 'linear')
 # Model time steps 
 model_ages = np.loadtxt(in_dir + 'ages_0.txt')
 # To reduce computation time, we only  use observations at periodic intervals for the kalman update
-skip = 5
+skip = 20
 obs_indexes = range(len(model_ages))[::skip]
 # Observation
 y = L_interp(model_ages[obs_indexes])
@@ -63,9 +63,9 @@ plt.plot(m, 'ko')
 plt.plot(m_p, 'ro')
 plt.show()
 
-np.savetxt(in_dir + 'mu.txt', mu)
-np.savetxt(in_dir + 'opt_P1.txt', P_p)
-np.savetxt(in_dir + 'opt_P1.txt', P_p)
+np.savetxt(in_dir + 'mu4.txt', mu)
+np.savetxt(in_dir + 'opt_m4.txt', m_p)
+np.savetxt(in_dir + 'opt_P4.txt', P_p)
 
 """
 np.savetxt('opt_m.txt', m_p)
