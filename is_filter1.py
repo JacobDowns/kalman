@@ -9,6 +9,21 @@ dt = 1./3.
 model_inputs = PaleoInputs('paleo_inputs/is_paleo_11_6_steady.hdf5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
+def softplus(y1,y2,alpha=0.5):
+    # The softplus function is a differentiable approximation
+    # to the ramp function.  Its derivative is the logistic function.
+    # Larger alpha makes a sharper transition.
+    return dolfin.Max(y1,y2) + (1./alpha)*dolfin.ln(1.+dolfin.exp(alpha*(dolfin.Min(y1,y2)-dolfin.Max(y1,y2))))
+
+min_thickness = Function(model_inputs.V_cg)
+min_thickness.interpolate(Constant(15.))
+
+#dolfin.plot(project(softplus(model_inputs.original_cg_functions['B'], min_thickness), model_inputs.V_cg))
+#plt.show()
+
+
+quit()
+
 ### Setup filter
 #######################################################################
 
