@@ -5,7 +5,8 @@ from support.momentum_form import *
 from support.momentum_form_fixed_domain import *
 from support.mass_form import *
 from support.mass_form_fixed_domain import *
-from support.length_form_calving1 import *
+#from support.length_form_calving1 import *
+from support.length_form_marine import *
 #from support.length_form import *
 import matplotlib.pyplot as plt
 
@@ -201,7 +202,7 @@ class ForwardIceModel(object):
         P_w_f = Constant(0.75)*P_0_f
         N_f = P_0_f - P_w_f
         # Sea level
-        self.sea_level = Constant(0.0)
+        self.sea_level = Constant(40.0)
         # Minimum ice thickness
         self.min_thickness = Constant(15.0)
         # CG ice thickness at last time step
@@ -476,7 +477,7 @@ class ForwardIceModel(object):
 
                         #self.jumped = True
 
-            print "real step: ", self.t, self.H0.vector().max(), self.H0.vector().min(), float(self.L0)
+            print "real step: ", self.t, self.H0_c.vector().get_local()[0], float(self.L0)
             return float(self.L0)
         else :
             return float(self.L0_temp)

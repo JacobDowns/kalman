@@ -22,6 +22,10 @@ class LengthForm(object):
         rho_w = model.constants['rho_w']
         # Min. thickness
         min_thickness = model.min_thickness
+        # Real test function
+        chi = model.chi
+        # Boundary measure
+        ds1 = dolfin.ds(subdomain_data = model.boundaries)
 
         def softplus(y1,y2,alpha=1):
             # The softplus function is a differentiable approximation
@@ -30,6 +34,7 @@ class LengthForm(object):
             return dolfin.Max(y1,y2) + (1./alpha)*dolfin.ln(1.+dolfin.exp(alpha*(dolfin.Min(y1,y2)-dolfin.Max(y1,y2))))
 
         # Grounding line thickness
-        H_g = softplus(Constant(rho_w / rho)*(sea_level - B), min_thickness, alpha = 0.5)
+        H_g = softplus(Constant(rho_w / rho)*(sea_level - B), min_thickness, alpha = 0.9)
+        #H_g = Constant(40.)
         R_length = (H_c - H_g)*chi*ds1(1)
         self.R_length = R_length
