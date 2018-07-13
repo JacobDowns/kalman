@@ -202,7 +202,7 @@ class ForwardIceModel(object):
         P_w_f = Constant(0.75)*P_0_f
         N_f = P_0_f - P_w_f
         # Sea level
-        self.sea_level = Constant(40.0)
+        self.sea_level = Constant(0.0)
         # Minimum ice thickness
         self.min_thickness = Constant(15.0)
         # CG ice thickness at last time step
