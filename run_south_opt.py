@@ -6,12 +6,13 @@ import numpy as np
 import sys
 import os.path
 
-in_dir = 'filter/prior5/'
-adots_opt = np.loadtxt(in_dir + 'opt_m3.txt')
+in_dir = 'filter/south_prior/'
+adots_opt = np.loadtxt(in_dir + 'opt_m.txt')
 
 dt = 1./3.
-model_inputs = PaleoInputs('paleo_inputs/is_paleo_11_6_steady.hdf5', dt = dt)
+model_inputs = PaleoInputs('paleo_inputs/south_paleo_steady_11_6.hdf5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
+model.sea_level.assign(Constant(-47.))
 
 sigma_ts = np.loadtxt(in_dir + 'sigma_ts.txt')
 model_ts = -11.6e3 + np.linspace(0., 4300., 4300*3)
@@ -19,9 +20,16 @@ delta_temp_interp = interp1d(sigma_ts, adots_opt, kind = 'linear')
 delta_temps = delta_temp_interp(model_ts)
 
 
-plt.plot(delta_temps)
+"""
+dolfin.plot(model.B)
+dolfin.plot(model.B + model.H0_c)
+plt.ylim([-100., 2500.])
 plt.show()
-quit()
+quit()"""
+
+#plt.plot(delta_temps)
+#plt.show()
+#quit()
 
 N = 4300*3
 Ls = []
@@ -39,5 +47,5 @@ for j in range(N):
 plt.plot(ages, Ls)
 plt.show()
 
-np.savetxt('opt_ages3.txt', np.array(ages))
-np.savetxt('opt_L3.txt', np.array(Ls))
+np.savetxt('paleo_runs/south_opt/opt_ages.txt', np.array(ages))
+np.savetxt('paleo_runs/south_opt/opt_Ls.txt', np.array(Ls))

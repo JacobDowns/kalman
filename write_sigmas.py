@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os.path
 
-in_dir = 'filter/prior5/'
+in_dir = 'filter/south_prior/'
 
 X = np.loadtxt(in_dir + 'X.txt')
 Y0 = np.loadtxt(in_dir + 'Y_0.txt')
