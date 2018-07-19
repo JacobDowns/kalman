@@ -11,12 +11,16 @@ ages_data = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
 Ls_data = [406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725]
 L_interp = interp1d(ages_data, Ls_data, kind = 'linear')"""
 
-ages = np.loadtxt('paleo_runs/south_jensen_re/opt_ages.txt')
-Ls = np.loadtxt('paleo_runs/south_jensen_re/opt_L.txt')
+ages = np.loadtxt('paleo_runs/south_opt/opt_ages.txt')
+Ls =   np.loadtxt('paleo_runs/south_opt/opt_Ls.txt')
+
+#ages = np.loadtxt('paleo_runs/south_jensen_land/opt_ages.txt')
+#Ls =   np.loadtxt('paleo_runs/south_jensen_land/opt_L.txt')
 
 #ages = np.loadtxt('paleo_runs/opt_ages.txt')
-Ls1 = np.loadtxt('paleo_runs/opt_L.txt')
+#Ls1 = np.loadtxt('paleo_runs/south_opt/opt_L.txt')
 
+#quit()
 # Opt run
 #Ls2 = np.loadtxt('paleo_runs/south_opt/opt_Ls.txt')
 
@@ -25,7 +29,7 @@ obs_Ls = np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 30
 
 #np.savetxt('filter/3/Ls_smoothed.txt', Ls)
 plt.plot(ages, Ls, 'r')
-plt.plot(ages, Ls1, 'b')
+#plt.plot(ages, Ls1, 'b')a
 #plt.plot(ages, Ls2, 'g')
 plt.plot(obs_ages, obs_Ls, 'ko-')
 #plt.plot(ages, L_interp(ages))

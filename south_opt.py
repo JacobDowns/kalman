@@ -3,7 +3,7 @@ import numpy as np
 from scipy.interpolate import interp1d
 from kalman_update import *
 
-in_dir = 'filter/south_prior/'
+in_dir = 'filter/south_prior3/'
 
 ### Observations 
 #############################################################
@@ -28,8 +28,8 @@ y = L_interp(model_ages[obs_indexes])
 #R = 500.**2 * np.identity(len(y))
 R = np.zeros((len(y), len(y)))
 error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
-min_err = 100.**2 #100.**2
-max_err = 250.**2 #1000.**2
+min_err = 1000.**2
+max_err = 2500.**2 #1000.**2
 error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
 error_interp = interp1d(error_ts, error_vs, kind = 'linear')
 errors = error_interp(model_ages[obs_indexes])

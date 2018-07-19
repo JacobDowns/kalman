@@ -1,4 +1,4 @@
-from model.inputs.paleo_inputs1 import *
+from model.inputs.paleo_inputs import *
 from model.forward_model.forward_ice_model import *
 import matplotlib.pyplot as plt
 import numpy as np
@@ -8,7 +8,7 @@ from stats.scalar_ukf import ScalarUKF
 ################################################################################
 
 dt = 1.
-model_inputs = PaleoInputs('paleo_inputs/south_ideal.h5', dt = dt)
+model_inputs = PaleoInputs('paleo_inputs/north_ideal.h5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "bc_test")
 #model.sea_level.assign(Constant(-47.))
 
@@ -16,13 +16,14 @@ model = ForwardIceModel(model_inputs, "out", "bc_test")
 #print model.H0_c.vector().min()
 #quit()
 
+"""
 sea_level = Function(model_inputs.V_cg)
 sea_level.interpolate(model.sea_level)
 dolfin.plot(model.H0_c + model.B)
 dolfin.plot(model.B)
 dolfin.plot(sea_level)
 plt.ylim([-250., 3000.])
-plt.show()
+plt.show()"""
 
 # Initial mean and variance for state variable delta_temp
 delta_temp_mu = -8.
@@ -52,12 +53,15 @@ ukf = ScalarUKF(delta_temp_mu, delta_temp_sigma2, F, H)
 Ls = []
 delta_temps = []
 
-for i in range(9000):
+#dolfin.plot(model.adot_prime_func)
+#plt.show()
+
+for i in range(10000):
     # Observation mean and covariance at the current time
-    L_mu = 424777
+    L_mu = 423169
     L_sigma2 = 100.**2
     # Process noise
-    Q = 0.1**2
+    Q = 0.07**2
 
     delta_temp, delta_temp_sigma2 = ukf.step(L_mu, L_sigma2, Q)
     delta_temps.append(delta_temp)
@@ -68,11 +72,13 @@ for i in range(9000):
     Ls.append(L)
     print "dif", L - L_mu
 
-    #dolfin.plot(model.S)
-    #dolfin.plot(model.B)
-    #aplt.show()
+    """
+    if i % 100 == 0:
+        dolfin.plot(model.S)
+        dolfin.plot(model.B)
+        plt.show()"""
 
-model.write_steady_file('south_paleo_steady_11_6_new')
+model.write_steady_file('north_paleo_steady_11_6_land')
 """
 if i % 50*3 == 0:
     dolfin.plot(model.adot_prime_func)

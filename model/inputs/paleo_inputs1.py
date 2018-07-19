@@ -11,7 +11,7 @@ Inputs for paleo run.
 
 class PaleoInputs(CommonInputs):
 
-    def __init__(self, input_file_name, dt = 1.):
+    def __init__(self, input_file_name, dt = 1., pdd_var = 5.5, lambda_snow = 0.005, lambda_ice = 0.008, lambda_precip = 0.07):
 
         ### Load monthly modern temp. and precip. fields
         ########################################################################
@@ -41,21 +41,20 @@ class PaleoInputs(CommonInputs):
         self.L_init = float(self.input_functions['L0'])
         # Model time step (in years)
         self.dt = dt
+        # PDD variance
+        self.pdd_var = pdd_var
         # Object for calculating PDD's
-        self.pdd_calc = PDDCalculator(5.5)
-        # Fraction of the snowpack that can contain superimposed ice before ice melt begins
-        self.super_ice_frac = 0.6
-
-
-        ### Create monthly reference temperatures for the start year
-        ########################################################################
-
+        self.pdd_calc = PDDCalculator(pdd_var)
         # Elevation lapse rate (degrees C / km)
         self.lapse_rate = 5.
         # Ablation rate for snow (m / (degree C * day))
-        self.lambda_snow = 0.005
+        self.lambda_snow = lambda_snow
         # Ablation rate ice (m / (degree C * day))
-        self.lambda_ice = 0.008
+        self.lambda_ice = lambda_ice
+        # Precipitation parameter
+        self.lambda_precip = lambda_precip
+        # Superimposed ice fraction
+        self.super_ice_frac = 0.6
 
 
     """
@@ -103,6 +102,7 @@ class PaleoInputs(CommonInputs):
             snowfall_frac = self.pdd_calc.get_acc_frac(temp_vec)
             # Compute snowfall for the month in m.w.e
             total_snowfall += precip_vec * (1./12.) * snowfall_frac
+            
 
         ### Compute SMB from total snowfall and pdds
         ########################################################################
@@ -130,7 +130,6 @@ class PaleoInputs(CommonInputs):
         total_pdds -= pdds_melt_super_ice
         # The amount of superimposed ice remaining
         super_ice -= pdds_melt_super_ice * self.lambda_ice
-
         # Compute the accumulation in m.w.e, consisting of snow and superimpsed ice
         accumulation = total_snowfall + super_ice
         # Compute the amount of ablation in m.w.e (remaining PDD's go to melting glacier ice)

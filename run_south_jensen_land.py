@@ -6,18 +6,11 @@ import sys
 import os.path
 from scipy.interpolate import interp1d
 
-
-"""Test sensitivity to PDD parameters."""
-
-lambda_ice_l = [0.006, 0.008, 0.01]
-lambda_snow_l = [0.003, 0.005, 0.007]
-
-
 ### Initialize model
 ############################################################################
 
 dt = 1./3.
-model_inputs = PaleoInputs('paleo_inputs/south_paleo_steady_11_6_land.hdf5', dt = dt)
+model_inputs = PaleoInputs('paleo_inputs/south_paleo_steady_11_6_land.h5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 

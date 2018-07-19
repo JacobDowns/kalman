@@ -11,7 +11,7 @@ Inputs for paleo run.
 
 class PaleoInputs(CommonInputs):
 
-    def __init__(self, input_file_name, dt = 1.):
+    def __init__(self, input_file_name, dt = 1., pdd_var = 5.5, lambda_snow = 0.005, lambda_ice = 0.008, lambda_precip = 0.07):
 
         ### Load monthly modern temp. and precip. fields
         ########################################################################
@@ -41,19 +41,18 @@ class PaleoInputs(CommonInputs):
         self.L_init = float(self.input_functions['L0'])
         # Model time step (in years)
         self.dt = dt
+        # PDD variance
+        self.pdd_var = pdd_var
         # Object for calculating PDD's
-        self.pdd_calc = PDDCalculator(5.5)
-
-
-        ### Create monthly reference temperatures for the start year
-        ########################################################################
-
+        self.pdd_calc = PDDCalculator(pdd_var)
         # Elevation lapse rate (degrees C / km)
         self.lapse_rate = 5.
         # Ablation rate for snow (m / (degree C * day))
-        self.lambda_snow = 0.005
+        self.lambda_snow = lambda_snow
         # Ablation rate ice (m / (degree C * day))
-        self.lambda_ice = 0.008
+        self.lambda_ice = lambda_ice
+        # Precipitation parameter
+        self.lambda_precip = lambda_precip
 
 
     """
@@ -92,7 +91,7 @@ class PaleoInputs(CommonInputs):
             # Compute the delta temp. adjusted precip.
             modern_precip_vec = self.input_functions['P' + str(i)].vector().get_local()
             # Temp. corrected precip. rate in m.w.e./a
-            precip_vec = modern_precip_vec*np.e**(0.07*(temp_vec - modern_temp_vec))
+            precip_vec = modern_precip_vec*np.e**(self.lambda_precip*(temp_vec - modern_temp_vec))
             # Compute pdd's for this month
             pdds = self.pdd_calc.get_pdd(temp_vec)
             # Fraction of precip. that falls as snow

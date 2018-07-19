@@ -11,6 +11,9 @@ from scipy.interpolate import interp1d
 
 lambda_ice_l = [0.006, 0.008, 0.01]
 lambda_snow_l = [0.003, 0.005, 0.007]
+pdd_var_l = [5.2, 5.5]
+pressure_l = [0.6, 0.8, 
+
 
 
 ### Initialize model

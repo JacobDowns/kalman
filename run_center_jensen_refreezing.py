@@ -6,18 +6,11 @@ import sys
 import os.path
 from scipy.interpolate import interp1d
 
-
-"""Test sensitivity to PDD parameters."""
-
-lambda_ice_l = [0.006, 0.008, 0.01]
-lambda_snow_l = [0.003, 0.005, 0.007]
-
-
 ### Initialize model
 ############################################################################
 
 dt = 1./3.
-model_inputs = PaleoInputs('paleo_inputs/south_paleo_steady_11_6_land.hdf5', dt = dt)
+model_inputs = PaleoInputs('paleo_inputs/is_paleo_steady_11_6.hdf5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 
@@ -52,5 +45,5 @@ for j in range(N):
 plt.plot(ages, Ls)
 plt.show()
 
-np.savetxt('paleo_runs/south_jensen_land/opt_ages.txt', np.array(ages))
-np.savetxt('paleo_runs/south_jensen_land/opt_L.txt', np.array(Ls))
+np.savetxt('paleo_runs/center_jensen_re/opt_ages.txt', np.array(ages))
+np.savetxt('paleo_runs/center_jensen_re/opt_L.txt', np.array(Ls))
