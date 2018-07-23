@@ -8,7 +8,8 @@ from stats.scalar_ukf import ScalarUKF
 ################################################################################
 
 dt = 1.
-model_inputs = PaleoInputs('paleo_inputs/north_ideal.h5', dt = dt)
+#model_inputs = PaleoInputs('paleo_inputs/north_ideal.h5', dt = dt)
+model_inputs = PaleoInputs('north_paleo_steady_11_6_land.hdf5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "bc_test")
 #model.sea_level.assign(Constant(-47.))
 
@@ -78,7 +79,7 @@ for i in range(10000):
         dolfin.plot(model.B)
         plt.show()"""
 
-model.write_steady_file('north_paleo_steady_11_6_land')
+model.write_steady_file('north_paleo_steady_11_6_land1')
 """
 if i % 50*3 == 0:
     dolfin.plot(model.adot_prime_func)

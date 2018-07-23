@@ -6,7 +6,7 @@ import sys
 import os.path
 
 # Directory to read stuff from 
-in_dir = 'filter/south_prior4/'
+in_dir = 'filter/center_prior2/'
 # Integer index
 index = int(sys.argv[1])
 print "index", index
@@ -30,7 +30,7 @@ for i in range(index*runs, min(num_sigma_points, index*runs + runs)):
         delta_temps = delta_temp_interp(model_ts)
 
         dt = 1./3.
-        model_inputs = PaleoInputs('paleo_inputs/south_paleo_steady_11_6_land.h5', dt = dt)
+        model_inputs = PaleoInputs('paleo_inputs/center_paleo_steady_11_6.hdf5', dt = dt)
         model = ForwardIceModel(model_inputs, "out", "paleo")
 
         N = 4300*3
