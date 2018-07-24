@@ -10,7 +10,7 @@ from scipy.interpolate import interp1d
 ############################################################################
 
 dt = 1./3.
-model_inputs = PaleoInputs('paleo_inputs/north_ideal.h5', dt = dt)
+model_inputs = PaleoInputs('paleo_inputs/north_paleo_steady_11_6.hdf5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 

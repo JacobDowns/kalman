@@ -3,7 +3,7 @@ import numpy as np
 from scipy.interpolate import interp1d
 from kalman_update import *
 
-in_dir = 'filter/south_prior4/'
+in_dir = 'filter/north_prior2/'
 
 ### Observations 
 #############################################################

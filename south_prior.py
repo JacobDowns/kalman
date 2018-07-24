@@ -16,7 +16,7 @@ delta_temp_interp = interp1d(years, temps - temps[-1], kind = 'linear')
 # Delta temp. grid years
 years = -11.6e3 + np.linspace(0., 4300, 87)
 np.savetxt(out_dir + 'sigma_ts.txt', years)
-print years
+
 
 ### Mean and covariance of prior
 ##########################################################################

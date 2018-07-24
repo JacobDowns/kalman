@@ -4,24 +4,18 @@ from scipy.interpolate import interp1d
 from filterpy.kalman import JulierSigmaPoints
 
 # Output directory
-out_dir = 'filter/north_prior1/'
-# Load Jensen dye3 temp.
-data = np.loadtxt('paleo_data/jensen_dye3.txt')
-# Years before present (2000)
-years = data[:,0] - 2000.0
-# Temps. in K
-temps = data[:,1]
-# Delta temps. 
-delta_temp_interp = interp1d(years, temps - temps[-1], kind = 'linear')
+out_dir = 'filter/north_prior2/'
 # Delta temp. grid years
 years = -11.6e3 + np.linspace(0., 4300, 87)
 np.savetxt(out_dir + 'sigma_ts.txt', years)
-print years
+
 
 ### Mean and covariance of prior
 ##########################################################################
 N = len(years)
-x = delta_temp_interp(years)
+# Prior mean 
+x = np.loadtxt('filter/north_prior1/opt_m.txt')
+# Prior covariance
 P = np.zeros((N, N))
 P[range(N), range(N)] = 2.
 P[range(1,N), range(N-1)] = -1.

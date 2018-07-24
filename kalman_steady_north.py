@@ -8,8 +8,8 @@ from stats.scalar_ukf import ScalarUKF
 ################################################################################
 
 dt = 1.
-#model_inputs = PaleoInputs('paleo_inputs/north_ideal.h5', dt = dt)
-model_inputs = PaleoInputs('north_paleo_steady_11_6_land.hdf5', dt = dt)
+model_inputs = PaleoInputs('paleo_inputs/north_ideal.h5', dt = dt)
+#model_inputs = PaleoInputs('north_paleo_steady_11_6_land.hdf5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "bc_test")
 #model.sea_level.assign(Constant(-47.))
 
@@ -27,7 +27,7 @@ plt.ylim([-250., 3000.])
 plt.show()"""
 
 # Initial mean and variance for state variable delta_temp
-delta_temp_mu = -8.
+delta_temp_mu = -10.
 delta_temp_sigma2 = 1.
 
 # Process model function
@@ -59,10 +59,10 @@ delta_temps = []
 
 for i in range(10000):
     # Observation mean and covariance at the current time
-    L_mu = 423169
-    L_sigma2 = 100.**2
+    L_mu = 443746.
+    L_sigma2 = 75.**2
     # Process noise
-    Q = 0.07**2
+    Q = 0.1**2
 
     delta_temp, delta_temp_sigma2 = ukf.step(L_mu, L_sigma2, Q)
     delta_temps.append(delta_temp)
@@ -78,7 +78,7 @@ for i in range(10000):
         dolfin.plot(model.S)
         dolfin.plot(model.B)
         plt.show()"""
-
+        
 model.write_steady_file('north_paleo_steady_11_6_land1')
 """
 if i % 50*3 == 0:

@@ -471,9 +471,9 @@ class ForwardIceModel(object):
                         self.update_inputs(L_term, adot0)
                         self.update_inputs(L_term, adot0)
 
-                        dolfin.plot(self.B)
-                        dolfin.plot(self.B + self.H0_c)
-                        plt.show()
+                        #dolfin.plot(self.B)
+                        #dolfin.plot(self.B + self.H0_c)
+                        #plt.show()
 
                         #self.jumped = True
 
