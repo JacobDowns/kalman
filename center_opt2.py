@@ -30,8 +30,8 @@ y = L_interp(model_ages[obs_indexes])
 #R = 500.**2 * np.identity(len(y))
 R = np.zeros((len(y), len(y)))
 error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
-min_err = 5000.**2
-max_err = 50000.**2
+min_err = 7500.**2
+max_err = 75000.**2
 error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
 error_interp = interp1d(error_ts, error_vs, kind = 'linear')
 errors = error_interp(model_ages[obs_indexes])
@@ -69,8 +69,9 @@ plt.plot(m_p - 2.0*np.sqrt(v), 'r-')
 plt.plot(m_p + 2.0*np.sqrt(v), 'r-')
 plt.show()
 
-np.savetxt(in_dir + 'var.txt', v)
-np.savetxt(in_dir + 'mu.txt', mu)
-np.savetxt(in_dir + 'opt_m.txt', m_p)
-np.savetxt(in_dir + 'opt_P.txt', P_p)
+out_dir = in_dir + 'error_10_75/'
+np.savetxt(out_dir + 'var.txt', v)
+np.savetxt(out_dir + 'mu.txt', mu)
+np.savetxt(out_dir + 'opt_m.txt', m_p)
+np.savetxt(out_dir + 'opt_P.txt', P_p)
 

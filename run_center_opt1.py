@@ -6,11 +6,11 @@ import numpy as np
 import sys
 import os.path
 
-in_dir = 'filter/north_prior2/'
-adots_opt = np.loadtxt(in_dir + 'opt_m.txt')
+in_dir = 'filter/center_prior2/'
+adots_opt = np.loadtxt(in_dir + 'error_10_75/opt_m.txt')
 
 dt = 1./3.
-model_inputs = PaleoInputs('paleo_inputs/north_paleo_steady_11_6.hdf5', dt = dt)
+model_inputs = PaleoInputs('paleo_inputs/center_paleo_steady_11_6.hdf5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 sigma_ts = np.loadtxt(in_dir + 'sigma_ts.txt')
@@ -45,5 +45,5 @@ for j in range(N):
 plt.plot(ages, Ls)
 plt.show()
 
-np.savetxt('paleo_runs/north_opt2/opt_ages.txt', np.array(ages))
-np.savetxt('paleo_runs/north_opt2/opt_Ls.txt', np.array(Ls))
+np.savetxt('paleo_runs/center_opt1/opt_ages.txt', np.array(ages))
+np.savetxt('paleo_runs/center_opt1/opt_Ls.txt', np.array(Ls))

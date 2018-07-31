@@ -27,8 +27,8 @@ y = L_interp(model_ages[obs_indexes])
 #R = 500.**2 * np.identity(len(y))
 R = np.zeros((len(y), len(y)))
 error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
-min_err = 1000.**2
-max_err = 2500.**2
+min_err = 5000.**2 #1000.**2
+max_err = 50000.**2 #2500.**2
 error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
 error_interp = interp1d(error_ts, error_vs, kind = 'linear')
 errors = error_interp(model_ages[obs_indexes])
@@ -63,21 +63,12 @@ m_p, P_p, mu, K = ku.update(y, R)
 
 plt.plot(m, 'ko')
 plt.plot(m_p, 'ro')
+v = P[range(len(P)), range(len(P))]
+plt.plot(m_p + 2.0*np.sqrt(v), 'ro--')
+plt.plot(m_p - 2.0*np.sqrt(v), 'ro--')
 plt.show()
 
-np.savetxt(in_dir + 'mu.txt', mu)
-np.savetxt(in_dir + 'opt_m.txt', m_p)
-np.savetxt(in_dir + 'opt_P.txt', P_p)
-
-"""
-np.savetxt('opt_m.txt', m_p)
-
-plt.subplot(3,1,2)
-plt.plot(model_ages, np.repeat(m_p, 30))
-plt.plot(model_ages, np.repeat(m, 30))
-
-plt.subplot(3,1,3)
-v = P[range(len(P)), range(len(P))]
-plt.plot(v)
-plt.show()"""
+np.savetxt(in_dir + 'mu_error.txt', mu)
+np.savetxt(in_dir + 'opt_m_error.txt', m_p)
+np.savetxt(in_dir + 'opt_P_error.txt', P_p)
 

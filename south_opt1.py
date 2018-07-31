@@ -20,12 +20,8 @@ L_interp = interp1d(obs_ages, obs_Ls, kind = 'linear')
 # Model time steps 
 model_ages = np.loadtxt(in_dir + 'ages_0.txt')
 # To reduce computation time, we only  use observations at periodic intervals for the kalman update
-#skip = 4
 obs_indexes = np.array([0, 1400*3, 2400*3, 3400*3, len(model_ages) - 2])
-
-#print model_ages[obs_indexes]
-#quit()
-
+#skip = 4
 #obs_indexes = range(len(model_ages))[::skip]
 # Observation
 y = L_interp(model_ages[obs_indexes])
@@ -34,7 +30,7 @@ y = L_interp(model_ages[obs_indexes])
 R = np.zeros((len(y), len(y)))
 error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
 min_err = 5000.**2
-max_err = 20000.**2 #1000.**2
+max_err = 50000.**2 #1000.**2
 error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
 error_interp = interp1d(error_ts, error_vs, kind = 'linear')
 errors = error_interp(model_ages[obs_indexes])
@@ -74,8 +70,7 @@ plt.plot(m_p - 2.0*np.sqrt(v), 'r-')
 plt.plot(m_p + 2.0*np.sqrt(v), 'r-')
 plt.show()
 
-quit()
-
+np.savetxt(in_dir + 'var.txt', v)
 np.savetxt(in_dir + 'mu.txt', mu)
 np.savetxt(in_dir + 'opt_m.txt', m_p)
 np.savetxt(in_dir + 'opt_P.txt', P_p)
