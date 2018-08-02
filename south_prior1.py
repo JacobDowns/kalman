@@ -15,6 +15,8 @@ np.savetxt(out_dir + 'sigma_ts.txt', years)
 N = len(years)
 # Prior mean 
 x = np.loadtxt('filter/south_prior3/opt_m.txt')
+
+print len(x)
 # Prior covariance
 P = np.zeros((N, N))
 P[range(N), range(N)] = 2.

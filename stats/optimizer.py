@@ -1,19 +1,37 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import interp1d
 from kalman_update import *
 
-in_dir = 'filter/prior1/'
 
-### Observations 
-#############################################################
+class Optimizer(object):
+
+    def __init__(self, input_dict):
+        # Input directory 
+        in_dir = input_dict['in_dir']
+        # Observed ages 
+        obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
+        # Observed lengths
+        obs_Ls = input_dict['obs_Ls']
+        # Interpolate the observations 
+        L_interp = interp1d(obs_ages, obs_Ls, kind = 'linear')
+        # Model time steps 
+        model_ages = np.loadtxt(in_dir + 'ages_0.txt')
+        if 'skip' in input_dict:
+            skip = input_dict['skip']
+        else:
+            skip = 5
+        # Indexes that define what observations to incorporate
+        obs_indexes = range(len(model_ages))[::skip]
+        # Observation
+        y = L_interp(model_ages[obs_indexes])
+
+        ### Observations 
+        #############################################################
 
 # Observed lengths
-obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
-# Observed ages 
-obs_Ls = [406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725]
-# Interpolate the observations 
-L_interp = interp1d(obs_ages, obs_Ls, kind = 'linear')
+obs_Ls = np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738.49932773202, 296659.0156905292])
+
+
 # Model time steps 
 model_ages = np.loadtxt(in_dir + 'ages_0.txt')
 # To reduce computation time, we only  use observations at periodic intervals for the kalman update
@@ -25,8 +43,10 @@ y = L_interp(model_ages[obs_indexes])
 #R = 500.**2 * np.identity(len(y))
 R = np.zeros((len(y), len(y)))
 error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
-min_err = 100.**2 #100.**2
-max_err = 100.**2 #1000.**2
+#min_err = 1000.**2
+#max_err = 2500.**2 #1000.**2
+min_err = 5000.**2
+max_err = 50000.**2
 error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
 error_interp = interp1d(error_ts, error_vs, kind = 'linear')
 errors = error_interp(model_ages[obs_indexes])
@@ -63,9 +83,9 @@ plt.plot(m, 'ko')
 plt.plot(m_p, 'ro')
 plt.show()
 
-np.savetxt(in_dir + 'mu.txt', mu)
-np.savetxt(in_dir + 'opt_P1.txt', P_p)
-np.savetxt(in_dir + 'opt_P1.txt', P_p)
+np.savetxt(in_dir + 'mu_error.txt', mu)
+np.savetxt(in_dir + 'opt_m_error.txt', m_p)
+np.savetxt(in_dir + 'opt_P_error.txt', P_p)
 
 """
 np.savetxt('opt_m.txt', m_p)
