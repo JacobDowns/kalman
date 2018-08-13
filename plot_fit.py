@@ -27,7 +27,7 @@ obs_Ls = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 2
 L_interp = interp1d(obs_ages, obs_Ls, kind = 'linear')
 
 plt.plot(obs_ages, obs_Ls, color = '#2ca02c', lw = 2, ms = 8, linestyle = '--', marker = 'o')
-plt.plot(ages, Ls, '#1f77b4', lw = 2)
+plt.plot(ages, Ls, , lw = 2)
 
 
 """

@@ -6,96 +6,82 @@ from kalman_update import *
 class Optimizer(object):
 
     def __init__(self, input_dict):
-        # Input directory 
-        in_dir = input_dict['in_dir']
-        # Observed ages 
-        obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
-        # Observed lengths
-        obs_Ls = input_dict['obs_Ls']
-        # Interpolate the observations 
-        L_interp = interp1d(obs_ages, obs_Ls, kind = 'linear')
-        # Model time steps 
-        model_ages = np.loadtxt(in_dir + 'ages_0.txt')
-        if 'skip' in input_dict:
-            skip = input_dict['skip']
-        else:
-            skip = 5
-        # Indexes that define what observations to incorporate
-        obs_indexes = range(len(model_ages))[::skip]
-        # Observation
-        y = L_interp(model_ages[obs_indexes])
 
-        ### Observations 
+        ### Load stuff we need for the unscented transform 
         #############################################################
 
-# Observed lengths
-obs_Ls = np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738.49932773202, 296659.0156905292])
+        # Input dictionary
+        self.input_dict = input_dict
+        # Input directory 
+        self.in_dir = input_dict['in_dir']
+        # Observed ages 
+        self.obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
+        # Model time steps 
+        self.model_ages = np.loadtxt(self.in_dir + 'ages_0.txt')
+        # Sigma points
+        self.X = np.loadtxt(self.in_dir + 'X.txt')
+        # Sigma points run through 
+        self.Y = np.loadtxt(self.in_dir + 'Y.txt')
+        # Prior mean
+        self.m = np.loadtxt(self.in_dir + 'prior_m.txt')
+        # Prior covariance 
+        self.P = np.loadtxt(self.in_dir + 'prior_P.txt')
+        # Load mean weights
+        self.m_weights = np.loadtxt(self.in_dir + 'm_weights.txt')
+        # Load covariance weights
+        self.c_weights = np.loadtxt(self.in_dir + 'c_weights.txt')
 
 
-# Model time steps 
-model_ages = np.loadtxt(in_dir + 'ages_0.txt')
-# To reduce computation time, we only  use observations at periodic intervals for the kalman update
-skip = 5
-obs_indexes = range(len(model_ages))[::skip]
-# Observation
-y = L_interp(model_ages[obs_indexes])
-# Assumed observation covariance
-#R = 500.**2 * np.identity(len(y))
-R = np.zeros((len(y), len(y)))
-error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
-#min_err = 1000.**2
-#max_err = 2500.**2 #1000.**2
-min_err = 5000.**2
-max_err = 50000.**2
-error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
-error_interp = interp1d(error_ts, error_vs, kind = 'linear')
-errors = error_interp(model_ages[obs_indexes])
-R[range(R.shape[0]), range(R.shape[0])] = errors
+    # Do the Kalman update to incorporate the measurement and correct the prior mean
+    def optimize(self, obs_Ls, sparse_obs = False, skip = 5, min_err = 5000.**2, max_err = 50000.**2, out_dir = None):
+
+        ### Generate observation vector
+        #############################################################
+
+        obs_indexes = range(len(self.model_ages))[::skip]
+        if sparse_obs:
+            # Include only the real observations (don't linearly interpolate)
+            obs_indexes = [abs(self.model_ages - obs_age).argmin() for obs_age in obs_ages]
+
+        # Interpolate the observations 
+        L_interp = interp1d(self.obs_ages, obs_Ls, kind = 'linear')
+        y = L_interp(self.model_ages[obs_indexes])
 
 
-### Load stuff we need for the unscented transform 
-#############################################################
+        ### Generate measurement covariance matrix
+        #############################################################
 
-# Sigma points
-X = np.loadtxt(in_dir + 'X.txt')
-# Sigma points run through 
-Y = np.loadtxt(in_dir + 'Y.txt')
-Y = Y[:, obs_indexes]
-# Prior mean
-m = np.loadtxt(in_dir + 'prior_m.txt')
-# Prior covariance 
-P = np.loadtxt(in_dir + 'prior_P.txt')
-# Load mean weights
-m_weights = np.loadtxt(in_dir + 'm_weights.txt')
-# Load covariance weights
-c_weights = np.loadtxt(in_dir + 'c_weights.txt')
+        # Assumed observation covariance
+        R = np.zeros((len(y), len(y)))
+
+        # Set the error through time
+        error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
+        error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
+        error_interp = interp1d(error_ts, error_vs, kind = 'linear')
+        errors = error_interp(self.model_ages[obs_indexes])
+        R[range(R.shape[0]), range(R.shape[0])] = errors
 
 
-### Do Kalman update
-#############################################################
+        ### Do the Kalman update
+        #############################################################
+        ku = KalmanUpdate(self.m, self.P, self.X, self.Y[:,obs_indexes], self.m_weights, self.c_weights, obs_indexes)
+        m_p, P_p, mu, K = ku.update(y, R)
 
-# Object for doing the Kalman update computations
-ku = KalmanUpdate(m, P, X, Y, m_weights, c_weights, obs_indexes)
+        if out_dir:
+            np.savetxt(out_dir + 'mu.txt', mu)
+            np.savetxt(out_dir + 'opt_m.txt', m_p)
+            np.savetxt(out_dir + 'opt_P.txt', P_p)
+            np.savetxt(out_dir + 'y.txt', y)
+            np.savetxt(out_dir + 'R.txt', R)
 
-m_p, P_p, mu, K = ku.update(y, R)
+        return m_p, P_p, mu, K, y, R
 
-plt.plot(m, 'ko')
-plt.plot(m_p, 'ro')
-plt.show()
+    
+inputs = {}
+inputs['in_dir']  = 'filter/north_prior2/'
+opt = Optimizer(inputs)
+opt.optimize(np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738.49932773202, 296659.0156905292]), out_dir = 'filter/north_prior2/opt/')
 
-np.savetxt(in_dir + 'mu_error.txt', mu)
-np.savetxt(in_dir + 'opt_m_error.txt', m_p)
-np.savetxt(in_dir + 'opt_P_error.txt', P_p)
 
-"""
-np.savetxt('opt_m.txt', m_p)
-
-plt.subplot(3,1,2)
-plt.plot(model_ages, np.repeat(m_p, 30))
-plt.plot(model_ages, np.repeat(m, 30))
-
-plt.subplot(3,1,3)
-v = P[range(len(P)), range(len(P))]
-plt.plot(v)
-plt.show()"""
+                               
 

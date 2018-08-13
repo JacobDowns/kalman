@@ -66,7 +66,7 @@ ku = KalmanUpdate(m, P, X, Y, m_weights, c_weights, obs_indexes)
 m_p, P_p, mu, K = ku.update(y, R)
 
 plt.plot(m, 'ko')
-v = P_p[range(len(P)), range(len(P))]
+v = P_p[range(len(P)), range(len(P))] 
 plt.plot(m_p, 'r')
 plt.plot(m_p - 2.0*np.sqrt(v), 'r-')
 plt.plot(m_p + 2.0*np.sqrt(v), 'r-')
