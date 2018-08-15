@@ -5,9 +5,7 @@ from support.momentum_form import *
 from support.momentum_form_fixed_domain import *
 from support.mass_form import *
 from support.mass_form_fixed_domain import *
-#from support.length_form_calving1 import *
 from support.length_form_marine import *
-#from support.length_form import *
 import matplotlib.pyplot as plt
 
 parameters['form_compiler']['cpp_optimize'] = True
@@ -193,13 +191,16 @@ class ForwardIceModel(object):
         dHdt_f = (H_f - H0) / dt
         # Overburden pressure
         P_0 = Constant(self.constants['rho']*self.constants['g'])*H_c
+        # Overburden fraction
+        P_frac = Constant(self.constants['P_frac'])
         # Water pressure
-        P_w = Constant(0.75)*P_0
+        P_w = P_frac*P_0
         # Effective pressure
         N = P_0 - P_w
         # Effective pressure for fixed domain problem
         P_0_f = Constant(self.constants['rho']*self.constants['g'])*H_c_f
-        P_w_f = Constant(0.75)*P_0_f
+        # Overburden pressure fraction
+        P_w_f = P_frac*P_0_f
         N_f = P_0_f - P_w_f
         # Sea level
         self.sea_level = Constant(0.0)
@@ -218,10 +219,12 @@ class ForwardIceModel(object):
         self.dHdt = dHdt
         self.dHdt_f = dHdt_f
         self.dt = dt
+        self.P_frac = P_frac
         self.P_0 = P_0
         self.P_w = P_w
         self.N = N
         self.N_f = N_f
+        
 
 
         ### Temporary variables that store variable values before a step is accepted

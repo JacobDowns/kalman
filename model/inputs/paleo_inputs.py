@@ -39,8 +39,6 @@ class PaleoInputs(CommonInputs):
         self.temp = Function(self.V_cg)
         # Initial glacier length
         self.L_init = float(self.input_functions['L0'])
-        # Model time step (in years)
-        self.dt = dt
         # PDD variance
         self.pdd_var = pdd_var
         # Object for calculating PDD's
@@ -53,6 +51,10 @@ class PaleoInputs(CommonInputs):
         self.lambda_ice = lambda_ice
         # Precipitation parameter
         self.lambda_precip = lambda_precip
+        # Superimposed ice fraction
+        self.super_ice_frac = 0.6
+        # Model time step
+        self.dt = dt
 
 
     """
@@ -69,19 +71,21 @@ class PaleoInputs(CommonInputs):
     """
     def update_adot(self, delta_temp):
 
+        print "Delta temp: ", delta_temp
+
         ### Compute monthly pdd's and precip.
         ########################################################################
-
-        # Accumulated snowpack for the year in m.w.e.
-        snowpack = np.zeros_like(self.input_functions['S_ref'].vector().get_local())
-        # Yearly ice ablation
-        ablation = np.zeros_like(self.input_functions['S_ref'].vector().get_local())
+        
         # Get the reference elevation used by climate model
         ref_elevation_vec = self.input_functions['S_ref'].vector().get_local()
         # Get the modeled elevation
         modeled_elevation_vec = self.modeled_S.vector().get_local()
         # Compute the lapse rate correction in C
         lapse_correction = ((ref_elevation_vec - modeled_elevation_vec) / 1000.0) * self.lapse_rate
+        # Total snow that has fallen for the year
+        total_snowfall = np.zeros_like(self.input_functions['S_ref'].vector().get_local())
+        # Total number of pdds for the year
+        total_pdds = np.zeros_like(self.input_functions['S_ref'].vector().get_local())
 
         for i in range(12):
             # Compute the delta temp. adjusted / lapse rate corrected temp. for this month
@@ -91,35 +95,49 @@ class PaleoInputs(CommonInputs):
             # Compute the delta temp. adjusted precip.
             modern_precip_vec = self.input_functions['P' + str(i)].vector().get_local()
             # Temp. corrected precip. rate in m.w.e./a
-            precip_vec = modern_precip_vec*np.e**(self.lambda_precip*(temp_vec - modern_temp_vec))
+            precip_vec = modern_precip_vec*np.e**(0.07*(temp_vec - modern_temp_vec))
             # Compute pdd's for this month
-            pdds = self.pdd_calc.get_pdd(temp_vec)
+            total_pdds += self.pdd_calc.get_pdd(temp_vec)
             # Fraction of precip. that falls as snow
             snowfall_frac = self.pdd_calc.get_acc_frac(temp_vec)
             # Compute snowfall for the month in m.w.e
-            monthly_snowfall = precip_vec * (1./12.) * snowfall_frac
-            snowpack += monthly_snowfall
-            # Compute monthly snow melt in m.w.e
-            monthly_snowmelt = pdds * self.lambda_snow
+            total_snowfall += precip_vec * (1./12.) * snowfall_frac
+            
 
-            # If the snowpack is depleted, start melting ice
-            if (snowpack - monthly_snowmelt).min() < 0.:
-                # Number of pdd's required to melt the snow
-                snow_pdds = snowpack / self.lambda_snow
-                # Excess PDD's that go to melting ice
-                ice_pdds = pdds - snow_pdds
-                ice_pdds[ice_pdds < 0.] = 0.
-                # Ablation m.w.e
-                ablation += ice_pdds * self.lambda_ice
-
-            # Update snowpack
-            snowpack -= monthly_snowmelt
-            snowpack[snowpack < 0.] = 0.
-
+        ### Compute SMB from total snowfall and pdds
+        ########################################################################
+        
+        # PDD's needed to melt given fraction of the snowpack 
+        pdds_to_make_super_ice = (self.super_ice_frac*total_snowfall) / self.lambda_snow
+        # PDD's that actually go to making superimposed ice
+        pdds_super_ice = np.minimum(total_pdds, pdds_to_make_super_ice)
+        total_pdds -= pdds_super_ice
+        # Amount of superimposed ice in m.w.e
+        super_ice = pdds_super_ice * self.lambda_snow
+        # Amount of snow in m.w.e remaining after some has been converted to superimposed ice
+        total_snowfall -= super_ice        
+        # PDD's needed to melt all the remaining snow
+        pdds_to_melt_snow = total_snowfall / self.lambda_snow
+        # PDD's that actually go to melting snow
+        pdds_melt_snow = np.minimum(total_pdds, pdds_to_melt_snow)
+        total_pdds -= pdds_melt_snow
+        # Amount of snow that remains in m.w.e
+        total_snowfall -= pdds_melt_snow * self.lambda_snow
+        # PDD's needed to melt the superimposed ice
+        pdds_to_melt_super_ice = super_ice / self.lambda_ice
+        # PDD's that actually go to melting superimposed ice
+        pdds_melt_super_ice = np.minimum(total_pdds, pdds_to_melt_super_ice)
+        total_pdds -= pdds_melt_super_ice
+        # The amount of superimposed ice remaining
+        super_ice -= pdds_melt_super_ice * self.lambda_ice
+        # Compute the accumulation in m.w.e, consisting of snow and superimpsed ice
+        accumulation = total_snowfall + super_ice
+        # Compute the amount of ablation in m.w.e (remaining PDD's go to melting glacier ice)
+        ablation = total_pdds * self.lambda_ice
         # Total yearly mass balance in m.i.e. assuming snowpack turns to ice at end of year
-        smb = (snowpack - ablation) * (10./9.)
+        smb = (accumulation - ablation) * (10./9.)
         self.adot.vector()[:] = smb
-
+        
 
     # Update inputs that change with length, iteration, time, and time step
     def update_inputs(self, L, adot0 = None):

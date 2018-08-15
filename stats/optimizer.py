@@ -2,7 +2,6 @@ import numpy as np
 from scipy.interpolate import interp1d
 from kalman_update import *
 
-
 class Optimizer(object):
 
     def __init__(self, input_dict):
@@ -41,12 +40,12 @@ class Optimizer(object):
         obs_indexes = range(len(self.model_ages))[::skip]
         if sparse_obs:
             # Include only the real observations (don't linearly interpolate)
-            obs_indexes = [abs(self.model_ages - obs_age).argmin() for obs_age in obs_ages]
+            obs_indexes = [abs(self.model_ages - obs_age).argmin() for obs_age in self.obs_ages]
 
         # Interpolate the observations 
         L_interp = interp1d(self.obs_ages, obs_Ls, kind = 'linear')
-        y = L_interp(self.model_ages[obs_indexes])
-
+        y = L_interp(np.round(self.model_ages[obs_indexes], 0))
+        
 
         ### Generate measurement covariance matrix
         #############################################################
@@ -57,8 +56,8 @@ class Optimizer(object):
         # Set the error through time
         error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
         error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
-        error_interp = interp1d(error_ts, error_vs, kind = 'linear')
-        errors = error_interp(self.model_ages[obs_indexes])
+        error_interp = interp1d(error_ts, error_vs, kind = 'linear', bounds_error = False)
+        errors = error_interp(np.round(self.model_ages[obs_indexes], 0))
         R[range(R.shape[0]), range(R.shape[0])] = errors
 
 
@@ -75,12 +74,6 @@ class Optimizer(object):
             np.savetxt(out_dir + 'R.txt', R)
 
         return m_p, P_p, mu, K, y, R
-
-    
-inputs = {}
-inputs['in_dir']  = 'filter/north_prior2/'
-opt = Optimizer(inputs)
-opt.optimize(np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738.49932773202, 296659.0156905292]), out_dir = 'filter/north_prior2/opt/')
 
 
                                

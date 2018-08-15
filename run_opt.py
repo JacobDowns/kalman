@@ -1,54 +1,43 @@
-
-from model.inputs.paleo_inputs1 import *
-from model.forward_model.forward_ice_model import *
-import matplotlib.pyplot as plt
 import numpy as np
 import sys
-import os.path
+from model.paleo_runner import *
+from scipy.interpolate import interp1d
 
-in_dir = 'filter/prior5/'
-adots_opt = np.loadtxt(in_dir + 'opt_m3.txt')
-
-dt = 1./3.
-model_inputs = PaleoInputs('paleo_inputs/is_paleo_11_6_steady.hdf5', dt = dt)
-model = ForwardIceModel(model_inputs, "out", "paleo")
-
-sigma_ts = np.loadtxt(in_dir + 'sigma_ts.txt')
-model_ts = -11.6e3 + np.linspace(0., 4300., 4300*3)
-delta_temp_interp = interp1d(sigma_ts, adots_opt, kind = 'linear')
-delta_temps = delta_temp_interp(model_ts)
-
+""" 
+Perform a model run with an optimized delta temp.
 """
-xs = model_inputs.mesh.coordinates() * model_inputs.L_init
-L_init = model_inputs.L_init
-plt.plot(xs, project(model.B).compute_vertex_values(), lw = 2)
-plt.plot(xs, project(model.B + model.H0_c).compute_vertex_values(), lw = 2)
-plt.ylim([-250., 2000.])
-plt.xlim([0., L_init])
-plt.xlabel('x (m)')
-plt.ylabel('y (m)')
-plt.show()"""
 
-dolfin.plot(model.adot_prime)
-plt.show()
+### Model inputs
+#######################################################
 
-quit()
+# Input dictionary
+inputs = {}
+# Input directory
+in_dir = sys.argv[1]
+# Optimization results directory
+opt_dir = sys.argv[2]
+# Steady state file name
+inputs['in_file'] = in_dir + '/steady.h5'
+# Time step
+inputs['dt'] = 1./3.
+# Number of model time steps
+inputs['N'] = 4300*3
 
-N = 4300*3
-Ls = []
-ages = []
 
-for j in range(N):
-    age = -11.6e3 + model.t + dt
-    ages.append(age)
+### Delta temp. function
+#######################################################
 
-    print age
+# State vector times
+sigma_ts = np.loadtxt(in_dir + '/sigma_ts.txt')
+delta_temps_opt = np.loadtxt(in_dir + '/' + opt_dir  + '/opt_m.txt')
+# Interpolated delta temp. function 
+inputs['delta_temp_func'] = interp1d(sigma_ts, delta_temps_opt, kind = 'linear')
 
-    L = model.step(delta_temps[j], accept = True)
-    Ls.append(L)
 
-plt.plot(ages, Ls)
-plt.show()
+### Perform the model run
+#######################################################
+model_runner = PaleoRunner(inputs)
+ages, Ls = model_runner.run()
 
-np.savetxt('opt_ages3.txt', np.array(ages))
-np.savetxt('opt_L3.txt', np.array(Ls))
+np.savetxt(in_dir + '/' + opt_dir + '/opt_ages.txt', ages)
+np.savetxt(in_dir + '/' + opt_dir + '/opt_Ls.txt', Ls)
