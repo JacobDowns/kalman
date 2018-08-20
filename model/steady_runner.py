@@ -1,64 +1,86 @@
-from inputs.paleo_inputs import *
-from forward_model.forward_ice_model import *
+from common_runner import *
+import numpy as np
+from stats.scalar_ukf import *
 
-class PaleoRunner(object):
+class SteadyRunner(CommonRunner):
 
     def __init__(self, input_dict):
+
+        super(SteadyRunner, self).__init__(input_dict)
+
         
-        ### Initialize model
+        ### Steady state run options
         ############################################################################
 
-        # Input file
-        self.in_file = input_dict['in_file']
-        # Time step
-        self.dt = 1./3.
-        if 'dt' in input_dict:
-            self.dt = input_dict['dt']
-        # Output directory
-        self.out_dir = 'out'
-        if 'out_dir' in input_dict:
-            self.out_dir = input_dict['out_dir']
-        # Output file name
-        self.out_file = 'paleo'
-        if 'out_file' in input_dict:
-            self.out_file = input_dict['paleo']
-        # Model inputs
-        self.model_inputs = PaleoInputs(self.in_file, dt = dt)
-        # Model 
-        self.model = ForwardIceModel(self.model_inputs, self.out_dir, self.out_file)
-        # Delta temp as a function of age
-        self.delta_temp_func = input_dict['delta_temp_func']
-        # Number of time steps
-        self.N = input_dict['N']
-        # Starting age
-        self.start_age = -11.6e3
-        # Output (print stuff)?
-        self.output = True
-        if 'output' in input_dict:
-            self.output = input_dict['output']
+        # Steady state file name
+        self.steady_file_name = input_dict['steady_file_name']
         
+        # Initial delta temp mean
+        self.delta_temp_mu = -8.
+        if 'delta_temp_mu' in input_dict:
+            self.delta_temp_mu = input_dict['delta_temp_mu']
 
+        # Initial delta temp variance
+        self.delta_temp_sigma2 = 1.
+        if 'delta_temp_sigma2' in input_dict:
+            self.delta_temp_sigma2 = input_dict['delta_temp_sigma2']
+
+        # Observation mean
+        self.L_mu = input_dict['L_mu']
+        
+        # Observation covariance
+        self.L_sigma2 = 100.**2
+        if 'L_sigma2' in input_dict:
+            self.L_sigma2 = input_dict['L_sigma2']
+        
+        # Process noise
+        self.Q = 0.1**2
+        if 'Q' in input_dict:
+            self.Q = input_dict['Q']
+
+            
+        ### Setup the UKF
+        ############################################################################
+
+        # Process model function
+        def F(xs):
+            return xs
+
+        # Measurement model function
+        def H(xs):
+            print "H", xs
+            ys = np.zeros_like(xs)
+
+            for i in range(len(xs)):
+                ys[i] = model.step(xs[i], accept = False)
+
+            return ys
+
+        self.ukf = ScalarUKF(self.delta_temp_mu, self.delta_temp_sigma2, F, H)
+        
+        
     # Perform a model run
-    def run():
+    def run(self):
+
         # Length at each time step
         Ls = []
-        # Age at each time step 
-        ages = []
+        # Delta temp at each time step
+        delta_temps = []
 
-        for j in range(self.N):
-            # Age
-            age = self.start_age + model.t + dt
-            ages.append(age)
-            # Delta temp. 
-            delta_temp = self.delta_temp_func(age)
+        for i in range(self.N):
 
+            # Get the optimal delta temp dist. from the filter
+            delta_temp, delta_temp_sigma2 = self.ukf.step(self.L_mu, self.L_sigma2, self.Q)
+            delta_temps.append(delta_temp)
+            
             if self.output:
-                print "delta temp.", delta_temp
-                print "age", age
-                print age
+                print "opt delta temp", delta_temp, delta_temp_sigma2
 
-            L = model.step(delta_temp, accept = True)
+            # Do a step with the optimal delta temp
+            L = selfmodel.step(delta_temp, accept = True)
             Ls.append(L)
 
-        return np.array(ages), np.array(Ls)
+            print "dif", L - L_mu
+
+        self.model.write_steady_file(self.steady_file_name)
         

@@ -27,4 +27,4 @@ for element in itertools.product(*params):
     i += 1
     
 all_params = np.array(all_params)
-print all_params
+print all_paramsz

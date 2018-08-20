@@ -48,9 +48,9 @@ for i in range(index*runs, min(num_experiments, index*runs + runs)):
     params = np.loadtxt('sensitivity/params_' + str(i) + '.txt')
 
     inputs['pdd_var'] = params[0]
-    inputs['lambda_s'] = params[1]
-    inputs['lambda_i'] = params[2]
-    inputs['lambda_p'] = params[3]
+    inputs['lambda_snow'] = params[1]
+    inputs['lambda_ice'] = params[2]
+    inputs['lambda_precip'] = params[3]
     inputs['P_frac'] = params[4]
     inputs['beta2'] = params[5]
 
@@ -60,4 +60,3 @@ for i in range(index*runs, min(num_experiments, index*runs + runs)):
     # Save the results 
     np.savetxt('sensitivity/ages_' + str(i) + '.txt', ages)
     np.savetxt('sensitivity/Ls_' + str(i) + '.txt', Ls)
-    

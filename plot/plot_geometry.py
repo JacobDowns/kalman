@@ -1,5 +1,6 @@
-
-from model.inputs.paleo_inputs1 import *
+import sys
+sys.path.append('../')
+from model.inputs.paleo_inputs import *
 from model.forward_model.forward_ice_model import *
 import matplotlib.pyplot as plt
 import numpy as np
@@ -25,7 +26,7 @@ fig = plt.figure(figsize=(12,14))
 ### North
 ################################################################################
 dt = 1./3.
-model_inputs = PaleoInputs('paleo_inputs/north_paleo_steady_11_6.hdf5', dt = dt)
+model_inputs = PaleoInputs('../paleo_inputs/north_paleo_steady_11_6.h5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 xs = model_inputs.mesh.coordinates() * model_inputs.L_init
@@ -35,6 +36,7 @@ surface = project(model.S)
 bed = project(model.B)
 
 ax = fig.add_subplot(311)
+plt.title('(a)')
 plt.plot(xs, surface.compute_vertex_values(), 'b', linewidth = 3.5)
 plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 
@@ -55,7 +57,7 @@ ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
 
 ### Center
 ################################################################################
-model_inputs = PaleoInputs('paleo_inputs/center_paleo_steady_11_6.hdf5', dt = dt)
+model_inputs = PaleoInputs('../paleo_inputs/center_paleo_steady_11_6.h5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 xs = model_inputs.mesh.coordinates() * model_inputs.L_init
@@ -65,6 +67,7 @@ surface = project(model.S)
 bed = project(model.B)
 
 ax = fig.add_subplot(312)
+plt.title('(b)')
 plt.plot(xs, surface.compute_vertex_values(), 'b', linewidth = 3.5)
 plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 
@@ -83,7 +86,7 @@ plt.ylabel('Elevation (m)')
 
 ### South
 ################################################################################
-model_inputs = PaleoInputs('paleo_inputs/south_paleo_steady_11_6.hdf5', dt = dt)
+model_inputs = PaleoInputs('../paleo_inputs/south_paleo_steady_11_6.h5', dt = dt)
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 xs = model_inputs.mesh.coordinates() * model_inputs.L_init
@@ -93,6 +96,7 @@ surface = project(model.S)
 bed = project(model.B)
 
 ax = fig.add_subplot(313)
+plt.title('(c)')
 plt.plot(xs, surface.compute_vertex_values(), 'b', linewidth = 3.5)
 plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 

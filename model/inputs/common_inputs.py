@@ -60,8 +60,12 @@ class CommonInputs(object):
         for field_name in self.cg_fields:
             self.original_cg_functions[field_name] = Function(self.V_cg)
             self.input_functions[field_name] = Function(self.V_cg)
+
             input_file.read(self.input_functions[field_name], field_name)
             input_file.read(self.original_cg_functions[field_name], field_name)
+
+            if field_name == 'beta2' and 'beta2' in input_options:
+                self.input_functions[field_name].interpolate(Constant(input_options['beta2']))
 
 
         ### DG inputs
@@ -124,7 +128,6 @@ class CommonInputs(object):
 
         #### Create boundary facet function
         ########################################################################
-        #self.boundaries = FacetFunctionSizet(self.mesh, 0)
         self.boundaries = MeshFunction('size_t', self.mesh, self.mesh.topology().dim() - 1, 0)
 
         for f in facets(self.mesh):

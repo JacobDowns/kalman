@@ -1,7 +1,7 @@
 from inputs.paleo_inputs import *
 from forward_model.forward_ice_model import *
 
-class PaleoRunner(object):
+class CommonRunner(object):
 
     def __init__(self, input_dict):
         
@@ -22,12 +22,8 @@ class PaleoRunner(object):
         self.out_file = 'paleo'
         if 'out_file' in input_dict:
             self.out_file = input_dict['paleo']
-        # Delta temp as a function of age
-        self.delta_temp_func = input_dict['delta_temp_func']
         # Number of time steps
         self.N = input_dict['N']
-        # Starting age
-        self.start_age = -11.6e3
         # Output (print stuff)?
         self.output = True
         if 'output' in input_dict:
@@ -53,15 +49,20 @@ class PaleoRunner(object):
         self.lambda_precip = 0.07
         if 'lambda_precip' in input_dict:
             self.lambda_precip = input_dict['lambda_precip']
-
+        
 
         ### Sliding parameters
         ############################################################################
 
         # Overburden pressure fraction
-        self.P_frac = input_dict['P_frac'] 
-        # Basal traction
-        self.beta2 = input_dict['beta2']
+        self.P_frac = 0.75
+        if 'P_frac' in input_dict:
+            self.P_frac = input_dict['P_frac']
+
+        self.beta2 = None:
+        if 'beta2' in input_dict:
+            # Basal traction
+            self.beta2 = input_dict['beta2']
         
 
         ### Init. model
@@ -69,36 +70,9 @@ class PaleoRunner(object):
         
         # Model inputs
         self.model_inputs = PaleoInputs(self.in_file, dt = self.dt, pdd_var = self.pdd_var,
-                                        lambda_snow = self.lambda_snow, lambda_ice = self.lambda_ice, lambda_precip = self.lambda_precip)
-        # Assign beta2
-        self.model.beta2.interpolate(Constant(self.beta2))
+                                        lambda_snow = self.lambda_snow, lambda_ice = self.lambda_ice, lambda_precip = self.lambda_precip, self.beta2)
         # Model 
         self.model = ForwardIceModel(self.model_inputs, self.out_dir, self.out_file)
         # Assign P_frac
         self.model.P_frac.assign(self.P_frac)
-        
-
-    # Perform a model run
-    def run(self):
-        # Length at each time step
-        Ls = []
-        # Age at each time step 
-        ages = []
-
-        for j in range(self.N):
-            # Age
-            age = self.start_age + self.model.t
-            ages.append(age)
-            # Delta temp. 
-            delta_temp = self.delta_temp_func(age)
-
-            if self.output:
-                print "delta temp.", delta_temp
-                print "age", age
-                print age
-
-            L = self.model.step(delta_temp, accept = True)
-            Ls.append(L)
-
-        return np.array(ages), np.array(Ls)
         
