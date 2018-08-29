@@ -13,55 +13,14 @@ Inputs for paleo run.
 
 class PaleoInputs(CommonInputs):
 
-    def __init__(self, input_file_name, input_dict):
+    def __init__(self, input_file_name, dt = 1., pdd_var = 5.5, lambda_snow = 0.005, lambda_ice = 0.008, lambda_precip = 0.07, beta2 = None):
 
-        ### Set input parameters
-        ########################################################################
-
-        # Time step
-        self.dt = 1.
-        if 'dt' in input_dict:
-            self.dt = input_dict['dt']
         
-        # PDD variance
-        self.pdd_var = 5.5
-        if 'pdd_var' in input_dict:
-            self.pdd_var = input_dict['pdd_var']
-
-        # Ablation rate for snow (m / (degree C * day))
-        self.lambda_snow = 0.005
-        if 'lambda_snow' in input_dict:
-            self.lambda_snow = input_dict['lambda_snow']
-
-        # Ablation rate for ice (m / (degree C * day))
-        self.lambda_ice = 0.008
-        if 'lambda_ice' in input_dict:
-            self.lambda_ice = input_dict['lambda_ice']
-
-        # Precipitation parameter
-        self.lambda_precip = 0.07
-        if 'lambda_precip' in input_dict:
-            self.lambda_precip = input_dict['lambda_precip']
-
-        # Superimposed ice fraction
-        self.super_ice_frac = 0.6
-        if 'super_ice_frac' in input_dict:
-            self.super_ice_frac = input_dict['super_ice_frac']
-
-        # Elevation lapse rate (degrees C / km)
-        self.lapse_rate = 5.
-        if 'lapse_rate' in input_dict:
-            self.lapse_rate = input_dict['lapse_rate']
-
-        # Basal traction
-        self.beta2 = None
-        if 'beta2' in input_dict:
-            self.beta2 = input_dict['beta2']
-            
         
         ### Load monthly modern temp. and precip. fields
         ########################################################################
 
+        
         additional_cg_fields = ['T' + str(i) for i in range(12)] \
          + ['P' + str(i) for i in range(12)] + ['S_ref']
         additional_interp_fields = additional_cg_fields
@@ -74,8 +33,8 @@ class PaleoInputs(CommonInputs):
         self.additional_cg_fields = additional_cg_fields
 
         # Override beta2 from the .h5 file?
-        if self.beta2:
-            input_options['beta2'] = self.beta2
+        if beta2:
+            input_options['beta2'] = beta2
 
         super(PaleoInputs, self).__init__(input_file_name, input_options)
 
@@ -89,8 +48,22 @@ class PaleoInputs(CommonInputs):
         self.temp = Function(self.V_cg)
         # Initial glacier length
         self.L_init = float(self.input_functions['L0'])
+        # PDD variance
+        self.pdd_var = pdd_var
         # Object for calculating PDD's
-        self.pdd_calc = PDDCalculator(self.pdd_var)
+        self.pdd_calc = PDDCalculator(pdd_var)
+        # Elevation lapse rate (degrees C / km)
+        self.lapse_rate = 5.
+        # Ablation rate for snow (m / (degree C * day))
+        self.lambda_snow = lambda_snow
+        # Ablation rate ice (m / (degree C * day))
+        self.lambda_ice = lambda_ice
+        # Precipitation parameter
+        self.lambda_precip = lambda_precip
+        # Superimposed ice fraction
+        self.super_ice_frac = 0.6
+        # Model time step
+        self.dt = dt
 
 
     """

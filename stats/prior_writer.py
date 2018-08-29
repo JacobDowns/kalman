@@ -39,13 +39,14 @@ class PriorWriter(object):
         ##########################################################################
         # Delta controls smoothness
         delta = 1500.
+        if 'delta' in input_dict:
+            delta = input_dict['delta']
         # Covariance matrix
         P = np.zeros((N, N))
         P[range(N), range(N)] = 2.
         P[range(1,N), range(N-1)] = -1.
         P[range(N-1), range(1,N)] = -1.
         P[N-1, N-1] = 1.
-        delta = 1500.
         P = delta*P
         P = np.linalg.inv(P)
         # Save prior mean and covariance

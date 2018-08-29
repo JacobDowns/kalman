@@ -1,11 +1,11 @@
 from common_runner import *
 import numpy as np
-from stats.scalar_ukf import *
 
-
-class TransientRunner(object):
+class TransientRunner(CommonRunner):
 
     def __init__(self, input_dict):
+
+        super(TransientRunner, self).__init__(input_dict)
         
         ### Transient inputs
         ############################################################################
@@ -14,31 +14,20 @@ class TransientRunner(object):
         self.delta_temp_func = input_dict['delta_temp_func']
         # Starting age
         self.start_age = -11.6e3
+        # Snapshot interval : write out thickness vector periodically
+        self.snapshot_interval = 1000
+        if 'snapshot_interval' in input_dict:
+            self.snapshot_interval = input_dict['snapshot_interval']
         
 
     # Perform a model run
     def run(self):
-
-        # Process model function
-        def F(xs):
-            return xs
-
-        # Measurement model function
-        def H(xs):
-            print "H", xs
-            ys = np.zeros_like(xs)
-
-            for i in range(len(xs)):
-                ys[i] = model.step(xs[i], accept = False)
-
-            return ys
-
-        ukf = ScalarUKF(delta_temp_mu, delta_temp_sigma2, F, H)
-        
         # Length at each time step
         Ls = []
         # Age at each time step 
         ages = []
+        # Thickness vectors through time
+        Hs = []
 
         for j in range(self.N):
             # Age
@@ -51,9 +40,13 @@ class TransientRunner(object):
                 print "delta temp.", delta_temp
                 print "age", age
                 print age
-
+                
             L = self.model.step(delta_temp, accept = True)
             Ls.append(L)
 
-        return np.array(ages), np.array(Ls)
-        
+            if j % self.snapshot_interval == 0:
+                print "asdf"
+                Hs.append(self.model.H0.vector().get_local())
+
+        return np.array(ages), np.array(Ls), np.array(Hs)
+    

@@ -1,5 +1,5 @@
 import numpy as np
-from sigma_points_scalar import *
+from stats.sigma_points_scalar import *
 
 """
 Simple scalar unscented Kalman filter

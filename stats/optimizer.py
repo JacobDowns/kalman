@@ -16,7 +16,7 @@ class Optimizer(object):
         # Observed ages 
         self.obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
         # Model time steps 
-        self.model_ages = np.loadtxt(self.in_dir + 'ages_0.txt')
+        self.model_ages = np.loadtxt(self.in_dir + 'age_0.txt')
         # Sigma points
         self.X = np.loadtxt(self.in_dir + 'X.txt')
         # Sigma points run through 

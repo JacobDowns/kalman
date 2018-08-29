@@ -1,13 +1,14 @@
 from common_runner import *
 import numpy as np
 from stats.scalar_ukf import *
+import sys
+sys.path.append('../')
 
 class SteadyRunner(CommonRunner):
 
     def __init__(self, input_dict):
 
         super(SteadyRunner, self).__init__(input_dict)
-
         
         ### Steady state run options
         ############################################################################
@@ -52,7 +53,7 @@ class SteadyRunner(CommonRunner):
             ys = np.zeros_like(xs)
 
             for i in range(len(xs)):
-                ys[i] = model.step(xs[i], accept = False)
+                ys[i] = self.model.step(xs[i], accept = False)
 
             return ys
 
@@ -77,10 +78,13 @@ class SteadyRunner(CommonRunner):
                 print "opt delta temp", delta_temp, delta_temp_sigma2
 
             # Do a step with the optimal delta temp
-            L = selfmodel.step(delta_temp, accept = True)
+            L = self.model.step(delta_temp, accept = True)
             Ls.append(L)
 
-            print "dif", L - L_mu
+            if self.output:
+                print
+                print "dif", L - self.L_mu
+                print
 
         self.model.write_steady_file(self.steady_file_name)
         

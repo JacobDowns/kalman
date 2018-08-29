@@ -1,7 +1,9 @@
 from model.inputs.paleo_inputs1 import *
 from model.forward_model.forward_ice_model import *
+from model.transient_runner import *
 import numpy as np
 import sys
+import os
 
 class SigmaRunner(object):
 
@@ -19,39 +21,45 @@ class SigmaRunner(object):
         # Load sigma times
         sigma_ts = np.loadtxt(in_dir + 'sigma_ts.txt')
         # Model input file
-        input_file = 'paleo_inputs/center_paleo_steady_11_6.hdf5'
-        # Time step
-        if 'dt' in input_dict:
-            dt = input_dict['dt']
-        else :
-            dt = 1./3.
-
+        input_file = input_dict['in_file'] 
+         
+        
         # Run several delta temp. sigma points through the forward model
         for i in range(index*runs, min(num_sigma_points, index*runs + runs)):
-            print i
-
+            #print i
+            
+            # Check to make sure this one hasn't been run before
             if not os.path.isfile(in_dir + 'Y_' + str(i) + '.txt'):
+
+                print i
+                ### Model inputs
+                #######################################################
+
+                # Input dictionary
+                inputs = {}
+                # Input file name
+                inputs['in_file'] = input_dict['in_file']
+                # Time step
+                inputs['dt'] = 1./3.
+                # Number of model time steps
+                inputs['N'] = 4300*3
+            
+
+                ### Delta temp. function
+                #######################################################
+                
                 # Interpolated delta temp
-                model_ts = -11.6e3 + np.linspace(0., 4300., 4300*3)
-                Y_i = sigma_points[i]
-                delta_temp_interp = interp1d(sigma_ts, Y_i, kind = 'linear')
-                delta_temps = delta_temp_interp(model_ts)
+                X_i = sigma_points[i]
+                inputs['delta_temp_func'] = interp1d(sigma_ts, X_i, kind = 'linear')
+                print X_i
 
-                model_inputs = PaleoInputs(input_file, dt)
-                model = ForwardIceModel(model_inputs, "out", "paleo")
+            
+                ### Perform model run 
+                #######################################################
+                
+                model_runner = TransientRunner(inputs)
+                ages, Ls, Hs = model_runner.run()
 
-                N = 4300*3
-                Ls = []
-                ages = []
-
-                for j in range(N):
-                    print model.t + dt
-                    age = -11.6e3 + model.t + dt
-                    ages.append(age)
-
-                    L = model.step(delta_temps[j], accept = True)
-                    Ls.append(L)
-
-                np.savetxt(in_dir + 'sigma_point_' + str(i) + '.txt', delta_temps)
-                np.savetxt(in_dir + 'ages_' + str(i) + '.txt', np.array(ages))
-                np.savetxt(in_dir + 'Y_' + str(i) + '.txt', np.array(Ls))
+                np.savetxt(in_dir + '/age_' + str(i) + '.txt', ages)
+                np.savetxt(in_dir + '/Y_' + str(i) + '.txt', Ls)
+                np.savetxt(in_dir + '/H_' + str(i) + '.txt', Hs)

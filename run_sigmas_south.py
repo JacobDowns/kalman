@@ -1,18 +1,17 @@
-from stats.sigma_runner import *
+from model.stats.sigma_runner import *
 
 # Directory to read stuff from 
 in_dir = sys.argv[1]
 # Integer index
 index = int(sys.argv[2])
+
 # Sigma runner inputs
 inputs = {}
 # Directory to read stuff from 
-inputs['in_dir'] = in_dir
-# Model input file
-inputs['in_file'] = in_dir + 'steady.h5'
+in_dir = input_dict['in_dir']
 # Integer index
-inputs['index'] = index
+index = input_dict['index']
 # Number of runs
-inputs['runs'] = 5
+runs = input_dict['runs']
 
 sr = SigmaRunner(inputs)

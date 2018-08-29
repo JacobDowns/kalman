@@ -203,7 +203,7 @@ class ForwardIceModel(object):
         P_w_f = P_frac*P_0_f
         N_f = P_0_f - P_w_f
         # Sea level
-        self.sea_level = Constant(0.0)
+        self.sea_level = Constant(self.constants['sea_level'])
         # Minimum ice thickness
         self.min_thickness = Constant(15.0)
         # CG ice thickness at last time step
@@ -491,7 +491,7 @@ class ForwardIceModel(object):
 
     # Write out a steady state file
     def write_steady_file(self, output_file_name):
-      output_file = HDF5File(mpi_comm_world(), output_file_name + '.hdf5', 'w')
+      output_file = HDF5File(mpi_comm_world(), output_file_name + '.h5', 'w')
 
       ### Write bed data
       output_file.write(self.model_inputs.original_cg_functions['B'], 'B')

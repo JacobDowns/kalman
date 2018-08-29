@@ -2,6 +2,12 @@ from dolfin import *
 import numpy as np
 from scipy.interpolate import UnivariateSpline
 import matplotlib.pyplot as plt
+import sys
+#sys.path.append('/')
+#print sys.path
+from model.forward_model.support.physical_constants import *
+
+
 """
 Flexible class for generating a forward model inputs file.
 """
@@ -33,6 +39,8 @@ class CommonInputs(object):
         self.V_r = FunctionSpace(self.mesh, self.E_r)
         # A dictionary of all model inputs
         self.input_functions = {}
+        # Physical constants
+        self.physical_constants = pcs
 
 
         ### CG inputs
