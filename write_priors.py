@@ -1,19 +1,16 @@
 from stats.prior_writer import PriorWriter
 import sys
 
-# Flowline
-out_dir = sys.argv[1]
-# Input dictionary
 inputs = {}
-# Dimension of state vector
-N = 87
-# Delta - controls prior smoothness
-delta = 1500.
 
-inputs = {}
-inputs['out_dir'] = out_dir
-inputs['delta'] = delta
-inputs['N'] = N
-#inputs['delta_temp_file'] = out_dir + 'opt_m.txt'
+# Directory to write prior
+inputs['out_dir'] = sys.argv[1]
+# Delta - controls prior smoothness
+inputs['delta'] = 1500.
+# Dimension of state vector
+inputs['N'] = 87
+# Optional prior input file
+if len(sys.argv) > 2:
+    inputs['delta_temp_file'] = sys.argv[2]
 pw = PriorWriter(inputs)
 

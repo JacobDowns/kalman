@@ -42,7 +42,7 @@ Ls = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 29284
 if flowline == 'center1':
     inputs['in_dir'] = 'transform/center1/'
     opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center1/opt1/')
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center1/opt2/')
 
 if flowline == 'center2':
     inputs['in_dir'] = 'transform/center2/'

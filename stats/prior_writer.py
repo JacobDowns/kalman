@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.interpolate import interp1d
 from filterpy.kalman import JulierSigmaPoints
+import matplotlib.pyplot as plt
 
 class PriorWriter(object):
 
@@ -20,8 +21,8 @@ class PriorWriter(object):
         ### Define prior mean
         ###########################################################################
         
-        # Prior defined by an interpolation object
         if 'delta_temp_file' in input_dict:
+            # Load a custom prior
             x = np.loadtxt(input_dict['delta_temp_file'])
         else :
             # Load Jensen dye3 temp.
@@ -57,9 +58,16 @@ class PriorWriter(object):
         ### Compute sigma points
         ##########################################################################
         # Generate Juleir sigma points
-        points = JulierSigmaPoints(N, kappa=20*len(years))
+        points = JulierSigmaPoints(N, kappa=20*N)
         sigma_points = points.sigma_points(x, P)
         # Save the mean and covariance weights, as well as the sigma points
         np.savetxt(out_dir + 'm_weights.txt', points.weights()[0])
         np.savetxt(out_dir + 'c_weights.txt', points.weights()[1])
         np.savetxt(out_dir + 'X.txt', sigma_points)
+
+        """
+        for i in range(len(sigma_points)):
+            print i
+            plt.plot(sigma_points[i])
+
+        plt.show()"""
