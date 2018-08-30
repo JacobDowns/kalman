@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.interpolate import interp1d
 from kalman_update import *
+import matplotlib.pyplot as plt
 
 class Optimizer(object):
 
@@ -72,6 +73,9 @@ class Optimizer(object):
             np.savetxt(out_dir + 'opt_P.txt', P_p)
             np.savetxt(out_dir + 'y.txt', y)
             np.savetxt(out_dir + 'R.txt', R)
+
+            plt.plot(m_p)
+            plt.show()
 
         return m_p, P_p, mu, K, y, R
 

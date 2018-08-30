@@ -1,6 +1,6 @@
 import numpy as np
 import sys
-from model.paleo_runner import *
+from model.transient_runner import *
 from scipy.interpolate import interp1d
 
 """ 
@@ -36,8 +36,10 @@ inputs['delta_temp_func'] = interp1d(sigma_ts, delta_temps_opt, kind = 'linear')
 
 ### Perform the model run
 #######################################################
-model_runner = PaleoRunner(inputs)
-ages, Ls = model_runner.run()
+tr = TransientRunner(inputs)
+ages, Ls, Hs = tr.run()
 
-np.savetxt(in_dir + '/' + opt_dir + '/opt_ages.txt', ages)
-np.savetxt(in_dir + '/' + opt_dir + '/opt_Ls.txt', Ls)
+np.savetxt(in_dir + '/' + opt_dir + '/opt_age.txt', ages)
+np.savetxt(in_dir + '/' + opt_dir + '/opt_L.txt', Ls)
+np.savetxt(in_dir + '/' + opt_dir + '/opt_H.txt', Ls)
+
