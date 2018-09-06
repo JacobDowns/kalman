@@ -76,9 +76,6 @@ class CommonRunner(object):
         inputs['lambda_precip'] = self.lambda_precip
         inputs['beta2'] = self.beta2
 
-        #print inputs
-        #quit()
-
         # Create model inputs
         self.model_inputs = PaleoInputs(self.in_file, inputs)
 
@@ -90,11 +87,12 @@ class CommonRunner(object):
         if 'b' in input_dict:
             print self.model_inputs.physical_constants['b']
             print input_dict['b']
-            #quit()
             self.model_inputs.physical_constants['b'] = input_dict['b']
+            
         # Overburden pressure fraction
         if 'P_frac' in input_dict:
             self.model_inputs.physical_constants['P_frac'] = input_dict['P_frac']
+            
         # Model
         print self.model_inputs.physical_constants
         self.model = ForwardIceModel(self.model_inputs, self.out_dir, self.out_file)

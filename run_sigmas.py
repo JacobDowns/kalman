@@ -1,5 +1,8 @@
 from stats.sigma_runner import *
 
+### Set the run options
+###############################################################
+
 # Directory to read stuff from 
 in_dir = sys.argv[1]
 # Integer index
@@ -15,4 +18,8 @@ inputs['index'] = index
 # Number of runs
 inputs['runs'] = 5
 
-sr = SigmaRunner(inputs)
+
+### Run some sigma points through the model
+###############################################################
+sr = SigmaRunner(inputs) 
+sr.run()

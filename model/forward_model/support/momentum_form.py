@@ -90,6 +90,7 @@ class MomentumForm(object):
         phi_ = [model.phibar, model.phidef]
 
         u = VerticalBasis(u_, coef, dcoef)
+        self.u = u
         phi = VerticalBasis(phi_, coef, dcoef)
 
 

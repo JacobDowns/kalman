@@ -5,7 +5,6 @@ from scipy.interpolate import interp1d
 from pdd_calculator import PDDCalculator
 import matplotlib.pyplot as plt
 import sys
-#sys.path.append('../model')
 
 """
 Inputs for paleo run.

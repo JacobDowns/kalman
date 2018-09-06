@@ -281,6 +281,7 @@ class ForwardIceModel(object):
 
         # Momentum balance residual
         momentum_form = MomentumForm(self)
+        self.momentum_form = momentum_form
         R_momentum = momentum_form.R_momentum
 
         # Continuous thickness residual

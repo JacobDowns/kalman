@@ -49,8 +49,13 @@ if flowline == 'center2':
     opt = Optimizer(inputs)
     opt.optimize(Ls, sparse_obs = True, min_err = min_err2, max_err = max_err2, out_dir = 'transform/center2/opt1/')
 
+if flowline == 'center1_new':
+    inputs['in_dir'] = 'transform/center1_new/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center1_new/opt1/')
 
-### North 
+
+### North
 #############################################################
 
 Ls = np.array([443746.66897917818, 397822.86008538032, 329757.49741948338, 292301.29712071194, 285478.05793305294])

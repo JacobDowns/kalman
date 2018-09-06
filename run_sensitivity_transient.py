@@ -37,16 +37,11 @@ temps = data[:,1]
 # Interp. delta temp. 
 inputs['delta_temp_func'] = interp1d(years, temps - temps[-1], kind = 'linear')
 
-np.set_printoptions(1, suppress = True)
-print years
-quit()
-
 
 ### Perform model run 
 #######################################################
 
 # Load the sensitivity parameters
-
 param_sets = np.loadtxt('sensitivity/' + name + '/param_sets.txt')
 params = param_sets[index,:]
 inputs['b'] = params[0]
