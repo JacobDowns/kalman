@@ -13,4 +13,3 @@ inputs['N'] = 87
 if len(sys.argv) > 2:
     inputs['delta_temp_file'] = sys.argv[2]
 pw = PriorWriter(inputs)
-

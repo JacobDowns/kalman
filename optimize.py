@@ -32,6 +32,12 @@ if flowline == 'south2':
     inputs['in_dir'] = 'transform/south2/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, sparse_obs = True, min_err = min_err2, max_err = max_err2, out_dir = 'transform/south2/opt1/')
+
+if flowline == 'south1_new':
+    inputs['in_dir'] = 'transform/south1_new/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, min_err = min_err1, max_err = max_err1, out_dir = 'transform/south1_new/opt1/')
+
     
     
 ### Center
@@ -53,6 +59,16 @@ if flowline == 'center1_new':
     inputs['in_dir'] = 'transform/center1_new/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center1_new/opt1/')
+
+if flowline == 'center2_new':
+    inputs['in_dir'] = 'transform/center2_new/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, sparse_obs = True, min_err = min_err2, max_err = max_err2, out_dir = 'transform/center2_new/opt1/')
+
+if flowline == 'center2_new1':
+    inputs['in_dir'] = 'transform/center2_new/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, min_err = min_err2, max_err = max_err2, out_dir = 'transform/center2_new/opt2/')
 
 
 ### North
