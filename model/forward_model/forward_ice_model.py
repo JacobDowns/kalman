@@ -368,22 +368,22 @@ class ForwardIceModel(object):
 
 
     # Assign input functions from model_inputs
-    def update_inputs(self, L, adot0):
+    def update_inputs(self, L, delta_temp, precip_param = 1.0):
         #print "update inputs", L
         self.S0_c.assign(self.B + self.H0_c)
-        self.model_inputs.update_inputs(L, adot0 = adot0)
+        self.model_inputs.update_inputs(L, delta_temp = delta_temp)
         self.B.assign(self.model_inputs.input_functions['B'])
         self.beta2.assign(self.model_inputs.input_functions['beta2'])
         self.adot_prime_func.assign(project(self.adot_prime, self.V_cg))
         self.width.assign(self.model_inputs.input_functions['width'])
 
 
-    def step(self, adot0, accept = False):
+    def step(self, delta_temp, precip_param = 1.0, accept = False):
 
         # Update input fields that change with length
-        self.update_inputs(float(self.L0), adot0)
+        self.update_inputs(float(self.L0), delta_temp, precip_param)
 
-        ### Take a step with the given adot0
+        ### Take a step with the given delta_temp and precip param.
         ########################################################################
         if self.jumped:
 
@@ -429,7 +429,7 @@ class ForwardIceModel(object):
         ### Accept the step by updating time
         ####################################################################
 
-        if accept :
+        if accept:
             # Update time
             self.t += float(self.dt)
             self.i += 1

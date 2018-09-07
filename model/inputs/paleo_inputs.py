@@ -104,9 +104,8 @@ class PaleoInputs(CommonInputs):
     """
     Recompute SMB as time and ice surface change.
     """
-    def update_adot(self, delta_temp):
-
-        print "Delta temp: ", delta_temp
+    def update_adot(self, delta_temp, precip_param = 1.0):
+        print "Delta temp: ", delta_temp, precip_param
 
         ### Compute monthly pdd's and precip.
         ########################################################################
@@ -121,7 +120,7 @@ class PaleoInputs(CommonInputs):
         total_snowfall = np.zeros_like(self.input_functions['S_ref'].vector().get_local())
         # Total number of pdds for the year
         total_pdds = np.zeros_like(self.input_functions['S_ref'].vector().get_local())
-
+        
         for i in range(12):
             # Compute the delta temp. adjusted / lapse rate corrected temp. for this month
             # Modern temp.  and precip. for a given month are computed as a 30 year modern average from Box
@@ -130,7 +129,7 @@ class PaleoInputs(CommonInputs):
             # Compute the delta temp. adjusted precip.
             modern_precip_vec = self.input_functions['P' + str(i)].vector().get_local()
             # Temp. corrected precip. rate in m.w.e./a
-            precip_vec = modern_precip_vec*np.e**(self.lambda_precip*(temp_vec - modern_temp_vec))
+            precip_vec = precip_param*modern_precip_vec*np.e**(self.lambda_precip*(temp_vec - modern_temp_vec))
             # Compute pdd's for this month
             total_pdds += self.pdd_calc.get_pdd(temp_vec)
             # Fraction of precip. that falls as snow
