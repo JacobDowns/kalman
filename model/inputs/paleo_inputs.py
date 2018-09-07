@@ -174,6 +174,6 @@ class PaleoInputs(CommonInputs):
         
 
     # Update inputs that change with length, iteration, time, and time step
-    def update_inputs(self, L, adot0 = None):
+    def update_inputs(self, L, delta_temp, precip_param = 1.0):
         self.update_interp_all(L)
-        self.update_adot(adot0)
+        self.update_adot(delta_temp, precip_param)

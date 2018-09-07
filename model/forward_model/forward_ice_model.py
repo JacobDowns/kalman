@@ -240,9 +240,9 @@ class ForwardIceModel(object):
         ### Initialize inputs
         ########################################################################
 
-        self.update_inputs(model_inputs.L_init, adot0 = 0.)
+        self.update_inputs(model_inputs.L_init, 0.)
         self.S0_c.assign(self.B + self.H0_c)
-        self.update_inputs(model_inputs.L_init, adot0 = 0.)
+        self.update_inputs(model_inputs.L_init, 0.)
 
 
         ### Thickness bounds
@@ -371,7 +371,7 @@ class ForwardIceModel(object):
     def update_inputs(self, L, delta_temp, precip_param = 1.0):
         #print "update inputs", L
         self.S0_c.assign(self.B + self.H0_c)
-        self.model_inputs.update_inputs(L, delta_temp = delta_temp)
+        self.model_inputs.update_inputs(L, delta_temp, precip_param)
         self.B.assign(self.model_inputs.input_functions['B'])
         self.beta2.assign(self.model_inputs.input_functions['beta2'])
         self.adot_prime_func.assign(project(self.adot_prime, self.V_cg))
@@ -472,8 +472,8 @@ class ForwardIceModel(object):
                         # Set the new ice thickness
                         self.H0_c.vector()[:] = np.ascontiguousarray(Hs_interp[::-1])
                         self.H0.assign(project(self.H0_c, self.V_dg))
-                        self.update_inputs(L_term, adot0)
-                        self.update_inputs(L_term, adot0)
+                        self.update_inputs(L_term, delta_temp, precip_param)
+                        self.update_inputs(L_term, delta_temp, precip_param)
 
                         #dolfin.plot(self.B)
                         #dolfin.plot(self.B + self.H0_c)

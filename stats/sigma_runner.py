@@ -37,6 +37,8 @@ class SigmaRunner(object):
         self.inputs['dt'] = 1./3.
         # Number of model time steps
         self.inputs['N'] = 4300*3
+        # Delta temp. function
+        self.inputs['delta_temp_func'] = input_dict['delta_temp_func']
         
 
     # Run several sigma points
@@ -49,7 +51,6 @@ class SigmaRunner(object):
 
             # Check to make sure this one hasn't been run before
             if not os.path.isfile(self.in_dir + 'Y_' + str(i) + '.txt'):
-
                 print i
                 
                 ### Delta temp. function
@@ -57,7 +58,8 @@ class SigmaRunner(object):
 
                 # Interpolated delta temp
                 X_i = self.sigma_points[i]
-                inputs['delta_temp_func'] = interp1d(self.sigma_ts, X_i, kind = 'linear')
+                inputs['precip_param_func'] = interp1d(self.sigma_ts, X_i, kind = 'linear')
+                
 
                 ### Perform model run 
                 #######################################################
