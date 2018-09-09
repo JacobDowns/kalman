@@ -13,7 +13,7 @@ class PriorWriter(object):
         if 'N' in input_dict:
             N = input_dict['N']
         else :
-            N = 51
+            N = 87
         # Delta temp. grid years
         dt_years = -11.6e3 + np.linspace(0., 4300, N)
         np.savetxt(out_dir + 'sigma_ts.txt', dt_years)
@@ -33,7 +33,7 @@ class PriorWriter(object):
         ##########################################################################
 
         # Delta controls smoothness
-        delta = 1000.
+        delta = 5000.
         if 'delta' in input_dict:
             delta = input_dict['delta']
             
@@ -49,11 +49,19 @@ class PriorWriter(object):
         np.savetxt(out_dir + 'prior_m.txt', x)
         np.savetxt(out_dir + 'prior_P.txt', P)
 
+        ### Plot samples from prior
+        ##########################################################################
+
+        samples = np.random.multivariate_normal(x, P, 100)
+        for i in range(samples.shape[0]):
+            plt.plot(samples[i])
+        plt.show()
+
         
         ### Compute sigma points
         ##########################################################################
-        # Generate Juleir sigma points
-        points = JulierSigmaPoints(N, kappa=3.*N)
+        # Generate Julier sigma points
+        points = JulierSigmaPoints(N, kappa=1.33*N)
         sigma_points = points.sigma_points(x, P)
 
         # Save the mean and covariance weights, as well as the sigma points
@@ -61,9 +69,8 @@ class PriorWriter(object):
         np.savetxt(out_dir + 'c_weights.txt', points.weights()[1])
         np.savetxt(out_dir + 'X.txt', sigma_points)
 
-        """
         for i in range(len(sigma_points)):
             print i
             plt.plot(sigma_points[i])
 
-        plt.show()"""
+        plt.show()

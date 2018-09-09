@@ -26,14 +26,27 @@ inputs['N'] = 4300*3
 
 ### Delta temp. function
 #######################################################
+data = np.loadtxt('paleo_data/jensen_dye3.txt')
+# Years before present (2000)
+years = data[:,0] - 2000.0
+# Temps. in K
+temps = data[:,1]
+# Interp. delta temp. 
+inputs['delta_temp_func'] = interp1d(years, temps - temps[-1], kind = 'linear')
+
+
+### Precip param. file
+#######################################################
 
 # State vector times
 sigma_ts = np.loadtxt(in_dir + '/sigma_ts.txt')
-delta_temps_opt = np.loadtxt(in_dir + '/' + opt_dir  + '/opt_m.txt')
+precip_param_opt = np.loadtxt(in_dir + '/' + opt_dir  + '/opt_m.txt')
 # Interpolated delta temp. function 
-inputs['delta_temp_func'] = interp1d(sigma_ts, delta_temps_opt, kind = 'linear')
+inputs['precip_param_func'] = interp1d(sigma_ts, precip_param_opt, kind = 'linear')
 
-
+plt.plot(precip_param_opt)
+plt.show()
+quit()
 ### Perform the model run
 #######################################################
 tr = TransientRunner(inputs)

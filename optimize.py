@@ -9,7 +9,7 @@ inputs = {}
 # Minimum error, first pass
 min_err1 = 1000.**2
 # Maximum error, first pass
-max_err1 = 5000.**2
+max_err1 = 1000.**2
 # Minimum error, second pass
 min_err2 = 5000.**2
 # Maximum error, second pass
@@ -26,19 +26,8 @@ Ls = np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738
 if flowline == 'south1':
     inputs['in_dir'] = 'transform/south1/'
     opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/south1/opt2/')
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/south1/opt1/')
 
-if flowline == 'south2':
-    inputs['in_dir'] = 'transform/south2/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, sparse_obs = True, min_err = min_err2, max_err = max_err2, out_dir = 'transform/south2/opt1/')
-
-if flowline == 'south1_new':
-    inputs['in_dir'] = 'transform/south1_new/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, min_err = min_err1, max_err = max_err1, out_dir = 'transform/south1_new/opt1/')
-
-    
     
 ### Center
 #############################################################
@@ -48,28 +37,13 @@ Ls = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 29284
 if flowline == 'center1':
     inputs['in_dir'] = 'transform/center1/'
     opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center1/opt2/')
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center1/opt1/')
 
 if flowline == 'center2':
     inputs['in_dir'] = 'transform/center2/'
     opt = Optimizer(inputs)
-    opt.optimize(Ls, sparse_obs = True, min_err = min_err2, max_err = max_err2, out_dir = 'transform/center2/opt1/')
-
-if flowline == 'center1_new':
-    inputs['in_dir'] = 'transform/center1_new/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center1_new/opt1/')
-
-if flowline == 'center2_new':
-    inputs['in_dir'] = 'transform/center2_new/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, sparse_obs = True, min_err = min_err2, max_err = max_err2, out_dir = 'transform/center2_new/opt1/')
-
-if flowline == 'center2_new1':
-    inputs['in_dir'] = 'transform/center2_new/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, min_err = min_err2, max_err = max_err2, out_dir = 'transform/center2_new/opt2/')
-
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center2/opt1/')
+    
 
 ### North
 #############################################################
@@ -79,9 +53,4 @@ Ls = np.array([443746.66897917818, 397822.86008538032, 329757.49741948338, 29230
 if flowline == 'north1':
     inputs['in_dir'] = 'transform/north1/'
     opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip,  min_err = min_err1, max_err = max_err1, out_dir = 'transform/north1/opt2/')
-
-if flowline == 'north2':
-    inputs['in_dir'] = 'transform/north2/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, sparse_obs = True, min_err = min_err2, max_err = max_err2, out_dir = 'transform/north2/opt1/')
+    opt.optimize(Ls, skip = skip,  min_err = min_err1, max_err = max_err1, out_dir = 'transform/north1/opt1/')

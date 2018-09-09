@@ -16,7 +16,7 @@ inputs['in_file'] = in_dir + 'steady.h5'
 # Integer index
 inputs['index'] = index
 # Number of runs
-inputs['runs'] = 3
+inputs['runs'] = 5
 
 
 ### Delta temp. function

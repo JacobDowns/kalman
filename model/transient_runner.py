@@ -53,4 +53,3 @@ class TransientRunner(CommonRunner):
                 Hs.append(self.model.H0.vector().get_local())
 
         return np.array(ages), np.array(Ls), np.array(Hs)
-    
