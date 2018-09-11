@@ -75,7 +75,6 @@ if flowline == 'center8':
     opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform/center8/opt2/')
 
     
-
 ### North
 #############################################################
 
