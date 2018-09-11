@@ -65,7 +65,7 @@ class SigmaRunner(object):
                 #######################################################
 
                 model_runner = TransientRunner(inputs)
-                ages, Ls, Hs = model_runner.run()
+                ages, Ls, Hs, Ps = model_runner.run()
 
                 np.savetxt(self.in_dir + '/age_' + str(i) + '.txt', ages)
                 np.savetxt(self.in_dir + '/Y_' + str(i) + '.txt', Ls)

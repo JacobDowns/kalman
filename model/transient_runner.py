@@ -30,6 +30,8 @@ class TransientRunner(CommonRunner):
         ages = []
         # Thickness vectors through time
         Hs = []
+        # Integral of accumulation  through time
+        Ps = []
 
         for j in range(self.N):
             # Age
@@ -48,8 +50,10 @@ class TransientRunner(CommonRunner):
                 
             L = self.model.step(delta_temp, precip_param, accept = True)
             Ls.append(L)
+            Ps.append(assemble(self.model.precip_func*dx)*L)
+            #print Ps
 
             if j % self.snapshot_interval == 0:
                 Hs.append(self.model.H0.vector().get_local())
 
-        return np.array(ages), np.array(Ls), np.array(Hs)
+        return np.array(ages), np.array(Ls), np.array(Hs), np.array(Ps)

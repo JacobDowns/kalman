@@ -212,6 +212,8 @@ class ForwardIceModel(object):
         self.adot_prime = model_inputs.get_adot_exp(self.S0_c)
         # SMB as a function
         self.adot_prime_func = Function(self.V_cg)
+        # Precip. (snowfall) as a function
+        self.precip_func = Function(self.V_cg)
 
         self.S = S
         self.S_f = S_f
@@ -225,7 +227,6 @@ class ForwardIceModel(object):
         self.N = N
         self.N_f = N_f
         
-
 
         ### Temporary variables that store variable values before a step is accepted
         ########################################################################
@@ -319,7 +320,6 @@ class ForwardIceModel(object):
         J_f = derivative(R_f, U_f, dU_f)
 
 
-
         ### Problem setup
         ########################################################################
 
@@ -376,6 +376,7 @@ class ForwardIceModel(object):
         self.beta2.assign(self.model_inputs.input_functions['beta2'])
         self.adot_prime_func.assign(project(self.adot_prime, self.V_cg))
         self.width.assign(self.model_inputs.input_functions['width'])
+        self.precip_func.assign(self.model_inputs.precip_func)
 
 
     def step(self, delta_temp, precip_param = 1.0, accept = False):
@@ -478,7 +479,6 @@ class ForwardIceModel(object):
                         #dolfin.plot(self.B)
                         #dolfin.plot(self.B + self.H0_c)
                         #plt.show()
-
                         #self.jumped = True
 
             print "real step: ", self.t, self.H0_c.vector().get_local()[0], float(self.L0)

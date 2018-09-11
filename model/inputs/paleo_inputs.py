@@ -83,7 +83,7 @@ class PaleoInputs(CommonInputs):
         # Surface mass blance function
         self.adot = Function(self.V_cg)
         # Precipitation for the given year (for plotting) in m/a
-        self.precip = Function(self.V_cg)
+        self.precip_func = Function(self.V_cg)
         # Temperature for the given year (for plotting) in C
         self.temp = Function(self.V_cg)
         # Initial glacier length
@@ -136,7 +136,10 @@ class PaleoInputs(CommonInputs):
             snowfall_frac = self.pdd_calc.get_acc_frac(temp_vec)
             # Compute snowfall for the month in m.w.e
             total_snowfall += precip_vec * (1./12.) * snowfall_frac
-            
+
+        # Save total snowfall for plotting
+        self.precip_func.vector()[:] = total_snowfall
+        
 
         ### Compute SMB from total snowfall and pdds
         ########################################################################

@@ -41,18 +41,25 @@ inputs['delta_temp_func'] = interp1d(years, temps - temps[-1], kind = 'linear')
 # State vector times
 sigma_ts = np.loadtxt(in_dir + '/sigma_ts.txt')
 precip_param_opt = np.loadtxt(in_dir + '/' + opt_dir  + '/opt_m.txt')
+v = np.loadtxt(in_dir + '/' + opt_dir  + '/v.txt')
 # Interpolated delta temp. function 
 inputs['precip_param_func'] = interp1d(sigma_ts, precip_param_opt, kind = 'linear')
 
+"""
 plt.plot(precip_param_opt)
+plt.plot(precip_param_opt + 2.*np.sqrt(v))
+plt.plot(precip_param_opt - 2.*np.sqrt(v))
 plt.show()
-quit()
+#quit()
+"""
+
 ### Perform the model run
 #######################################################
 tr = TransientRunner(inputs)
-ages, Ls, Hs = tr.run()
+ages, Ls, Hs, Ps = tr.run()
 
 np.savetxt(in_dir + '/' + opt_dir + '/opt_age.txt', ages)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_L.txt', Ls)
-np.savetxt(in_dir + '/' + opt_dir + '/opt_H.txt', Ls)
+np.savetxt(in_dir + '/' + opt_dir + '/opt_H.txt', Hs)
+np.savetxt(in_dir + '/' + opt_dir + '/opt_p.txt', Ps)
 

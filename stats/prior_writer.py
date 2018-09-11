@@ -48,6 +48,7 @@ class PriorWriter(object):
         # Save prior mean and covariance
         np.savetxt(out_dir + 'prior_m.txt', x)
         np.savetxt(out_dir + 'prior_P.txt', P)
+        
 
         ### Plot samples from prior
         ##########################################################################
@@ -61,7 +62,7 @@ class PriorWriter(object):
         ### Compute sigma points
         ##########################################################################
         # Generate Julier sigma points
-        points = JulierSigmaPoints(N, kappa=1.33*N)
+        points = JulierSigmaPoints(N, kappa=3.*N)
         sigma_points = points.sigma_points(x, P)
 
         # Save the mean and covariance weights, as well as the sigma points
