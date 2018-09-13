@@ -7,9 +7,9 @@ flowline = sys.argv[1]
 # Input dictionary
 inputs = {}
 # Minimum error, first pass
-min_err1 = 1000.**2
+min_err1 = 5000.**2
 # Maximum error, first pass
-max_err1 = 5000.**2
+max_err1 = 25000.**2
 # Minimum error, second pass
 min_err2 = 5000.**2
 # Maximum error, second pass
@@ -17,7 +17,7 @@ max_err2 = 50000.**2
 # Observation skip to reduce computation time
 skip = 3
 
-                               
+# 1.41382816                          
 ### South
 #############################################################
 
@@ -28,7 +28,7 @@ if flowline == 'south1':
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/south1/opt1/')
 
-    
+# 1.02
 ### Center
 #############################################################
 
@@ -39,42 +39,7 @@ if flowline == 'center1':
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center1/opt1/')
 
-if flowline == 'center2':
-    inputs['in_dir'] = 'transform/center2/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center2/opt1/')
-
-if flowline == 'center3':
-    inputs['in_dir'] = 'transform/center3/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center3/opt1/')
-
-if flowline == 'center4':
-    inputs['in_dir'] = 'transform/center4/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center4/opt1/')
-
-if flowline == 'center5':
-    inputs['in_dir'] = 'transform/center5/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center5/opt1/')
-
-if flowline == 'center6':
-    inputs['in_dir'] = 'transform/center6/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center6/opt1/')
-
-if flowline == 'center7':
-    inputs['in_dir'] = 'transform/center7/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform/center7/opt1/')
-
-if flowline == 'center8':
-    inputs['in_dir'] = 'transform/center8/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform/center8/opt2/')
-
-    
+# 1.17655504
 ### North
 #############################################################
 

@@ -15,16 +15,21 @@ class SteadyRunner(CommonRunner):
 
         # Steady state file name
         self.steady_file_name = input_dict['steady_file_name']
-        
-        # Initial delta temp mean
-        self.delta_temp_mu = -8.
-        if 'delta_temp_mu' in input_dict:
-            self.delta_temp_mu = input_dict['delta_temp_mu']
 
-        # Initial delta temp variance
-        self.delta_temp_sigma2 = 1.
-        if 'delta_temp_sigma2' in input_dict:
-            self.delta_temp_sigma2 = input_dict['delta_temp_sigma2']
+        # Fixed delta temp. (Default is Buizert 11.6 temp.)
+        self.delta_temp = -7.888035714285713
+        if 'delta_temp' in input_dict:
+            self.delta_temp = input_dict['delta_temp']
+        
+        # Initial precip. weight
+        self.precip_param_mu = 0.
+        if 'precip_param_mu' in input_dict:
+            self.precip_param_mu = input_dict['precip_param_mu']
+
+        # Initial precip param variance
+        self.precip_param_sigma2 = 0.1**2
+        if 'precip_param_sigma2' in input_dict:
+            self.precip_param_sigma2 = input_dict['precip_param_sigma2']
 
         # Observation mean
         self.L_mu = input_dict['L_mu']
@@ -35,7 +40,7 @@ class SteadyRunner(CommonRunner):
             self.L_sigma2 = input_dict['L_sigma2']
         
         # Process noise
-        self.Q = 0.1**2
+        self.Q = 0.001**2
         if 'Q' in input_dict:
             self.Q = input_dict['Q']
 
@@ -53,32 +58,32 @@ class SteadyRunner(CommonRunner):
             ys = np.zeros_like(xs)
 
             for i in range(len(xs)):
-                ys[i] = self.model.step(xs[i], accept = False)
+                ys[i] = self.model.step(self.delta_temp, xs[i], accept = False)
 
             return ys
 
-        self.ukf = ScalarUKF(self.delta_temp_mu, self.delta_temp_sigma2, F, H)
+        self.ukf = ScalarUKF(self.precip_param_mu, self.precip_param_sigma2, F, H)
         
         
-    # Perform a model run
-    def run(self):
-
+    # Optimize the precip. weight
+    def run(self, precip_param = 0.):
+        
         # Length at each time step
         Ls = []
         # Delta temp at each time step
-        delta_temps = []
+        precip_params = []
 
         for i in range(self.N):
 
             # Get the optimal delta temp dist. from the filter
-            delta_temp, delta_temp_sigma2 = self.ukf.step(self.L_mu, self.L_sigma2, self.Q)
-            delta_temps.append(delta_temp)
+            precip_param, precip_param_sigma2 = self.ukf.step(self.L_mu, self.L_sigma2, self.Q)
+            precip_params.append(precip_param)
             
             if self.output:
-                print "opt delta temp", delta_temp, delta_temp_sigma2
+                print "opt precip weight", precip_param, precip_param_sigma2
 
-            # Do a step with the optimal delta temp
-            L = self.model.step(delta_temp, accept = True)
+            # Do a step with the optimal param.
+            L = self.model.step(self.delta_temp, precip_param, accept = True)
             Ls.append(L)
 
             if self.output:

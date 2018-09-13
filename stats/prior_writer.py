@@ -26,7 +26,7 @@ class PriorWriter(object):
             # Load a custom prior
             x = np.loadtxt(input_dict['x'])
         else :
-            x = np.ones(len(dt_years)) 
+            x = 0.42*np.ones(len(dt_years))
 
 
         ### Define prior covariance 
@@ -62,7 +62,7 @@ class PriorWriter(object):
         ### Compute sigma points
         ##########################################################################
         # Generate Julier sigma points
-        points = JulierSigmaPoints(N, kappa=3.*N)
+        points = JulierSigmaPoints(N, kappa=N)
         sigma_points = points.sigma_points(x, P)
 
         # Save the mean and covariance weights, as well as the sigma points

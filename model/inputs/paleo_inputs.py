@@ -104,7 +104,7 @@ class PaleoInputs(CommonInputs):
     """
     Recompute SMB as time and ice surface change.
     """
-    def update_adot(self, delta_temp, precip_param = 1.0):
+    def update_adot(self, delta_temp, precip_param = 0.0):
         print "Delta temp: ", delta_temp, precip_param
 
         ### Compute monthly pdd's and precip.
@@ -129,7 +129,7 @@ class PaleoInputs(CommonInputs):
             # Compute the delta temp. adjusted precip.
             modern_precip_vec = self.input_functions['P' + str(i)].vector().get_local()
             # Temp. corrected precip. rate in m.w.e./a
-            precip_vec = precip_param*modern_precip_vec*np.e**(self.lambda_precip*(temp_vec - modern_temp_vec))
+            precip_vec = modern_precip_vec*np.e**(self.lambda_precip*(temp_vec - modern_temp_vec)) + precip_param
             # Compute pdd's for this month
             total_pdds += self.pdd_calc.get_pdd(temp_vec)
             # Fraction of precip. that falls as snow
@@ -177,6 +177,6 @@ class PaleoInputs(CommonInputs):
         
 
     # Update inputs that change with length, iteration, time, and time step
-    def update_inputs(self, L, delta_temp, precip_param = 1.0):
+    def update_inputs(self, L, delta_temp, precip_param = 0.0):
         self.update_interp_all(L)
         self.update_adot(delta_temp, precip_param)

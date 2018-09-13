@@ -368,7 +368,7 @@ class ForwardIceModel(object):
 
 
     # Assign input functions from model_inputs
-    def update_inputs(self, L, delta_temp, precip_param = 1.0):
+    def update_inputs(self, L, delta_temp, precip_param = 0.0):
         #print "update inputs", L
         self.S0_c.assign(self.B + self.H0_c)
         self.model_inputs.update_inputs(L, delta_temp, precip_param)
@@ -379,7 +379,7 @@ class ForwardIceModel(object):
         self.precip_func.assign(self.model_inputs.precip_func)
 
 
-    def step(self, delta_temp, precip_param = 1.0, accept = False):
+    def step(self, delta_temp, precip_param = 0.0, accept = False):
 
         # Update input fields that change with length
         self.update_inputs(float(self.L0), delta_temp, precip_param)
