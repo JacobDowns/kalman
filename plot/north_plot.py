@@ -11,7 +11,6 @@ fig = plt.figure(figsize=(12,14))
 ###############################################################
 
 ax = fig.add_subplot(311)
-
 plt.title('(a)')
 ages = np.loadtxt('paleo_runs/north_opt1/opt_ages.txt')
 Ls =   np.loadtxt('paleo_runs/north_opt1/opt_Ls.txt')
