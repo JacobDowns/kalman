@@ -14,4 +14,3 @@ if len(sys.argv) > 2:
     inputs['x'] = sys.argv[2]
     
 pw = PriorWriter(inputs)
-

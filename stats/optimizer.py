@@ -79,6 +79,8 @@ class Optimizer(object):
             np.savetxt(out_dir + 'v.txt', v)
 
             plt.plot(m_p)
+            plt.plot(m_p + 2.0*np.sqrt(v))
+            plt.plot(m_p - 2.0*np.sqrt(v))
             plt.show()
 
         return m_p, P_p, mu, K, y, R
