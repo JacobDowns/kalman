@@ -7,15 +7,15 @@ flowline = sys.argv[1]
 # Input dictionary
 inputs = {}
 # Minimum error, first pass
-min_err1 = 5000.**2
+min_err1 = 1000.**2
 # Maximum error, first pass
-max_err1 = 25000.**2
+max_err1 = 5000.**2
 # Minimum error, second pass
 min_err2 = 5000.**2
 # Maximum error, second pass
 max_err2 = 50000.**2
 # Observation skip to reduce computation time
-skip = 3
+skip = 2
 
 # 1.41382816                          
 ### South
