@@ -26,7 +26,7 @@ fig = plt.figure(figsize=(12,14))
 ### North
 ################################################################################
 dt = 1./3.
-model_inputs = PaleoInputs('../paleo_inputs/north_paleo_steady_11_6.h5', dt = dt)
+model_inputs = PaleoInputs('../paleo_inputs/north_steady.h5', {})
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 xs = model_inputs.mesh.coordinates() * model_inputs.L_init
@@ -37,18 +37,18 @@ bed = project(model.B)
 
 ax = fig.add_subplot(311)
 plt.title('(a)')
-plt.plot(xs, surface.compute_vertex_values(), 'b', linewidth = 3.5)
-plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 
 obs_Ls = np.array([443746.66897917818, 397822.86008538032, 329757.49741948338, 292301.29712071194, 285478.05793305294])
 colors = ['r', 'g', 'b', 'maroon', 'c']
-plt.plot([obs_Ls[0], obs_Ls[0]], [-1000., 5000.], colors[0], lw = 3, linestyle = '--', label = '11.6')
-plt.plot([obs_Ls[1], obs_Ls[1]], [-1000., 5000.], colors[1], lw = 3, linestyle = '--', label = '10.2')
-plt.plot([obs_Ls[2], obs_Ls[2]], [-1000., 5000.], colors[2], lw = 3, linestyle = '--', label = '9.2')
-plt.plot([obs_Ls[3], obs_Ls[3]], [-1000., 5000.], colors[3], lw = 3, linestyle = '--', label = '8.2')
-plt.plot([obs_Ls[4], obs_Ls[4]], [-1000., 5000.], colors[4], lw = 3, linestyle = '--', label = '7.3')
+plt.plot([obs_Ls[0], obs_Ls[0]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '11.6')
+plt.plot([obs_Ls[1], obs_Ls[1]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '10.2')
+plt.plot([obs_Ls[2], obs_Ls[2]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '9.2')
+plt.plot([obs_Ls[3], obs_Ls[3]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '8.2')
+plt.plot([obs_Ls[4], obs_Ls[4]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '7.3')
 
-plt.legend(loc = 6)
+plt.plot(xs, surface.compute_vertex_values(), 'b', linewidth = 3.5)
+plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
+
 plt.ylim([-300., 2950.])
 plt.xlim([0., 443746. + 2.5e3])
 
@@ -57,7 +57,7 @@ ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
 
 ### Center
 ################################################################################
-model_inputs = PaleoInputs('../paleo_inputs/center_paleo_steady_11_6.h5', dt = dt)
+model_inputs = PaleoInputs('../paleo_inputs/center_steady.h5', {})
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 xs = model_inputs.mesh.coordinates() * model_inputs.L_init
@@ -68,15 +68,16 @@ bed = project(model.B)
 
 ax = fig.add_subplot(312)
 plt.title('(b)')
-plt.plot(xs, surface.compute_vertex_values(), 'b', linewidth = 3.5)
-plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 
 obs_Ls = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725])
-plt.plot([obs_Ls[0], obs_Ls[0]], [-1000., 5000.], colors[0], lw = 3, linestyle = '--')
-plt.plot([obs_Ls[1], obs_Ls[1]], [-1000., 5000.], colors[1], lw = 3, linestyle = '--')
-plt.plot([obs_Ls[2], obs_Ls[2]], [-1000., 5000.], colors[2], lw = 3, linestyle = '--')
-plt.plot([obs_Ls[3], obs_Ls[3]], [-1000., 5000.], colors[3], lw = 3, linestyle = '--')
-plt.plot([obs_Ls[4], obs_Ls[4]], [-1000., 5000.], colors[4], lw = 3, linestyle = '--')
+plt.plot([obs_Ls[0], obs_Ls[0]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '11.6')
+plt.plot([obs_Ls[1], obs_Ls[1]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '10.2')
+plt.plot([obs_Ls[2], obs_Ls[2]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '9.2')
+plt.plot([obs_Ls[3], obs_Ls[3]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '8.2')
+plt.plot([obs_Ls[4], obs_Ls[4]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '7.3')
+
+plt.plot(xs, surface.compute_vertex_values(), 'b', linewidth = 3.5)
+plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 
 plt.ylim([-300., 2950.])
 plt.xlim([0., 443746. + 2.5e3])
@@ -86,7 +87,7 @@ plt.ylabel('Elevation (m)')
 
 ### South
 ################################################################################
-model_inputs = PaleoInputs('../paleo_inputs/south_paleo_steady_11_6.h5', dt = dt)
+model_inputs = PaleoInputs('../paleo_inputs/south_steady.h5', {})
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 xs = model_inputs.mesh.coordinates() * model_inputs.L_init
@@ -97,21 +98,23 @@ bed = project(model.B)
 
 ax = fig.add_subplot(313)
 plt.title('(c)')
+
+obs_Ls = np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738.49932773202, 296659.0156905292])
+plt.plot([obs_Ls[0], obs_Ls[0]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '11.6')
+plt.plot([obs_Ls[1], obs_Ls[1]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '10.2')
+plt.plot([obs_Ls[2], obs_Ls[2]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '9.2')
+plt.plot([obs_Ls[3], obs_Ls[3]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '8.2')
+plt.plot([obs_Ls[4], obs_Ls[4]], [-1000., 5000.], 'k', lw = 3, linestyle = ':', label = '7.3')
+
 plt.plot(xs, surface.compute_vertex_values(), 'b', linewidth = 3.5)
 plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 
-obs_Ls = np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738.49932773202, 296659.0156905292])
-plt.plot([obs_Ls[0], obs_Ls[0]], [-1000., 5000.], colors[0], lw = 3, linestyle = '--')
-plt.plot([obs_Ls[1], obs_Ls[1]], [-1000., 5000.], colors[1], lw = 3, linestyle = '--')
-plt.plot([obs_Ls[2], obs_Ls[2]], [-1000., 5000.], colors[2], lw = 3, linestyle = '--')
-plt.plot([obs_Ls[3], obs_Ls[3]], [-1000., 5000.], colors[3], lw = 3, linestyle = '--')
-plt.plot([obs_Ls[4], obs_Ls[4]], [-1000., 5000.], colors[4], lw = 3, linestyle = '--')
 
 
 plt.ylim([-300., 2950.])
 plt.xlim([0., 443746. + 2.5e3])
 ticks = ax.get_xticks()
 ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
-plt.xlabel(r'Glacier Length $L$ (km)')
+plt.xlabel(r'Length (km)')
 plt.tight_layout()
 plt.savefig('geo.png', dpi=700)

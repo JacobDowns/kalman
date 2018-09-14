@@ -16,6 +16,9 @@ p3 = np.loadtxt('transform/south2/opt2/opt_m.txt')
 v3 = np.loadtxt('transform/south2/opt2/v.txt')
 ts = np.loadtxt('transform/center1/sigma_ts.txt')
 
+print ts[1] - ts[0]
+quit()
+
 """
 p1_interp = interp1d(ts, p1, kind = 'linear')
 p2_interp = interp1d(ts, p2, kind = 'linear')
