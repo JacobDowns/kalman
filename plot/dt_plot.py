@@ -16,8 +16,6 @@ p3 = np.loadtxt('transform/south2/opt2/opt_m.txt')
 v3 = np.loadtxt('transform/south2/opt2/v.txt')
 ts = np.loadtxt('transform/center1/sigma_ts.txt')
 
-print ts[1] - ts[0]
-quit()
 
 """
 p1_interp = interp1d(ts, p1, kind = 'linear')
@@ -38,6 +36,12 @@ p3_fine = p3_interp(ts_fine)
 #obs_Ls = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725])
 
 #np.savetxt('filter/3/Ls_smoothed.txt', Ls)
+
+#print "north", p1
+#print "center", p2
+print "south", p3
+print ts
+quit()
 
 #ages / 1000.
 plt.plot(ts, p3, '#1f77b4', lw = 2.5, label = 'South', marker = 'o', ms = 10)
