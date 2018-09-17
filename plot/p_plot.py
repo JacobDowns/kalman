@@ -8,14 +8,24 @@ matplotlib.rcParams.update({'font.size': 16})
 fig = plt.figure(figsize=(9,6))
 ax = fig.add_subplot(111)
 
-p1 = np.loadtxt('transform/north2/opt1/opt_m.txt')
 p1a = np.loadtxt('transform/north2/opt2/opt_m.txt')
-p2 = np.loadtxt('transform/center2/opt1/opt_m.txt')
-p2a = np.loadtxt('transform/center2/opt2/opt_m.txt')
-p3 = np.loadtxt('transform/south2/opt1/opt_m.txt')
-p3a = np.loadtxt('transform/south2/opt2/opt_m.txt')
-ts = np.loadtxt('transform/center1/sigma_ts.txt')
+L1 = np.loadtxt('transform/north2/opt2/opt_L.txt')
+p1 = np.loadtxt('transform/north2/opt2/opt_p.txt') / L1
+v1 = np.loadtxt('transform/north2/opt2/v.txt')
 
+p2a = np.loadtxt('transform/center2/opt2/opt_m.txt')
+L2 = np.loadtxt('transform/center2/opt2/opt_L.txt')
+p2 = np.loadtxt('transform/center2/opt2/opt_p.txt') / L2
+v2 = np.loadtxt('transform/center2/opt2/v.txt')
+
+
+p3a = np.loadtxt('transform/south2/opt2/opt_m.txt')
+L3 = np.loadtxt('transform/south2/opt2/opt_L.txt')
+p3 = np.loadtxt('transform/south2/opt2/opt_p.txt') / L3
+v3 = np.loadtxt('transform/south2/opt2/v.txt')
+
+tsa = np.loadtxt('transform/center1/sigma_ts.txt')
+ts = np.loadtxt('transform/center2/opt2/opt_age.txt') 
 """
 p1_interp = interp1d(ts, p1, kind = 'linear')
 p2_interp = interp1d(ts, p2, kind = 'linear')
@@ -36,26 +46,30 @@ p3_fine = p3_interp(ts_fine)
 
 #np.savetxt('filter/3/Ls_smoothed.txt', Ls)
 
-plt.plot(ts, p3, '#1f77b4', lw = 2.5, label = 'South', marker = 'o', ms = 10)
-plt.plot(ts, p3a, '#1f77b4', lw = 2.5, label = 'South opt2', marker = 'o', ms = 10, linestyle = '--')
+plt.plot(tsa, p3a, '#1f77b4', lw = 2.5, label = 'South', marker = 'o', ms = 5, linestyle = '--')
+#plt.plot(tsa, p3a + 2.0*np.sqrt(v1), '#1f77b4', lw = 2.5, linestyle = ':')
+#plt.plot(tsa, p3a - 2.0*np.sqrt(v1), '#1f77b4', lw = 2.5, linestyle = ':')
+plt.plot(ts, p3,  '#1f77b4', lw = 2.5, ms = 10, alpha = 0.7)
 
-plt.plot(ts, p2, '#2ca02c', lw = 2.5, label = 'Center', marker = 'o', ms = 10)
-plt.plot(ts, p2a, '#2ca02c', lw = 2.5, label = 'Center opt2', marker = 'o', ms = 10, linestyle = '--')
+plt.plot(tsa, p2a, '#2ca02c', lw = 2.5, label = 'Center', marker = 'o', ms = 5, linestyle = '--')
+plt.plot(ts, p2, '#2ca02c', lw = 2.5, ms = 10, alpha = 0.7)
 
-plt.plot(ts, p1, '#d62728', lw = 2.5, label = 'North', marker = 'o', ms = 10)
-plt.plot(ts, p1a, '#d62728', lw = 2.5, label = 'North opt2', marker = 'o', ms = 10, linestyle = '--')
+plt.plot(tsa, p1a, '#d62728', lw = 2.5, label = 'North', marker = 'o', ms = 5, linestyle = '--')
+plt.plot(ts, p1, '#d62728', lw = 2.5, ms = 10, alpha = 0.7)
 
 
 #plt.plot(ages, dtb, color = 'k', lw = 1.5, label = 'Buizert Dye-3', marker = 'o', ms = 2)
 plt.legend()
 plt.xlabel('Age (ka BP)')
-plt.ylabel(r'Avg. Add. Precip. m.w.e')
+plt.ylabel(r'Avg. Precip. (m.w.e. a$^{-1}$ m$^{-1}$)')
 plt.xlim([ts.min(), ts.max()])
 ax.set_xticks([-11600, -11000., -10000., -9000., -8000, -7300.])
 ticks = ax.get_xticks()
 #rint ticks
 plt.grid(color='slategray', linestyle=':', linewidth=1)
-ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
+labels = [int(abs(tick / 1000.)) for tick in ticks]
+labels[0] = '11.6'
+ax.set_xticklabels(labels)
 plt.tight_layout()
-plt.show()
-#plt.savefig('dts.png', dpi=700)
+#plt.show()
+plt.savefig('precip.png', dpi=700)
