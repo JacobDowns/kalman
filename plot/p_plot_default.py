@@ -25,20 +25,7 @@ p3 = np.loadtxt('transform/south2/opt1/opt_p.txt') / L3
 v3 = np.loadtxt('transform/south2/opt1/v.txt')
 
 tsa = np.loadtxt('transform/center1/sigma_ts.txt')
-ts = np.loadtxt('transform/center2/opt1/opt_age.txt')
-
-
-print "north"
-print p1a
-
-print "center"
-print p2a
-
-print "south"
-print p3a
-
-quit()
-
+ts = np.loadtxt('transform/center2/opt1/opt_age.txt') 
 """
 p1_interp = interp1d(ts, p1, kind = 'linear')
 p2_interp = interp1d(ts, p2, kind = 'linear')

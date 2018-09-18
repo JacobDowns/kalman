@@ -19,7 +19,7 @@ dt_forcing = sys.argv[2]
 # Steady state file name
 inputs['in_file'] = in_dir + '/steady.h5'
 # Time step
-inputs['dt'] = 1./3.
+inputs['dt'] = 1./6.
 # Number of model time steps
 inputs['N'] = 4300*3
 
