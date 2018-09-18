@@ -26,7 +26,7 @@ class PriorWriter(object):
             # Load a custom prior
             x = np.loadtxt(input_dict['x'])
         else :
-            x = 0.42*np.ones(len(dt_years))
+            x = 0.0*np.ones(len(dt_years))
 
 
         ### Define prior covariance 
