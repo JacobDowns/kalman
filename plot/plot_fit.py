@@ -6,10 +6,10 @@ import matplotlib
 matplotlib.rcParams.update({'font.size': 18})
 fig = plt.figure(figsize=(12,14))
 
-ages = np.loadtxt('transform/north2/opt2/opt_age.txt')
-Ls1 = np.loadtxt('transform/north2/opt2/opt_L.txt') / 1000.
-Ls2 = np.loadtxt('transform/center2/opt2/opt_L.txt') / 1000.
-Ls3 = np.loadtxt('transform/south2/opt2/opt_L.txt') / 1000.
+ages = np.loadtxt('transform/north2/opt1/opt_age.txt')
+Ls1 = np.loadtxt('transform/north2/opt1/opt_L.txt') / 1000.
+Ls2 = np.loadtxt('transform/center2/opt1/opt_L.txt') / 1000.
+Ls3 = np.loadtxt('transform/south2/opt1/opt_L.txt') / 1000.
 
 obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
 obs_Ls1 = np.array([443746.66897917818, 397822.86008538032, 329757.49741948338, 292301.29712071194, 285478.05793305294]) / 1000.
@@ -53,7 +53,7 @@ ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
 plt.grid(True)
 plt.xlabel('Age (ka BP)')
 
-plt.savefig('buizert_fit.png', dpi=700)
+plt.savefig('dj_fit.png', dpi=700)
 
 
 

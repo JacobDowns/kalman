@@ -13,7 +13,10 @@ class TransientRunner(CommonRunner):
         # Delta temp as a function of age
         self.delta_temp_func = input_dict['delta_temp_func']
         # Precipitation param as a function of age
-        self.precip_param_func = input_dict['precip_param_func']
+        if 'precip_param_func' in input_dict:
+            self.precip_param_func = input_dict['precip_param_func']
+        else :
+            self.precip_param_func = lambda x : 0.0
         # Starting age
         self.start_age = -11.6e3
         # Snapshot interval : write out thickness vector periodically

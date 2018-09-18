@@ -8,24 +8,24 @@ matplotlib.rcParams.update({'font.size': 16})
 fig = plt.figure(figsize=(9,6))
 ax = fig.add_subplot(111)
 
-p1a = np.loadtxt('transform/north2/opt2/opt_m.txt')
-L1 = np.loadtxt('transform/north2/opt2/opt_L.txt')
-p1 = np.loadtxt('transform/north2/opt2/opt_p.txt') / L1
-v1 = np.loadtxt('transform/north2/opt2/v.txt')
+p1a = np.loadtxt('transform/north2/opt1/opt_m.txt')
+L1 = np.loadtxt('transform/north2/opt1/opt_L.txt')
+p1 = np.loadtxt('transform/north2/opt1/opt_p.txt') / L1
+v1 = np.loadtxt('transform/north2/opt1/v.txt')
 
-p2a = np.loadtxt('transform/center2/opt2/opt_m.txt')
-L2 = np.loadtxt('transform/center2/opt2/opt_L.txt')
-p2 = np.loadtxt('transform/center2/opt2/opt_p.txt') / L2
-v2 = np.loadtxt('transform/center2/opt2/v.txt')
+p2a = np.loadtxt('transform/center2/opt1/opt_m.txt')
+L2 = np.loadtxt('transform/center2/opt1/opt_L.txt')
+p2 = np.loadtxt('transform/center2/opt1/opt_p.txt') / L2
+v2 = np.loadtxt('transform/center2/opt1/v.txt')
 
 
-p3a = np.loadtxt('transform/south2/opt2/opt_m.txt')
-L3 = np.loadtxt('transform/south2/opt2/opt_L.txt')
-p3 = np.loadtxt('transform/south2/opt2/opt_p.txt') / L3
-v3 = np.loadtxt('transform/south2/opt2/v.txt')
+p3a = np.loadtxt('transform/south2/opt1/opt_m.txt')
+L3 = np.loadtxt('transform/south2/opt1/opt_L.txt')
+p3 = np.loadtxt('transform/south2/opt1/opt_p.txt') / L3
+v3 = np.loadtxt('transform/south2/opt1/v.txt')
 
 tsa = np.loadtxt('transform/center1/sigma_ts.txt')
-ts = np.loadtxt('transform/center2/opt2/opt_age.txt') 
+ts = np.loadtxt('transform/center2/opt1/opt_age.txt') 
 """
 p1_interp = interp1d(ts, p1, kind = 'linear')
 p2_interp = interp1d(ts, p2, kind = 'linear')
@@ -72,4 +72,4 @@ labels[0] = '11.6'
 ax.set_xticklabels(labels)
 plt.tight_layout()
 #plt.show()
-plt.savefig('precip.png', dpi=700)
+plt.savefig('dj_precip.png', dpi=700)
