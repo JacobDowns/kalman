@@ -27,16 +27,24 @@ v3 = np.loadtxt('transform/south2/opt1/v.txt')
 tsa = np.loadtxt('transform/center2/sigma_ts.txt')
 ts = np.loadtxt('transform/center2/opt1/opt_age.txt')
 
-"""
+print tsa
+
 print "north"
 print p1a
+print p1a.min(), p1a.max()
+print tsa[p1a.argmin()], tsa[p1a.argmax()]
 
 print "center"
 print p2a
+print p2a.min(), p2a.max()
+print tsa[p2a.argmin()], tsa[p2a.argmax()]
 
 print "south"
 print p3a
-"""
+print p3a.min(), p3a.max()
+print tsa[p3a.argmin()], tsa[p3a.argmax()]
+
+#quit()
 
 p1_interp = interp1d(ts, p1, kind = 'linear')
 p2_interp = interp1d(ts, p2, kind = 'linear')
@@ -56,15 +64,14 @@ p3_fine = p3_interp(ts_fine)
 
 #np.savetxt('filter/3/Ls_smoothed.txt', Ls)
 
-plt.plot(tsa, p3a, '#1f77b4', lw = 2.5, label = 'South', marker = 'o', ms = 5, linestyle = '-')
-plt.plot(ts, p3,  '#1f77b4', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--', dashes=(4, 1))
+plt.plot(tsa, p1a, '#d62728', lw = 2.5, label = 'North', marker = 'o', ms = 5, linestyle = '-')
+plt.plot(ts, p1, '#d62728', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--',  dashes=(4, 1))
 
 plt.plot(tsa, p2a, '#2ca02c', lw = 2.5, label = 'Center', marker = 'o', ms = 5, linestyle = '-')
 plt.plot(ts, p2, '#2ca02c', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--',  dashes=(4, 1))
 
-plt.plot(tsa, p1a, '#d62728', lw = 2.5, label = 'North', marker = 'o', ms = 5, linestyle = '-')
-plt.plot(ts, p1, '#d62728', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--',  dashes=(4, 1))
-
+plt.plot(tsa, p3a, '#1f77b4', lw = 2.5, label = 'South', marker = 'o', ms = 5, linestyle = '-')
+plt.plot(ts, p3,  '#1f77b4', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--', dashes=(4, 1))
 
 #plt.plot(ages, dtb, color = 'k', lw = 1.5, label = 'Buizert Dye-3', marker = 'o', ms = 2)
 plt.legend()
