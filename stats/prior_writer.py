@@ -15,7 +15,7 @@ class PriorWriter(object):
         else :
             N = 87
         # Delta temp. grid years
-        dt_years = -11.6e3 + np.linspace(0., 4300, N)
+        dt_years = -11.6e3 + np.linspace(0., 11590, N)
         np.savetxt(out_dir + 'sigma_ts.txt', dt_years)
         
 
@@ -26,7 +26,7 @@ class PriorWriter(object):
             # Load a custom prior
             x = np.loadtxt(input_dict['x'])
         else :
-            x = 0.0*np.ones(len(dt_years))
+            x = 0.42*np.ones(len(dt_years))
 
 
         ### Define prior covariance 

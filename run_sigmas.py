@@ -18,14 +18,12 @@ inputs['index'] = index
 # Number of runs
 inputs['runs'] = 1
 
-
 ### Delta temp. function
 #######################################################
-data = np.loadtxt('paleo_data/jensen_dye3.txt')
-years = data[:,0] - 2000.0
-temps = data[:,1]
+data = np.loadtxt('paleo_data/buizert_dye3.txt')
+years = -data[:,0][::-1]
+temps = data[:,1][::-1]
 inputs['delta_temp_func'] = interp1d(years, temps - temps[-1], kind = 'linear')
-
 
 ### Run some sigma points through the model
 ###############################################################
