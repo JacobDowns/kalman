@@ -38,3 +38,8 @@ if flowline == 'center3':
     inputs['in_dir'] = 'transform_long/center3/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/center3/opt1/')
+
+if flowline == 'center4':
+    inputs['in_dir'] = 'transform_long/center4/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/center4/opt1/')
