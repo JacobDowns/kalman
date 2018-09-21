@@ -50,7 +50,7 @@ class TransientRunner(CommonRunner):
                 print "precip param.", precip_param
                 print "age", age
                 print age
-                
+
             L = self.model.step(delta_temp, precip_param, accept = True)
             Ls.append(L)
             Ps.append(assemble(self.model.precip_func*dx)*L)

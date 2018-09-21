@@ -21,16 +21,15 @@ inputs['in_file'] = in_dir + '/steady.h5'
 # Time step
 inputs['dt'] = 1./3.
 # Number of model time steps
-inputs['N'] = 4300*3
+inputs['N'] = 11580*3
 
 
 ### Delta temp. function
 #######################################################
-data = np.loadtxt('paleo_data/jensen_dye3.txt')
-years = data[:,0] - 2000.0
-temps = data[:,1]
+data = np.loadtxt('paleo_data/buizert_dye3.txt')
+years = -data[:,0][::-1]
+temps = data[:,1][::-1]
 inputs['delta_temp_func'] = interp1d(years, temps - temps[-1], kind = 'linear')
-print inputs['delta_temp_func'](-11.6e3)
 
 
 ### Precip param. file
@@ -43,12 +42,11 @@ v = np.loadtxt(in_dir + '/' + opt_dir  + '/v.txt')
 # Interpolated delta temp. function 
 inputs['precip_param_func'] = interp1d(sigma_ts, precip_param_opt, kind = 'linear')
 
-"""
-plt.plot(precip_param_opt)
-plt.plot(precip_param_opt + 2.*np.sqrt(v))
-plt.plot(precip_param_opt - 2.*np.sqrt(v))
+plt.plot(sigma_ts, precip_param_opt)
+plt.plot(sigma_ts, precip_param_opt + 2.*np.sqrt(v))
+plt.plot(sigma_ts, precip_param_opt - 2.*np.sqrt(v))
 plt.show()
-quit()"""
+quit()
 
 
 ### Perform the model run

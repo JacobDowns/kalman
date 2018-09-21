@@ -15,7 +15,7 @@ class Optimizer(object):
         # Input directory 
         self.in_dir = input_dict['in_dir']
         # Observed ages 
-        self.obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
+        self.obs_ages = np.array([-11.6e3, -10.2e3, -9.2e3, -8.2e3, -7.3e3, 0.])
         # Model time steps 
         self.model_ages = np.loadtxt(self.in_dir + 'age_0.txt')
         # Sigma points
@@ -55,12 +55,12 @@ class Optimizer(object):
         R = np.zeros((len(y), len(y)))
 
         # Set the error through time
-        error_ts = np.array([-11.6, -10.9, -10.2, -9.7, -9.2, -8.7, -8.2, -7.75, -7.3])*1e3
-        error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err])
+        error_ts = np.array([-11.6e3, -10.9e3, -10.2e3, -9.7e3, -9.2e3, -8.7e3, -8.2e3, -7.75e3, -7.3e3, -3650.0, 0.])
+        error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err, max_err, min_err])
         error_interp = interp1d(error_ts, error_vs, kind = 'linear', bounds_error = False)
         errors = error_interp(np.round(self.model_ages[obs_indexes], 0))
         R[range(R.shape[0]), range(R.shape[0])] = errors
-
+        
 
         ### Do the Kalman update
         #############################################################
