@@ -7,9 +7,12 @@ matplotlib.rcParams.update({'font.size': 18})
 fig = plt.figure(figsize=(12,14))
 
 ages = np.loadtxt('transform_long/center1/opt1/opt_age.txt')
-Ls1 = np.loadtxt('transform_long/center1/opt1/opt_L.txt') / 1000.
+Ls1 = np.loadtxt('transform_long/center1/opt1/opt_m.txt') #/ 1000.
+Ls2 = np.loadtxt('transform_long/center2/opt1/opt_m.txt') #/ 1000.
 
-plt.plot(ages, Ls1)
+plt.plot(Ls1, 'r')
+plt.plot(Ls2, 'b')
+#plt.plot(0.*Ls2, 'k')
 plt.show()
 quit()
 #Ls2 = np.loadtxt('/media/jake/drive1/transform_buizert/center2/opt2/opt_L.txt') / 1000.

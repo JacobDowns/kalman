@@ -26,7 +26,8 @@ class PriorWriter(object):
             # Load a custom prior
             x = np.loadtxt(input_dict['x'])
         else :
-            x = 0.42*np.ones(len(dt_years))
+            chi = np.linspace(0., 1., len(dt_years))
+            x = 0.45*np.ones(len(dt_years)) - 0.45*chi
 
 
         ### Define prior covariance 
@@ -42,7 +43,7 @@ class PriorWriter(object):
         P[range(N), range(N)] = 2.
         P[range(1,N), range(N-1)] = -1.
         P[range(N-1), range(1,N)] = -1.
-        P[N-1, N-1] = 1.
+        P[N-1, N-1] = 2.
         P = delta*P
         P = np.linalg.inv(P)
         # Save prior mean and covariance

@@ -48,7 +48,6 @@ plt.plot(sigma_ts, precip_param_opt - 2.*np.sqrt(v))
 plt.show()
 quit()
 
-
 ### Perform the model run
 #######################################################
 tr = TransientRunner(inputs)
