@@ -6,30 +6,21 @@ import matplotlib
 matplotlib.rcParams.update({'font.size': 18})
 fig = plt.figure(figsize=(12,14))
 
-ages = np.loadtxt('transform_long/center3/opt1/opt_age.txt')
-Ls1 = np.loadtxt('transform_long/center3/opt1/opt_m.txt') #/ 1000.
-#Ls2 = np.loadtxt('transform_long/center2/opt1/opt_m.txt') #/ 1000.
+ages = np.loadtxt('transform_long/center4/opt1/opt_age.txt')
+Ls1 = np.loadtxt('transform_long/center4/opt1/opt_L.txt') / 1000.
 
-plt.plot(Ls1, 'r')
-#plt.plot(Ls2, 'b')
-#plt.plot(0.*Ls2, 'k')
+obs_ages = np.array([-11.6e3, -10.2e3, -9.2e3, -8.2e3, -7.3e3, 0.])
+obs_Ls1 = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725, 279753.70997966686]) / 1000.
+
+#obs_Ls1 = interp1d(obs_ages, obs_Ls1)(ages)
+#obs_Ls2 = interp1d(obs_ages, obs_Ls2)(ages)
+#obs_Ls3 = interp1d(obs_ages, obs_Ls3)(ages)
+
+plt.plot(obs_ages, obs_Ls1, 'ko--')
+plt.plot(ages, Ls1)
 plt.show()
+
 quit()
-#Ls2 = np.loadtxt('/media/jake/drive1/transform_buizert/center2/opt2/opt_L.txt') / 1000.
-#Ls3 = np.loadtxt('/media/jake/drive1/transform_buizert/south2/opt2/opt_L.txt') / 1000.
-
-Ls1 = np.loadtxt('paleo_runs/north_dj/L.txt') / 1000.
-Ls2 = np.loadtxt('paleo_runs/center_dj/L.txt') / 1000.
-Ls3 = np.loadtxt('paleo_runs/south_dj/L.txt') / 1000.
-
-obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3])*1e3
-obs_Ls1 = np.array([443746.66897917818, 397822.86008538032, 329757.49741948338, 292301.29712071194, 285478.05793305294]) / 1000.
-obs_Ls2 = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725]) / 1000.
-obs_Ls3 = np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738.49932773202, 296659.0156905292]) / 1000.
-
-obs_Ls1 = interp1d(obs_ages, obs_Ls1)(ages)
-obs_Ls2 = interp1d(obs_ages, obs_Ls2)(ages)
-obs_Ls3 = interp1d(obs_ages, obs_Ls3)(ages)
 
 ax = plt.subplot(3,1,1)
 plt.title('(a)')
