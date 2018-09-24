@@ -1,4 +1,3 @@
-from model.inputs.paleo_inputs1 import *
 from model.forward_model.forward_ice_model import *
 from model.transient_runner import *
 import numpy as np
