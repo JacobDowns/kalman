@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os.path
 
-in_dir = 'transform_long/center4/'
+in_dir = 'transform_long/beta2_1/'
 X = np.loadtxt(in_dir + 'X.txt')
 Y0 = np.loadtxt(in_dir + 'Y_0.txt')
 Y = np.zeros((X.shape[0], len(Y0)))

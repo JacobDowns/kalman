@@ -55,11 +55,19 @@ class Optimizer(object):
         R = np.zeros((len(y), len(y)))
 
         # Set the error through time
+        dif = (self.obs_ages[1:] - self.obs_ages[:-1])
+        dif /= dif.max()
+        dif *= max_err
+        #print np.sqrt(dif)
+        #quit()
         error_ts = np.array([-11.6e3, -10.9e3, -10.2e3, -9.7e3, -9.2e3, -8.7e3, -8.2e3, -7.75e3, -7.3e3, -3650.0, 0.])
-        error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err, 1.5*max_err, min_err])
+        error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err, dif[4], min_err])
         error_interp = interp1d(error_ts, error_vs, kind = 'linear', bounds_error = False)
         errors = error_interp(np.round(self.model_ages[obs_indexes], 0))
         R[range(R.shape[0]), range(R.shape[0])] = errors
+        #plt.plot(np.sqrt(errors))
+        #plt.show()
+        #quit()
         
 
         ### Do the Kalman update
@@ -75,7 +83,7 @@ class Optimizer(object):
             np.savetxt(out_dir + 'opt_m.txt', m_p)
             np.savetxt(out_dir + 'opt_P.txt', P_p)
             np.savetxt(out_dir + 'y.txt', y)
-            np.savetxt(out_dir + 'R.txt', R)
+            #np.savetxt(out_dir + 'R.txt', R)
             np.savetxt(out_dir + 'v.txt', v)
 
             plt.plot(m_p)

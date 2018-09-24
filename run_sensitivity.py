@@ -1,62 +1,43 @@
-import numpy as np
-import sys
-from model.paleo_runner import *
-import matplotlib.pyplot as plt
+from stats.sigma_runner import *
 
-# Integer index
-index = int(sys.argv[1])
-# Number of runs
-runs = 9
+### Set the run options
+###############################################################
 
-### Model inputs
-#######################################################
+# Parameter name
+param_name = str(sys.argv[1])
+# param. index
+param_index = int(sys.argv[2])
+# Run index
+run_index = int(sys.argv[3])
 
-# Input dictionary
+# Load param value
+in_dir = 'transform_long/' + param_name + '_' + str(param_index) +  '/'
+params = np.loadtxt('sensitivity/' + param_name +  '/params.txt')
+param_value = params[param_index]
+
+# Sigma runner inputs
 inputs = {}
-# Steady state file name
-inputs['in_file'] = 'paleo_inputs/center_paleo_steady_11_6.h5'
-# Time step
-inputs['dt'] = 1./3.
-# Number of model time steps
-inputs['N'] = 4300*3
+# Directory to read stuff from 
+inputs['in_dir'] = in_dir
+# Model input file
+inputs['in_file'] = in_dir + 'steady.h5'
+# Integer index
+inputs['index'] = run_index
+# Number of runs
+inputs['runs'] = 1
 
 
 ### Delta temp. function
 #######################################################
-
-data = np.loadtxt('paleo_data/jensen_dye3.txt')
-# Years before present (2000)
-years = data[:,0] - 2000.0
-# Temps. in K
-temps = data[:,1]
-# Interp. delta temp. 
+data = np.loadtxt('paleo_data/buizert_dye3.txt')
+years = -data[:,0][::-1]
+temps = data[:,1][::-1]
 inputs['delta_temp_func'] = interp1d(years, temps - temps[-1], kind = 'linear')
 
 
-### Perform model
-#######################################################
+### Run some sigma points through the model
+###############################################################
 
-# Number of sensitivity experiments
-num_experiments = 324
-
-# Run several delta temp. sigma points through the forward model
-for i in range(index*runs, min(num_experiments, index*runs + runs)):
-
-    print i
-
-    # Load the sensitivity parameters
-    params = np.loadtxt('sensitivity/params_' + str(i) + '.txt')
-
-    inputs['pdd_var'] = params[0]
-    inputs['lambda_snow'] = params[1]
-    inputs['lambda_ice'] = params[2]
-    inputs['lambda_precip'] = params[3]
-    inputs['P_frac'] = params[4]
-    inputs['beta2'] = params[5]
-
-    model_runner = PaleoRunner(inputs)
-    ages, Ls = model_runner.run()
-
-    # Save the results 
-    np.savetxt('sensitivity/ages_' + str(i) + '.txt', ages)
-    np.savetxt('sensitivity/Ls_' + str(i) + '.txt', Ls)
+sr = SigmaRunner(inputs)
+sr.inputs[param_name] = param_value
+sr.run()
