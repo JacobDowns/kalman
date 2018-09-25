@@ -4,10 +4,8 @@ from scipy.interpolate import UnivariateSpline
 import matplotlib.pyplot as plt
 import sys
 sys.path.append('/home/jake/kalman')
-#print sys.path
 
 from model.forward_model.support.physical_constants import *
-
 
 """
 Flexible class for generating a forward model inputs file.
