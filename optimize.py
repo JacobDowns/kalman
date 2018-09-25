@@ -13,7 +13,7 @@ max_err1 = 5000.**2
 # Minimum error, second pass
 min_err2 = 5000.**2
 # Maximum error, second pass
-max_err2 = 50000.**2
+max_err2 = 60000.**2
 # Observation skip to reduce computation time
 skip = 3
     
@@ -28,21 +28,21 @@ if flowline == 'center1':
     inputs['in_dir'] = 'transform_long/center1/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/center1/opt1/')
+
+if flowline == 'center1_opt2':
+    inputs['in_dir'] = 'transform_long/center1/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = 10000.**2, out_dir = 'transform_long/center1/opt2/')
+
+if flowline == 'center2':
+    inputs['in_dir'] = 'transform_long/center2/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/center2/opt1/')
     
 if flowline == 'center2':
     inputs['in_dir'] = 'transform_long/center2/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/center2/opt1/')
-
-if flowline == 'center3':
-    inputs['in_dir'] = 'transform_long/center3/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/center3/opt1/')
-
-if flowline == 'center4':
-    inputs['in_dir'] = 'transform_long/center4/'
-    opt = Optimizer(inputs)
-    opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/center4/opt1/')
 
 if flowline == 'center4_opt2':
     inputs['in_dir'] = 'transform_long/center4/'

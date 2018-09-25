@@ -91,23 +91,34 @@ class PaleoInputs(CommonInputs):
         # Object for calculating PDD's
         self.pdd_calc = PDDCalculator(self.pdd_var)
 
-
+        
         ### Load delta temp. record
         ########################################################################
 
-        data = np.loadtxt('paleo_data/buizert_full.txt')
-        years = -data[:,0][::-1]
-        temps_ann = data[:,1][::-1]
-        temps_djf = data[:,2][::-1]
-        temps_mam = data[:,3][::-1]
-        temps_jja = data[:,4][::-1]
-        temps_son = data[:,5][::-1]
+        self.delta_temp_record = 'buizert'
 
-        self.delta_temp_ann = interp1d(years, temps_ann - temps_ann[-1], kind = 'linear')
-        self.delta_temp_djf = interp1d(years, temps_djf - temps_djf[-1], kind = 'linear')
-        self.delta_temp_mam = interp1d(years, temps_mam - temps_mam[-1], kind = 'linear')\
-        self.delta_temp_mam = interp1d(years, temps_jja - temps_jja[-1], kind = 'linear')
-        self.delta_temp_son = interp1d(years, temps_son - temps_son[-1], kind = 'linear')
+        # Use seasonal or annual delta temp. record?
+        self.delta_temp_type = 'annual'
+        if self.delta_temp_record == 'buizert' and 'delta_temp_type' in input_dict:
+            self.delta_temp_type = input_dict['delta_temp_type']
+
+        if self.delta_temp_record == 'buizert':
+            data = np.loadtxt('paleo_data/buizert_full.txt')
+            years = -data[:,0][::-1]
+            temps_ann = data[:,1][::-1]
+            temps_djf = data[:,2][::-1]
+            temps_mam = data[:,3][::-1]
+            temps_jja = data[:,4][::-1]
+            temps_son = data[:,5][::-1]
+
+            self.delta_temp_ann = interp1d(years, temps_ann - temps_ann[-1], kind = 'linear')
+            self.delta_temp_djf = interp1d(years, temps_djf - temps_djf[-1], kind = 'linear')
+            self.delta_temp_mam = interp1d(years, temps_mam - temps_mam[-1], kind = 'linear')
+            self.delta_temp_jja = interp1d(years, temps_jja - temps_jja[-1], kind = 'linear')
+            self.delta_temp_son = interp1d(years, temps_son - temps_son[-1], kind = 'linear')
+
+        
+        
 
         
     """
@@ -124,6 +135,7 @@ class PaleoInputs(CommonInputs):
     """
     def update_adot(self, delta_temp, precip_param = 0.0):
         print "Delta temp: ", delta_temp, precip_param
+
 
         ### Compute monthly pdd's and precip.
         ########################################################################

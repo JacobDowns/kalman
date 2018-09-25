@@ -36,5 +36,4 @@ inputs['L_mu'] = 406893.
 # Load the sensitivity parameters
 inputs[param_name] = param_value
 model_runner = SteadyRunner(inputs)
-print model_runner
 model_runner.run()

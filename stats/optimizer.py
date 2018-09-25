@@ -58,10 +58,9 @@ class Optimizer(object):
         dif = (self.obs_ages[1:] - self.obs_ages[:-1])
         dif /= dif.max()
         dif *= max_err
-        #print np.sqrt(dif)
-        #quit()
         error_ts = np.array([-11.6e3, -10.9e3, -10.2e3, -9.7e3, -9.2e3, -8.7e3, -8.2e3, -7.75e3, -7.3e3, -3650.0, 0.])
-        error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err, max_err, min_err])
+        #error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err, max_err, min_err])
+        error_vs = np.array([min_err,  dif[0],  min_err,   dif[1],  min_err,   dif[2],  min_err,   dif[3],  min_err, dif[4], min_err])
         error_interp = interp1d(error_ts, error_vs, kind = 'linear', bounds_error = False)
         errors = error_interp(np.round(self.model_ages[obs_indexes], 0))
         R[range(R.shape[0]), range(R.shape[0])] = errors
