@@ -47,11 +47,11 @@ class SigmaRunner(object):
 
         # Run several delta temp. sigma points through the forward model
         for i in range(self.index*self.runs, min(self.num_sigma_points, self.index*self.runs + self.runs)):
-
+            
             # Check to make sure this one hasn't been run before
             if not os.path.isfile(self.in_dir + 'Y_' + str(i) + '.txt'):
                 print i
-                
+
                 ### Delta temp. function
                 #######################################################
 

@@ -94,6 +94,7 @@ class CommonRunner(object):
             self.model_inputs.physical_constants['P_frac'] = input_dict['P_frac']
             
         # Model
+        print inputs
         print self.model_inputs.physical_constants
         self.model = ForwardIceModel(self.model_inputs, self.out_dir, self.out_file)
         
