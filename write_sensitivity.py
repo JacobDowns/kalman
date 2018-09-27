@@ -5,7 +5,7 @@ import numpy as np
 Write parameter sets for sensitivity tests.
 """
 
-ratio = 1./3.
+ratio = 1./4.
     
 ### Water pressure fracion test
 ############################################################################

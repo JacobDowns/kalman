@@ -10,8 +10,8 @@ fig = plt.figure(figsize=(9,6))
 ax = fig.add_subplot(111)
 
 #ages = np.loadtxt('transform_long/center1/opt1/opt_age.txt')
-p1 = np.loadtxt('transform_long/center1/opt1/opt_m.txt')
-p2 = np.loadtxt('transform_long/center2/opt1/opt_m.txt')
+p1 = np.loadtxt('transform_long/center3/opt1/opt_m.txt')
+p2 = np.loadtxt('transform_long/beta2_0/opt1/opt_m.txt')
 
 plt.plot(p1, 'r')
 plt.plot(p2, 'g')
