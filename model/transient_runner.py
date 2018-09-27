@@ -46,10 +46,9 @@ class TransientRunner(CommonRunner):
             precip_param = self.precip_param_func(age)
 
             if self.output:
-                print "delta temp.", delta_temp
-                print "precip param.", precip_param
-                print "age", age
-                print age
+                print ("delta temp.", delta_temp)
+                print ("precip param.", precip_param)
+                print ("age", age)
 
             L = self.model.step(delta_temp, precip_param, accept = True)
             Ls.append(L)
