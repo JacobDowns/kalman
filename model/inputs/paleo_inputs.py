@@ -118,9 +118,6 @@ class PaleoInputs(CommonInputs):
             self.delta_temp_son = interp1d(years, temps_son - temps_son[-1], kind = 'linear')
 
         
-        
-
-        
     """
     Adot expression used by the model.
     """

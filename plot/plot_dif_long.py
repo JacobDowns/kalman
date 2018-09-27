@@ -9,6 +9,8 @@ fig = plt.figure(figsize=(12,14))
 ages = np.loadtxt('transform_long/center2/opt1/opt_age.txt')
 Ls1 = np.loadtxt('transform_long/center2/opt1/opt_L.txt') / 1000.
 Ls2 = np.loadtxt('transform_long/beta2_0/opt1/opt_L.txt') / 1000.
+Ls3 = np.loadtxt('transform_long/beta2_1/opt1/opt_L.txt') / 1000.
+Ls4 = np.loadtxt('transform_long/P_frac_0/opt1/opt_L.txt') / 1000.
 
 obs_ages = np.array([-11.6e3, -10.2e3, -9.2e3, -8.2e3, -7.3e3, 0.])
 obs_Ls1 = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725, 279753.70997966686]) / 1000.
@@ -19,7 +21,9 @@ obs_Ls1 = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 
 
 plt.plot(obs_ages, obs_Ls1, 'ko--')
 plt.plot(ages, Ls1, 'r')
-plt.plot(ages, Ls2, 'b')
+plt.plot(ages, Ls2, 'g')
+plt.plot(ages, Ls3, 'b')
+plt.plot(ages, Ls4, 'y')
 plt.show()
 
 quit()

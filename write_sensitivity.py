@@ -9,7 +9,7 @@ ratio = 1./4.
     
 ### Water pressure fracion test
 ############################################################################
-params = [0.825, 0.875]
+params = [0.8, 0.9]
 np.savetxt('sensitivity/P_frac/params.txt', params)
     
 ### Basal traction test
