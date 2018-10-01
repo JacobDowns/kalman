@@ -95,11 +95,12 @@ class PaleoInputs(CommonInputs):
         ### Load delta temp. record
         ########################################################################
 
+        # What dt reconstruction to use?
         self.delta_temp_record = 'buizert'
-
         # Use seasonal or annual delta temp. record?
-        self.delta_temp_type = 'annual'
-        if self.delta_temp_record == 'buizert' and 'delta_temp_type' in input_dict:
+        self.seasonality = False
+        
+        if self.delta_temp_record == 'buizert' and 'seasonality' in input_dict:
             self.delta_temp_type = input_dict['delta_temp_type']
 
         if self.delta_temp_record == 'buizert':
@@ -132,6 +133,13 @@ class PaleoInputs(CommonInputs):
     """
     def update_adot(self, delta_temp, precip_param = 0.0):
         print "Delta temp: ", delta_temp, precip_param
+
+        ### Delta temp. to use for each month
+        ########################################################################
+        
+        
+        #if self.seasonality:
+            
 
 
         ### Compute monthly pdd's and precip.

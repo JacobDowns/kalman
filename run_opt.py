@@ -42,6 +42,7 @@ v = np.loadtxt(in_dir + '/' + opt_dir  + '/v.txt')
 # Interpolated delta temp. function 
 inputs['precip_param_func'] = interp1d(sigma_ts, precip_param_opt, kind = 'linear')
 
+
 plt.plot(sigma_ts, precip_param_opt)
 plt.plot(sigma_ts, precip_param_opt + 2.*np.sqrt(v))
 plt.plot(sigma_ts, precip_param_opt - 2.*np.sqrt(v))

@@ -68,3 +68,18 @@ if flowline == 'P_frac_0':
     inputs['in_dir'] = 'transform_long/P_frac_0/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/P_frac_0/opt1/')
+
+if flowline == 'P_frac_1':
+    inputs['in_dir'] = 'transform_long/P_frac_1/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/P_frac_1/opt1/')
+
+if flowline == 'lambda_ice_0':
+    inputs['in_dir'] = 'transform_long/lambda_ice_0/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/lambda_ice_0/opt1/')
+
+if flowline == 'lambda_ice_1':
+    inputs['in_dir'] = 'transform_long/lambda_ice_1/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/lambda_ice_1/opt1/')
