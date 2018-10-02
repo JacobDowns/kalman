@@ -56,6 +56,11 @@ class PaleoInputs(CommonInputs):
         self.beta2 = None
         if 'beta2' in input_dict:
             self.beta2 = input_dict['beta2']
+
+        # Start age
+        self.start_age = -11.6e3
+        if 'start_age' in input_dict:
+            self.start_age = input_dict['start_age']
             
         
         ### Load monthly modern temp. and precip. fields
@@ -98,10 +103,10 @@ class PaleoInputs(CommonInputs):
         # What dt reconstruction to use?
         self.delta_temp_record = 'buizert'
         # Use seasonal or annual delta temp. record?
-        self.seasonality = False
+        self.seasonality = True
         
-        if self.delta_temp_record == 'buizert' and 'seasonality' in input_dict:
-            self.delta_temp_type = input_dict['delta_temp_type']
+        #if self.delta_temp_record == 'buizert' and 'seasonality' in input_dict:
+        #    self.seasonality = input_dict['seasonality']
 
         if self.delta_temp_record == 'buizert':
             data = np.loadtxt('paleo_data/buizert_full.txt')
@@ -117,6 +122,12 @@ class PaleoInputs(CommonInputs):
             self.delta_temp_mam = interp1d(years, temps_mam - temps_mam[-1], kind = 'linear')
             self.delta_temp_jja = interp1d(years, temps_jja - temps_jja[-1], kind = 'linear')
             self.delta_temp_son = interp1d(years, temps_son - temps_son[-1], kind = 'linear')
+        else:
+            data = np.loadtxt('paleo_data/jensen_dye3.txt')
+            years = data[:,0] - 2000.0
+            temps = data[:,1]
+            
+            self.delta_temp_ann = interp1d(years, temps_ann - temps_ann[-1], kind = 'linear')
 
         
     """
@@ -131,16 +142,36 @@ class PaleoInputs(CommonInputs):
     """
     Recompute SMB as time and ice surface change.
     """
-    def update_adot(self, delta_temp, precip_param = 0.0):
-        print "Delta temp: ", delta_temp, precip_param
+    def update_adot(self, t, precip_param = 0.0, delta_temp = None):
+        age = self.start_age + t
 
         ### Delta temp. to use for each month
         ########################################################################
-        
-        
-        #if self.seasonality:
-            
 
+        if delta_temp:
+            dt_djf = delta_temp
+            dt_mam = delta_temp
+            dt_jja = delta_temp
+            dt_son = delta_temp            
+        elif self.delta_temp_record == 'buizert' and self.seasonality:
+            dt_djf = self.delta_temp_djf(age)
+            dt_mam = self.delta_temp_mam(age)
+            dt_jja = self.delta_temp_jja(age)
+            dt_son = self.delta_temp_son(age)
+        else :
+            dt_ann = self.delta_temp_ann(age)
+            dt_djf = dt_ann
+            dt_mam = dt_ann
+            dt_jja = dt_ann
+            dt_son = dt_ann   
+                 
+        monthly_dts = [dt_djf, dt_djf, dt_djf, dt_mam, dt_mam, dt_mam,\
+                   dt_jja, dt_jja, dt_jja, dt_son, dt_son, dt_son]
+
+        print ("Age", age)
+        print ("Delta", dt_djf, dt_mam, dt_jja, dt_son)
+        print ("Precip", precip_param)
+            
 
         ### Compute monthly pdd's and precip.
         ########################################################################
@@ -160,7 +191,7 @@ class PaleoInputs(CommonInputs):
             # Compute the delta temp. adjusted / lapse rate corrected temp. for this month
             # Modern temp.  and precip. for a given month are computed as a 30 year modern average from Box
             modern_temp_vec = self.input_functions['T' + str(i)].vector().get_local()
-            temp_vec = modern_temp_vec + delta_temp + lapse_correction
+            temp_vec = modern_temp_vec + monthly_dts[i] + lapse_correction
             # Compute the delta temp. adjusted precip.
             modern_precip_vec = self.input_functions['P' + str(i)].vector().get_local()
             # Temp. corrected precip. rate in m.w.e./a
@@ -211,7 +242,7 @@ class PaleoInputs(CommonInputs):
         self.adot.vector()[:] = smb
         
 
-    # Update inputs that change with length, iteration, time, and time step
-    def update_inputs(self, L, delta_temp, precip_param = 0.0):
+    # Update inputs that change with glacier length and time
+    def update_inputs(self, L, age, precip_param = 0.0):
         self.update_interp_all(L)
-        self.update_adot(delta_temp, precip_param)
+        self.update_adot(age, precip_param)

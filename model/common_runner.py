@@ -62,6 +62,21 @@ class CommonRunner(object):
         self.b = None
         if 'b' in input_dict:
             self.b = input_dict['b']
+
+        # Delta temp record
+        self.delta_temp_record = 'buizert'
+        if 'delta_temp_record' in input_dict:
+            self.delta_temp_record = input_dict['delta_temp_record']
+
+        # Use seasonal delta temps.?
+        self.seasonality = False
+        if 'seasonality' in input_dict:
+            self.seasonality = input_dict['seasonality']
+
+        # Start age
+        self.start_age = -11.6e3
+        if 'start_age' in input_dict:
+            self.start_age = input_dict['start_age']
             
         
         ### Init. model
@@ -75,6 +90,9 @@ class CommonRunner(object):
         inputs['lambda_ice'] = self.lambda_ice
         inputs['lambda_precip'] = self.lambda_precip
         inputs['beta2'] = self.beta2
+        inputs['delta_temp_record'] = self.delta_temp_record
+        inputs['seasonality'] = self.seasonality
+        inputs['start_age'] = self.start_age
 
         # Create model inputs
         self.model_inputs = PaleoInputs(self.in_file, inputs)

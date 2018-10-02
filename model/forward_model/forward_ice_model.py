@@ -21,13 +21,12 @@ class ForwardIceModel(object):
         self.model_inputs = model_inputs
         # Mesh
         self.mesh = model_inputs.mesh
-        # Model time
-        self.t = 0.
         # Physical constants / parameters
         self.constants = pcs
         # Max domain length
         self.domain_len = float(self.model_inputs.input_functions['domain_len'])
-
+        # Model time
+        self.t = 0.0
 
         #### Function spaces
         ########################################################################
@@ -368,10 +367,9 @@ class ForwardIceModel(object):
 
 
     # Assign input functions from model_inputs
-    def update_inputs(self, L, delta_temp, precip_param = 0.0):
-        #print "update inputs", L
+    def update_inputs(self, L, precip_param = 0.0):
         self.S0_c.assign(self.B + self.H0_c)
-        self.model_inputs.update_inputs(L, delta_temp, precip_param)
+        self.model_inputs.update_inputs(L, self.t, precip_param)
         self.B.assign(self.model_inputs.input_functions['B'])
         self.beta2.assign(self.model_inputs.input_functions['beta2'])
         self.adot_prime_func.assign(project(self.adot_prime, self.V_cg))
@@ -379,10 +377,10 @@ class ForwardIceModel(object):
         self.precip_func.assign(self.model_inputs.precip_func)
 
 
-    def step(self, delta_temp, precip_param = 0.0, accept = False):
-
+    def step(self, precip_param = 0.0, accept = False):
+        
         # Update input fields that change with length
-        self.update_inputs(float(self.L0), delta_temp, precip_param)
+        self.update_inputs(float(self.L0), precip_param)
 
         ### Take a step with the given delta_temp and precip param.
         ########################################################################
@@ -405,9 +403,6 @@ class ForwardIceModel(object):
                 solver.solve()
 
             self.assigner_inv_f.assign([self.un_temp, self.u2n_temp, self.H0_c_temp, self.H0_temp], self.U_f)
-
-            #dolfin.plot(self.un_temp)
-            #plt.show()
         else :
             # If the margin position didn't jump, just do a standard solve
             try:
@@ -476,12 +471,9 @@ class ForwardIceModel(object):
                         self.update_inputs(L_term, delta_temp, precip_param)
                         self.update_inputs(L_term, delta_temp, precip_param)
 
-                        #dolfin.plot(self.B)
-                        #dolfin.plot(self.B + self.H0_c)
-                        #plt.show()
                         #self.jumped = True
 
-            print "real step: ", self.t, self.H0_c.vector().get_local()[0], float(self.L0)
+            print "real step: ", self.t, self.H0_c.vector().max(), self.H0_c.vector().get_local()[0], float(self.L0)
             return float(self.L0)
         else :
             return float(self.L0_temp)
