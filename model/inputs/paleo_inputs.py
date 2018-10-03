@@ -61,6 +61,9 @@ class PaleoInputs(CommonInputs):
         self.start_age = -11.6e3
         if 'start_age' in input_dict:
             self.start_age = input_dict['start_age']
+
+        # Steady state run?
+        self.steady = False
             
         
         ### Load monthly modern temp. and precip. fields
@@ -103,7 +106,7 @@ class PaleoInputs(CommonInputs):
         # What dt reconstruction to use?
         self.delta_temp_record = 'buizert'
         # Use seasonal or annual delta temp. record?
-        self.seasonality = True
+        self.seasonality = False
         
         #if self.delta_temp_record == 'buizert' and 'seasonality' in input_dict:
         #    self.seasonality = input_dict['seasonality']
@@ -122,6 +125,15 @@ class PaleoInputs(CommonInputs):
             self.delta_temp_mam = interp1d(years, temps_mam - temps_mam[-1], kind = 'linear')
             self.delta_temp_jja = interp1d(years, temps_jja - temps_jja[-1], kind = 'linear')
             self.delta_temp_son = interp1d(years, temps_son - temps_son[-1], kind = 'linear')
+
+            """
+            ts = np.linspace(-11.6e3, -7.3e3, 500)
+            plt.plot(self.delta_temp_djf(ts), 'k')
+            plt.plot(self.delta_temp_mam(ts), 'r')
+            plt.plot(self.delta_temp_jja(ts), 'g')
+            plt.plot(self.delta_temp_son(ts), 'b')
+            plt.show()
+            quit()"""
         else:
             data = np.loadtxt('paleo_data/jensen_dye3.txt')
             years = data[:,0] - 2000.0
@@ -142,18 +154,16 @@ class PaleoInputs(CommonInputs):
     """
     Recompute SMB as time and ice surface change.
     """
-    def update_adot(self, t, precip_param = 0.0, delta_temp = None):
+    def update_adot(self, t, precip_param = 0.0):
+
         age = self.start_age + t
+        if self.steady:
+            age = start_age
 
         ### Delta temp. to use for each month
         ########################################################################
 
-        if delta_temp:
-            dt_djf = delta_temp
-            dt_mam = delta_temp
-            dt_jja = delta_temp
-            dt_son = delta_temp            
-        elif self.delta_temp_record == 'buizert' and self.seasonality:
+        if self.delta_temp_record == 'buizert' and self.seasonality:
             dt_djf = self.delta_temp_djf(age)
             dt_mam = self.delta_temp_mam(age)
             dt_jja = self.delta_temp_jja(age)
@@ -165,8 +175,8 @@ class PaleoInputs(CommonInputs):
             dt_jja = dt_ann
             dt_son = dt_ann   
                  
-        monthly_dts = [dt_djf, dt_djf, dt_djf, dt_mam, dt_mam, dt_mam,\
-                   dt_jja, dt_jja, dt_jja, dt_son, dt_son, dt_son]
+        monthly_dts = [dt_djf, dt_djf, dt_mam, dt_mam, dt_mam, dt_jja,\
+                       dt_jja, dt_jja, dt_son, dt_son, dt_son, dt_djf]
 
         print ("Age", age)
         print ("Delta", dt_djf, dt_mam, dt_jja, dt_son)
@@ -239,6 +249,9 @@ class PaleoInputs(CommonInputs):
         ablation = total_pdds * self.lambda_ice
         # Total yearly mass balance in m.i.e. assuming snowpack turns to ice at end of year
         smb = (accumulation - ablation) * (10./9.)
+
+        #plt.plot(smb)
+        #plt.show()
         self.adot.vector()[:] = smb
         
 

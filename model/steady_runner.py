@@ -44,6 +44,9 @@ class SteadyRunner(CommonRunner):
         if 'Q' in input_dict:
             self.Q = input_dict['Q']
 
+        # Set a steady state flag for paleo inputs so delta temp. doesn't update
+        self.model_inputs.steady = False
+
             
         ### Setup the UKF
         ############################################################################
@@ -58,11 +61,12 @@ class SteadyRunner(CommonRunner):
             ys = np.zeros_like(xs)
 
             for i in range(len(xs)):
-                ys[i] = self.model.step(self.delta_temp, xs[i], accept = False)
+                ys[i] = self.model.step(xs[i], accept = False, age = -11.6e3)
 
             return ys
 
         self.ukf = ScalarUKF(self.precip_param_mu, self.precip_param_sigma2, F, H)
+
         
         
     # Optimize the precip. weight
@@ -83,7 +87,7 @@ class SteadyRunner(CommonRunner):
                 print "opt precip weight", precip_param, precip_param_sigma2
 
             # Do a step with the optimal param.
-            L = self.model.step(self.delta_temp, precip_param, accept = True)
+            L = self.model.step(precip_param, accept = True, age = -11.6e3)
             Ls.append(L)
 
             if self.output:

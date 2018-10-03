@@ -27,5 +27,6 @@ inputs['delta_temp_func'] = interp1d(years, temps - temps[-1], kind = 'linear')
 
 ### Run some sigma points through the model
 ###############################################################
-sr = SigmaRunner(inputs) 
+sr = SigmaRunner(inputs)
+sr.inputs['beta2'] = 1.6e-3
 sr.run()

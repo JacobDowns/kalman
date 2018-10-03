@@ -377,7 +377,7 @@ class ForwardIceModel(object):
         self.precip_func.assign(self.model_inputs.precip_func)
 
 
-    def step(self, precip_param = 0.0, accept = False):
+    def step(self, precip_param = 0.0, accept = False, age = None):
         
         # Update input fields that change with length
         self.update_inputs(float(self.L0), precip_param)
@@ -468,8 +468,8 @@ class ForwardIceModel(object):
                         # Set the new ice thickness
                         self.H0_c.vector()[:] = np.ascontiguousarray(Hs_interp[::-1])
                         self.H0.assign(project(self.H0_c, self.V_dg))
-                        self.update_inputs(L_term, delta_temp, precip_param)
-                        self.update_inputs(L_term, delta_temp, precip_param)
+                        self.update_inputs(L_term, precip_param)
+                        self.update_inputs(L_term, precip_param)
 
                         #self.jumped = True
 
