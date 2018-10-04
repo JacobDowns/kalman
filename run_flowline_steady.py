@@ -35,6 +35,10 @@ if flowline == 'north':
 inputs['dt'] = 3.
 # Number of model time steps
 inputs['N'] = 10000
+# Tuned basal traction
+inputs['beta2'] = 1.6e-3
+# Start age 
+inputs['start_age'] = -11.5e3
 
 
 ### Perform model run 

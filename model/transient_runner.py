@@ -44,9 +44,9 @@ class TransientRunner(CommonRunner):
             # Precip param.
             precip_param = self.precip_param_func(age)
 
-            if self.output:
-                print ("precip param.", precip_param)
-                print ("age", age)
+            #if self.output:
+            #    print ("precip param.", precip_param)
+            #    print ("age", age)
 
             L = self.model.step(precip_param, accept = True)
             Ls.append(L)

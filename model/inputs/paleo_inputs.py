@@ -158,7 +158,7 @@ class PaleoInputs(CommonInputs):
 
         age = self.start_age + t
         if self.steady:
-            age = start_age
+            age = self.start_age
 
         ### Delta temp. to use for each month
         ########################################################################

@@ -15,11 +15,6 @@ class SteadyRunner(CommonRunner):
 
         # Steady state file name
         self.steady_file_name = input_dict['steady_file_name']
-
-        # Fixed delta temp. (Default is Buizert 11.6 temp.)
-        self.delta_temp = -7.888035714285713
-        if 'delta_temp' in input_dict:
-            self.delta_temp = input_dict['delta_temp']
         
         # Initial precip. weight
         self.precip_param_mu = 0.
@@ -27,7 +22,7 @@ class SteadyRunner(CommonRunner):
             self.precip_param_mu = input_dict['precip_param_mu']
 
         # Initial precip param variance
-        self.precip_param_sigma2 = 0.1**2
+        self.precip_param_sigma2 = 0.07**2
         if 'precip_param_sigma2' in input_dict:
             self.precip_param_sigma2 = input_dict['precip_param_sigma2']
 
@@ -40,12 +35,12 @@ class SteadyRunner(CommonRunner):
             self.L_sigma2 = input_dict['L_sigma2']
         
         # Process noise
-        self.Q = 0.001**2
+        self.Q = 0.005**2
         if 'Q' in input_dict:
             self.Q = input_dict['Q']
 
         # Set a steady state flag for paleo inputs so delta temp. doesn't update
-        self.model_inputs.steady = False
+        self.model_inputs.steady = True
 
             
         ### Setup the UKF
