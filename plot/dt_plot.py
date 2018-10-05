@@ -1,33 +1,34 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import interp1d
-import seaborn as sns
+#import seaborn as sns
 import matplotlib
 matplotlib.rcParams.update({'font.size': 16})
 
-
-fig = plt.figure(figsize=(9,6))
+fig = plt.figure(figsize=(10,6))
 ax = fig.add_subplot(111)
 
 #ages = np.loadtxt('transform_long/center1/opt1/opt_age.txt')
-p1 = np.loadtxt('transform_long/center3/opt1/opt_m.txt')
-p2 = np.loadtxt('transform_long/beta2_0/opt1/opt_m.txt')
-p3 = np.loadtxt('transform_long/beta2_1/opt1/opt_m.txt')
-p4 = np.loadtxt('transform_long/P_frac_0/opt1/opt_m.txt')
-p5 = np.loadtxt('transform_long/P_frac_1/opt1/opt_m.txt')
-p6 = np.loadtxt('transform_long/lambda_ice_0/opt1/opt_m.txt')
-p7 = np.loadtxt('transform_long/lambda_ice_1/opt1/opt_m.txt')
+p1 = np.loadtxt('transform_long/center1/opt1/opt_m.txt')
+
+p2 = np.loadtxt('transform_long/center2_seasonal/opt1/opt_m.txt')
+#p3 = np.loadtxt('transform_long/beta2_1/opt1/opt_m.txt')
+#p4 = np.loadtxt('transform_long/P_frac_0/opt1/opt_m.txt')
+#p5 = np.loadtxt('transform_long/P_frac_1/opt1/opt_m.txt')
+#p6 = np.loadtxt('transform_long/lambda_ice_0/opt1/opt_m.txt')
+#p7 = np.loadtxt('transform_long/lambda_ice_1/opt1/opt_m.txt')
 
 plt.plot(p1, 'ko-')
 plt.plot(p2, 'ro-')
+"""
 plt.plot(p3, 'ro--')
 plt.plot(p4, 'go-')
 plt.plot(p5, 'go--')
 plt.plot(p6, 'bo-')
 plt.plot(p7, 'bo--')
-#plt.plot(
 plt.show()
-quit()
+"""
+#quit()
 #v1 = np.loadtxt('transform/north2/opt2/v.txt')
 #p2 = np.loadtxt('transform_long/beta2_0/opt1/opt_m.txt')
 #p3 = np.loadtxt('transform_long/beta2_1/opt1/opt_m.txt')
@@ -36,8 +37,8 @@ quit()
 #v3 = np.loadtxt('transform/south2/opt2/v.txt')
 #ts = np.loadtxt('transform/center1/sigma_ts.txt')
 
-plt.plot(p1, 'r')
-plt.plot(p2, 'g')
+#plt.plot(p1, 'r')
+#plt.plot(p2, 'g')
 #plt.plot(ages, p3, 'b')
 plt.show()
 

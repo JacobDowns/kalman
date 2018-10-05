@@ -22,6 +22,10 @@ if flowline == 'center':
     inputs['in_file'] = 'paleo_inputs/center_paleo_steady_11_6.h5'
     inputs['steady_file_name'] = 'paleo_inputs/center_steady'
     inputs['L_mu'] = 406893.
+if flowline == 'center_seasonal':
+    inputs['in_file'] = 'paleo_inputs/center_paleo_steady_11_6.h5'
+    inputs['steady_file_name'] = 'paleo_inputs/center_steady_seasonal'
+    inputs['L_mu'] = 406893.
 if flowline == 'north':
     inputs['in_file'] = 'paleo_inputs/north_paleo_steady_11_6.h5'
     inputs['steady_file_name'] = 'paleo_inputs/north_steady'

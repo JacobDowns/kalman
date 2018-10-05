@@ -29,6 +29,11 @@ if flowline == 'center1':
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/center1/opt1/')
 
+if flowline == 'center1_seasonal':
+    inputs['in_dir'] = 'transform_long/center1_seasonal/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/center1_seasonal/opt1/')
+
 if flowline == 'center1_opt2':
     inputs['in_dir'] = 'transform_long/center1/'
     opt = Optimizer(inputs)
@@ -38,7 +43,12 @@ if flowline == 'center2':
     inputs['in_dir'] = 'transform_long/center2/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/center2/opt1/')
-    
+
+if flowline == 'center2_seasonal':
+    inputs['in_dir'] = 'transform_long/center2_seasonal/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/center2_seasonal/opt1/')
+
 if flowline == 'center3':
     inputs['in_dir'] = 'transform_long/center3/'
     opt = Optimizer(inputs)

@@ -106,7 +106,7 @@ class PaleoInputs(CommonInputs):
         # What dt reconstruction to use?
         self.delta_temp_record = 'buizert'
         # Use seasonal or annual delta temp. record?
-        self.seasonality = False
+        self.seasonality = True
         
         #if self.delta_temp_record == 'buizert' and 'seasonality' in input_dict:
         #    self.seasonality = input_dict['seasonality']

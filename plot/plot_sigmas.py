@@ -4,88 +4,67 @@ from scipy.interpolate import interp1d
 from filterpy.kalman import JulierSigmaPoints
 import seaborn as sns
 
-plt.rcParams.update({'font.size': 22})
+plt.rcParams.update({'font.size': 16})
 
-# Output directory
-out_dir = 'filter/south_prior3/'
-# Load Jensen dye3 temp.
-data = np.loadtxt('paleo_data/jensen_dye3.txt')
-# Years before present (2000)
-years = data[:,0] - 2000.0
-# Temps. in K
-temps = data[:,1]
-# Delta temps. 
-delta_temp_interp = interp1d(years, temps - temps[-1], kind = 'linear')
-# Delta temp. grid years
-years = -11.6e3 + np.linspace(0., 4300, 87)
+fig = plt.figure(figsize=(10,6))
+current_palette = sns.color_palette()
+#sns.palplot(current_palette)
+#plt.show()
+#quit()
+#print current_palette
+#quit()
 
 
-### Mean and covariance of prior
-##########################################################################
-N = len(years)
-x = delta_temp_interp(years)
+### Prior mean
+####################################################
+N = 45
+x = np.zeros(N)
+ts = np.linspace(-11.6, 0., N)
+
+### Prior covariance
+####################################################
+
+delta = 250e3
+# Covariance matrix
 P = np.zeros((N, N))
 P[range(N), range(N)] = 2.
 P[range(1,N), range(N-1)] = -1.
 P[range(N-1), range(1,N)] = -1.
-P[N-1, N-1] = 1.
-P = 1500.*P
+P[N-1, N-1] = 2.
+P = delta*P
 P = np.linalg.inv(P)
-
-np.savetxt(out_dir + 'prior_m.txt', x)
-np.savetxt(out_dir + 'prior_P.txt', P)
-
-
-### Plot samples from prior
-##########################################################################
-samples = np.random.multivariate_normal(x, P, 15)
-
-sns.set_palette("muted")
-#sns.palplot(sns.color_palette("hls", 8))
-current_palette = sns.color_palette()
-#sns.palplot(current_palette)
-
-print 2*N +  1
-
-fig, ax = plt.subplots()
-
-for i in range(samples.shape[0]):
-    sns.lineplot(years, samples[i], lw = 4)
-
-
-#quit()
-plt.plot(years, x, 'k', lw = 6, label = 'Dahl-Jensen')
-plt.title('Prior Samples')
-plt.xlim(years.min(), years.max())
-plt.xlabel('Year Before Present')
-plt.ylabel(r'$\Delta T$')
-ticks = ax.get_xticks()
-ax.set_xticklabels([int(abs(tick)) for tick in ticks])
-plt.legend()
-plt.show()
-
-quit()
-
 
 ### Compute sigma points
 ##########################################################################
-points = JulierSigmaPoints(N, kappa=20*len(years))
-
-print points.weights()[0]
-print points.weights()[1]
-
+# Generate Julier sigma points
+points = JulierSigmaPoints(N, kappa=N)
 sigma_points = points.sigma_points(x, P)
+linestyles = [':', '--', ':', '--', ':', '--', '--', '-']
+colors = [current_palette[0], current_palette[1], current_palette[2], 'k', current_palette[1]] 
 
-plt.title('Sigma Points')
-plt.xlabel('Year Before Present')
-plt.ylabel(r'$\Delta T$')
-plt.plot(years, sigma_points[50], 'ro-', lw = 2)
-plt.plot(years, sigma_points[50 + 88], 'bo-', lw = 2)
-plt.plot(years, sigma_points[0], 'ko-', lw = 2)
-plt.show()
+j = 0
+#[0, N+28, 24, N+20, 16, N+12, 8, N + 4]
 
-"""
-indexes = range(len(points.weights()[0]))[::5]
-for i in indexes:
-    plt.plot(sigma_points[i])
-plt.show()"""
+#[0, 24, N+20, 8, N + 4]
+labels = [r'$\chi_0$', r'$\chi_{34}$', r'$\chi_{67}$', r'$\chi_{11}$', r'$\chi_{49}$']
+alphas = [1., 0.7, .55, .4, .6]
+dashes = [(5, 0), (5, 0), (5, 0), (5, 0), (5, 4)]
+
+for i in [0, 34, N+22, 11]:
+    print i
+    plt.plot(ts, sigma_points[i], linewidth = 3, marker = 'o', ms = 4, alpha = alphas[j], dashes = dashes[j], color = colors[j], label = labels[j])
+    j += 1
+
+plt.xlim([ts.min(), ts.max()])
+#plt.ylim([-0.021, 0.021])
+#plt.show()
+plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
+plt.xlabel('Age (ka BP)')
+plt.legend(loc = 4)
+plt.yticks([-0.02, -0.01, 0., 0.01, 0.02])
+#plt.xticks([-10., -6., -2.])
+#plt.grid(True)
+plt.grid(color='slategray', linestyle=':', linewidth=0.75)
+plt.tight_layout()
+plt.savefig('sigmas.png', dpi=700)
+

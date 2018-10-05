@@ -24,6 +24,8 @@ inputs['dt'] = 1./3.
 inputs['N'] = 11580*3
 # Starting age
 inputs['start_age'] = -11.6e3
+# Tuned basal traction
+inputs['beta2'] = 1.6e-3
 
 
 ### Precip param. file
