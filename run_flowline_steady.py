@@ -18,6 +18,10 @@ if flowline == 'south':
     inputs['in_file'] = 'paleo_inputs/south_paleo_steady_11_6.h5'
     inputs['steady_file_name'] = 'paleo_inputs/south_steady'
     inputs['L_mu'] = 424778.
+if flowline == 'south_seasonal':
+    inputs['in_file'] = 'paleo_inputs/south_paleo_steady_11_6.h5'
+    inputs['steady_file_name'] = 'paleo_inputs/south_steady_seasonal'
+    inputs['L_mu'] = 424778.
 if flowline == 'center':
     inputs['in_file'] = 'paleo_inputs/center_paleo_steady_11_6.h5'
     inputs['steady_file_name'] = 'paleo_inputs/center_steady'
@@ -30,13 +34,17 @@ if flowline == 'north':
     inputs['in_file'] = 'paleo_inputs/north_paleo_steady_11_6.h5'
     inputs['steady_file_name'] = 'paleo_inputs/north_steady'
     inputs['L_mu'] = 443746.
+if flowline == 'north_seasonal':
+    inputs['in_file'] = 'paleo_inputs/north_paleo_steady_11_6.h5'
+    inputs['steady_file_name'] = 'paleo_inputs/north_steady'
+    inputs['L_mu'] = 443746.
 
     
 ### Model inputs
 #######################################################
 
 # Time step
-inputs['dt'] = 3.
+inputs['dt'] = 1.
 # Number of model time steps
 inputs['N'] = 10000
 # Tuned basal traction

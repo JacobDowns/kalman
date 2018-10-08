@@ -18,20 +18,11 @@ class PriorWriter(object):
             delta_P_len = input_dict['delta_P_len']
         else :
             delta_P_len = 45
-
-        if 'param_names' in input_dict:
-            # Number of parameters in state vector
-            param_names = input_dict['param_names']
+        self.x = np.zeros(N1 + 3)
         
-
-        
-        
-        
-        self.x = 
         
         ### Delta P mean
         ###########################################################################
-
 
         # Delta temp. grid years
         dt_years = -11.6e3 + np.linspace(0., 11590, N1)
@@ -41,9 +32,17 @@ class PriorWriter(object):
         ### Param. means
         ###########################################################################
 
-        
-        
+        # Mean and variance for each parameter
+        param_priors = {
+             'beta2' : [1.6e-3, .2e-3**2],
+             'P_frac' : [0.85, 0.025**2],
+             'b' : [(3.5e-25*60**2*24*365)**(-1./3.), (0.75e-25*60**2*24*365)**(-1./3.)]
+             'lambda_precip' : [0.07, 0.005**2],
+             'lambda_ice' : [0.008, 0.0005**2],
+             'lambda_snow' : [0.005, 0.0005**2] 
+            }
 
+        
         ### Define prior mean
         ###########################################################################
         

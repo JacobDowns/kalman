@@ -35,7 +35,7 @@ class SteadyRunner(CommonRunner):
             self.L_sigma2 = input_dict['L_sigma2']
         
         # Process noise
-        self.Q = 0.005**2
+        self.Q = 0.1**2
         if 'Q' in input_dict:
             self.Q = input_dict['Q']
 

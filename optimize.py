@@ -93,3 +93,13 @@ if flowline == 'lambda_ice_1':
     inputs['in_dir'] = 'transform_long/lambda_ice_1/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/lambda_ice_1/opt1/')
+
+if flowline == 'south1_seasonal':
+    inputs['in_dir'] = 'transform_long/south1_seasonal/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/south1_seasonal/opt1/')
+
+if flowline == 'south2_seasonal':
+    inputs['in_dir'] = 'transform_long/south2_seasonal/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/south2_seasonal/opt1/')
