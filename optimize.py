@@ -94,7 +94,7 @@ if flowline == 'lambda_ice_1':
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/lambda_ice_1/opt1/')
 
-# south
+# South
 Ls = [424777.2650658561, 394942.08036138373, 332430.9181651594, 303738.499327732, 296659.0156905292, 284686.5963970118]
     
 if flowline == 'south1_seasonal':
@@ -108,4 +108,14 @@ if flowline == 'south2_seasonal':
     opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/south2_seasonal/opt1/')
 
 # north
-#[443746.6689791782, 397822.8600853803, 329757.4974194834, 292301.29712071194, 285478.05793305294, 278183.0803897464]
+Ls = [443746.6689791782, 397822.8600853803, 329757.4974194834, 292301.29712071194, 285478.05793305294, 278183.0803897464]
+
+if flowline == 'north1_seasonal':
+    inputs['in_dir'] = 'transform_long/north1_seasonal/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err1, max_err = max_err1, out_dir = 'transform_long/north1_seasonal/opt1/')
+
+if flowline == 'north2_seasonal':
+    inputs['in_dir'] = 'transform_long/north2_seasonal/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/north2_seasonal/opt1/')
