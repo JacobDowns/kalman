@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os.path
 
-in_dir = 'transform_long/south1_seasonal/'
+in_dir = 'transform_long/south2_seasonal/'
 X = np.loadtxt(in_dir + 'X.txt')
 Y0 = np.loadtxt(in_dir + 'Y_0.txt')
 Y = np.zeros((X.shape[0], len(Y0)))

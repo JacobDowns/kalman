@@ -36,7 +36,7 @@ if flowline == 'north':
     inputs['L_mu'] = 443746.
 if flowline == 'north_seasonal':
     inputs['in_file'] = 'paleo_inputs/north_paleo_steady_11_6.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/north_steady'
+    inputs['steady_file_name'] = 'paleo_inputs/north_steady_seasonal'
     inputs['L_mu'] = 443746.
 
     

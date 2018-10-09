@@ -9,9 +9,8 @@ fig = plt.figure(figsize=(10,6))
 ax = fig.add_subplot(111)
 
 #ages = np.loadtxt('transform_long/center1/opt1/opt_age.txt')
-p1 = np.loadtxt('transform_long/center1/opt1/opt_m.txt')
-
-p2 = np.loadtxt('transform_long/center2_seasonal/opt1/opt_m.txt')
+p1 = np.loadtxt('transform_long/center1_seasonal/opt1/opt_m.txt')
+p2 = np.loadtxt('transform_long/south1_seasonal/opt1/opt_m.txt')
 #p3 = np.loadtxt('transform_long/beta2_1/opt1/opt_m.txt')
 #p4 = np.loadtxt('transform_long/P_frac_0/opt1/opt_m.txt')
 #p5 = np.loadtxt('transform_long/P_frac_1/opt1/opt_m.txt')

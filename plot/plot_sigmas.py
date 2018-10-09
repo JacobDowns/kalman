@@ -76,7 +76,11 @@ plt.xlim([ts.min(), ts.max()])
 #plt.ylim([-0.021, 0.021])
 #plt.show()
 plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
-plt.legend(loc = 3)
+
+handles, labels = plt.gca().get_legend_handles_labels()
+order = [0, 4, 2, 3, 1]
+plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 3)
+
 plt.yticks([-0.02, -0.01, 0., 0.01, 0.02])
 #plt.xticks([-10., -6., -2.])
 #plt.grid(True)

@@ -49,7 +49,6 @@ plt.show()
 tr = TransientRunner(inputs)
 ages, Ls, Hs, Ps = tr.run()
 
-quit()
 np.savetxt(in_dir + '/' + opt_dir + '/opt_age.txt', ages)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_L.txt', Ls)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_H.txt', Hs)
