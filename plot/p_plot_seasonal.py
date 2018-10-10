@@ -59,10 +59,10 @@ p3_fine = p3_interp(ts_fine)"""
 #np.savetxt('filter/3/Ls_smoothed.txt', Ls)
 
 #plt.plot(tsa, p1a, 'k', lw = 2.5, label = 'Default', marker = 'o', ms = 5, linestyle = '-')
-plt.plot(ts, p1, '#d62728', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--',  dashes=(4, 1))
+plt.plot(ts, p1, '#d62728', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--',  dashes=(1, 0))
 plt.plot(tsa, p1a, '#1f77b4', lw = 2.5, marker = 'o', ms = 5, linestyle = '-')
 #plt.plot(tsa, p3a, '#1f77b4', lw = 2.5, label = r'$\beta^2 = 1.25 \times 10^{-3}$', marker = 'o', ms = 5, linestyle = '--')
-plt.plot(ts, p2,  '#1f77b4', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--', dashes=(4, 1))
+plt.plot(ts, p2,  '#1f77b4', lw = 2.5, ms = 10, alpha = 0.7, linestyle = '--', dashes=(1, 0))
 plt.plot(tsa, p2a, '#d62728', lw = 2.5, marker = 'o', ms = 5, linestyle = '-')
 #plt.plot(tsa, p5a, '#d62728', lw = 2.5, label = r'$\beta^2 = 1.25 \times 10^{-3}$', marker = 'o', ms = 5, linestyle = '--')
 
@@ -72,7 +72,7 @@ plt.legend()
 plt.xlabel('Age (ka BP)')
 plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
 plt.xlim([ts.min(), ts.max()])
-ax.set_xticks([-11600, -11000., -10000., -9000., -8000, -7000., -6000., -5000., -4000., -3000., -2000., -1000., 0.])
+#ax.set_xticks([-11600, -11000., -10000., -9000., -8000, -7000., -6000., -5000., -4000., -3000., -2000., -1000., 0.])
 ticks = ax.get_xticks()
 #rint ticks
 plt.grid(color='slategray', linestyle=':', linewidth=1)

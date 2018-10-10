@@ -13,7 +13,7 @@ max_err1 = 5000.**2
 # Minimum error, second pass
 min_err2 = 5000.**2
 # Maximum error, second pass
-max_err2 = 60000.**2
+max_err2 = 50000.**2
 # Observation skip to reduce computation time
 skip = 3
     
@@ -119,3 +119,8 @@ if flowline == 'north2_seasonal':
     inputs['in_dir'] = 'transform_long/north2_seasonal/'
     opt = Optimizer(inputs)
     opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/north2_seasonal/opt1/')
+
+if flowline == 'north3_seasonal':
+    inputs['in_dir'] = 'transform_long/north3_seasonal/'
+    opt = Optimizer(inputs)
+    opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/north3_seasonal/opt1/')

@@ -7,16 +7,14 @@ matplotlib.rcParams.update({'font.size': 18})
 fig = plt.figure(figsize=(12,14))
 
 ages = np.loadtxt('transform_long/south2_seasonal/opt1/opt_age.txt')
-#Ls1 = np.loadtxt('transform_buizert/north2/opt1/opt_L.txt') / 1000.
-#Ls2 = np.loadtxt('transform_buizert/center2_seasonal/opt1/opt_L.txt') / 1000.
+Ls1 = np.loadtxt('transform_buizert/north2/opt1/opt_L.txt') / 1000.
+Ls2 = np.loadtxt('transform_buizert/center2_seasonal/opt1/opt_L.txt') / 1000.
 Ls3 = np.loadtxt('transform_long/south2_seasonal/opt1/opt_L.txt') / 1000.
 
 obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3, 0.0])*1e3
-obs_Ls1 = np.array([443746.66897917818, 397822.86008538032, 329757.49741948338, 292301.29712071194, 285478.05793305294]) / 1000.
-obs_Ls2 = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725]) / 1000.
-#obs_Ls3 = np.array([424777.2650658561, 394942.08036138373, 332430.91816515941, 303738.49932773202, 296659.0156905292]) / 1000.
-
-obs_Ls3 = np.array([424777.2650658561, 394942.08036138373, 332430.9181651594, 303738.499327732, 296659.0156905292, 284686.5963970118]) / 1000.
+obs_Ls1 = np.array([443746, 397822, 329757, 292301, 285478, 278183]) / 1000. 
+obs_Ls2 = np.array([406878, 396313, 321224, 292845, 288562, 279753]) / 1000.
+obs_Ls3 = np.array([424777, 394942, 332430, 303738, 296659, 284686]) / 1000. 
 
 ax = plt.subplot(3,1,1)
 """
