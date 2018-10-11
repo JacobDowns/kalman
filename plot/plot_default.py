@@ -6,7 +6,7 @@ import seaborn as sns
 
 matplotlib.rcParams.update({'font.size': 16})
 current_palette = sns.color_palette("RdBu_r", 12)
-fig = plt.figure(figsize=(12,15))
+fig = plt.figure(figsize=(12,16))
 
 data = np.loadtxt('paleo_data/buizert_full.txt')
 years = -data[:,0][::-1]

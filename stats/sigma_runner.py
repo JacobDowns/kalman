@@ -33,7 +33,7 @@ class SigmaRunner(object):
         # Input file name
         self.inputs['in_file'] = input_dict['in_file']
         # Time step
-        self.inputs['dt'] = 1./3.
+        self.inputs['dt'] = 1./6.
         # Number of model time steps
         self.inputs['N'] = 11590*3
         # Delta temp. function

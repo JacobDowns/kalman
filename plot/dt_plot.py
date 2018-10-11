@@ -19,6 +19,7 @@ p2 = np.loadtxt('transform_long/north3_seasonal/opt1/opt_m.txt')
 
 plt.plot(p1, 'ko-')
 plt.plot(p2, 'ro-')
+
 """
 plt.plot(p3, 'ro--')
 plt.plot(p4, 'go-')
