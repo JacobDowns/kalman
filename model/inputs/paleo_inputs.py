@@ -250,8 +250,6 @@ class PaleoInputs(CommonInputs):
         # Total yearly mass balance in m.i.e. assuming snowpack turns to ice at end of year
         smb = (accumulation - ablation) * (10./9.)
 
-        #plt.plot(smb)
-        #plt.show()
         self.adot.vector()[:] = smb
         
 

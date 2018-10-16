@@ -13,9 +13,9 @@ max_err1 = 5000.**2
 # Minimum error, second pass
 min_err2 = 5000.**2
 # Maximum error, second pass
-max_err2 = 150000.**2
+max_err2 = 60000.**2
 # Observation skip to reduce computation time
-skip = 3
+skip = 6
     
     
 # 1.02

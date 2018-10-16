@@ -2,6 +2,7 @@ from common_runner import *
 import numpy as np
 from stats.scalar_ukf import *
 import sys
+import matplotlib.pyplot as plt
 sys.path.append('../')
 
 class SteadyRunner(CommonRunner):
@@ -35,7 +36,7 @@ class SteadyRunner(CommonRunner):
             self.L_sigma2 = input_dict['L_sigma2']
         
         # Process noise
-        self.Q = 0.1**2
+        self.Q = 0.2**2
         if 'Q' in input_dict:
             self.Q = input_dict['Q']
 
@@ -89,6 +90,13 @@ class SteadyRunner(CommonRunner):
                 print
                 print "dif", L - self.L_mu
                 print
+
+            """
+            if i % 100 == 0:
+                #dolfin.plot(self.model.adot_prime)
+                #dolfin.plot(self.model.B)
+                plt.show()"""
+        
 
         self.model.write_steady_file(self.steady_file_name)
         

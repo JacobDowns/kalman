@@ -35,18 +35,18 @@ if flowline == 'north':
     inputs['steady_file_name'] = 'paleo_inputs/north_steady'
     inputs['L_mu'] = 443746.
 if flowline == 'north_seasonal':
-    inputs['in_file'] = 'paleo_inputs/north_paleo_steady_11_6.h5'
+    inputs['in_file'] = 'paleo_inputs/north_ideal_seasonal.h5'
     inputs['steady_file_name'] = 'paleo_inputs/north_steady_seasonal'
-    inputs['L_mu'] = 443746.
-
+    inputs['L_mu'] = 470376.
+    
     
 ### Model inputs
 #######################################################
 
 # Time step
-inputs['dt'] = 1.
+inputs['dt'] = 3.
 # Number of model time steps
-inputs['N'] = 10000
+inputs['N'] = 9000
 # Tuned basal traction
 inputs['beta2'] = 1.6e-3
 # Start age 
@@ -58,3 +58,5 @@ inputs['start_age'] = -11.5e3
 
 model_runner = SteadyRunner(inputs)
 model_runner.run()
+
+
