@@ -6,7 +6,8 @@ inputs = {}
 # Directory to write prior
 inputs['out_dir'] = sys.argv[1]
 # Delta - controls prior smoothness
-inputs['delta'] = 250e3
+#inputs['delta'] = 250e3
+inputs['delta'] = 50e3
 # Dimension of state vector
 inputs['N'] = 45
 # Optional prior input file

@@ -3,6 +3,9 @@ import sys
 from model.transient_runner import *
 from scipy.interpolate import interp1d
 
+set_log_active(False)
+
+
 """ 
 Perform a model run with an optimized delta temp.
 """

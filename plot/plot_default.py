@@ -8,6 +8,10 @@ matplotlib.rcParams.update({'font.size': 16})
 current_palette = sns.color_palette("RdBu_r", 12)
 fig = plt.figure(figsize=(12,16))
 
+
+
+
+
 data = np.loadtxt('paleo_data/buizert_full.txt')
 years = -data[:,0][::-1]
 temps_ann = data[:,1][::-1]
@@ -22,6 +26,7 @@ delta_temp_mam = interp1d(years, temps_mam - temps_mam[-1], kind = 'linear' )
 delta_temp_jja = interp1d(years, temps_jja - temps_jja[-1], kind = 'linear' )
 delta_temp_son = interp1d(years, temps_son - temps_son[-1], kind = 'linear')
 
+"""
 ax = plt.subplot(4,1,1)
 plt.title('(a)')
 ts = np.linspace(-11.6e3, -7.3e3, 750)
@@ -36,18 +41,24 @@ plt.ylabel(r'$\Delta T$ ($^{\circ{}}$ C)')
 ticks = ax.get_xticks()
 ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
 plt.grid(True)
-plt.legend(loc = 4)
+plt.legend(loc = 4)"""
 
 
 ### Terminus positon
 #################################################################
 ages = np.loadtxt('paleo_runs/north_seasonal/age.txt')
-Ls1 = np.loadtxt('paleo_runs/north_seasonal/L.txt') / 1000.
+Ls1 = np.loadtxt('paleo_runs/north_seasonal/L.txt') 
 Ls2 = np.loadtxt('paleo_runs/center_seasonal/L.txt') / 1000.
 Ls3 = np.loadtxt('paleo_runs/south_seasonal/L.txt') / 1000.
 
+
+P = np.loadtxt('paleo_runs/north_seasonal/P.txt') / Ls1
+plt.plot(P)
+plt.show()
+quit()
+
 obs_ages = np.array([-11.6, -10.2, -9.2, -8.2, -7.3, 0.0])*1e3
-obs_Ls1 = np.array([443746, 397822, 329757, 292301, 285478, 278183]) / 1000. 
+obs_Ls1 = np.array([470376, 442567, 351952, 313633, 307167, 300896]) / 1000. 
 obs_Ls2 = np.array([406878, 396313, 321224, 292845, 288562, 279753]) / 1000.
 obs_Ls3 = np.array([424777, 394942, 332430, 303738, 296659, 284686]) / 1000. 
 

@@ -125,15 +125,6 @@ class PaleoInputs(CommonInputs):
             self.delta_temp_mam = interp1d(years, temps_mam - temps_mam[-1], kind = 'linear')
             self.delta_temp_jja = interp1d(years, temps_jja - temps_jja[-1], kind = 'linear')
             self.delta_temp_son = interp1d(years, temps_son - temps_son[-1], kind = 'linear')
-
-            """
-            ts = np.linspace(-11.6e3, -7.3e3, 500)
-            plt.plot(self.delta_temp_djf(ts), 'k')
-            plt.plot(self.delta_temp_mam(ts), 'r')
-            plt.plot(self.delta_temp_jja(ts), 'g')
-            plt.plot(self.delta_temp_son(ts), 'b')
-            plt.show()
-            quit()"""
         else:
             data = np.loadtxt('paleo_data/jensen_dye3.txt')
             years = data[:,0] - 2000.0
@@ -209,13 +200,14 @@ class PaleoInputs(CommonInputs):
             # Compute pdd's for this month
             total_pdds += self.pdd_calc.get_pdd(temp_vec)
             # Fraction of precip. that falls as snow
-            snowfall_frac = self.pdd_calc.get_acc_frac(temp_vec)
+            snowfall_frac = self.pdd_calc.get_acc_frac(temp_vec)    
             # Compute snowfall for the month in m.w.e
-            total_snowfall += precip_vec * (1./12.) * snowfall_frac
-
+            total_snowfall += precip_vec * (1./12.) * snowfall_frac            
+            
         # Save total snowfall for plotting
         self.precip_func.vector()[:] = total_snowfall
         
+
 
         ### Compute SMB from total snowfall and pdds
         ########################################################################
@@ -251,6 +243,8 @@ class PaleoInputs(CommonInputs):
         smb = (accumulation - ablation) * (10./9.)
 
         self.adot.vector()[:] = smb
+        dolfin.plot(self.adot)
+        plt.show()
         
 
     # Update inputs that change with glacier length and time

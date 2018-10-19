@@ -27,7 +27,7 @@ class PriorWriter(object):
             x = np.loadtxt(input_dict['x'])
         else :
             chi = np.linspace(0., 1., len(dt_years))
-            x = 0.3*np.ones(len(dt_years)) - 0.45*(chi)**6
+            x = 1.4*np.ones(len(dt_years)) - 1.4*chi**6
 
 
         ### Define prior covariance 
@@ -50,7 +50,7 @@ class PriorWriter(object):
         np.savetxt(out_dir + 'prior_m.txt', x)
         np.savetxt(out_dir + 'prior_P.txt', P)
         
-
+        
         ### Plot samples from prior
         ##########################################################################
 
