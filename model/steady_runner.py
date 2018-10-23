@@ -23,7 +23,7 @@ class SteadyRunner(CommonRunner):
             self.precip_param_mu = input_dict['precip_param_mu']
 
         # Initial precip param variance
-        self.precip_param_sigma2 = 0.07**2
+        self.precip_param_sigma2 = 1**2
         if 'precip_param_sigma2' in input_dict:
             self.precip_param_sigma2 = input_dict['precip_param_sigma2']
 
@@ -36,7 +36,7 @@ class SteadyRunner(CommonRunner):
             self.L_sigma2 = input_dict['L_sigma2']
         
         # Process noise
-        self.Q = 0.2**2
+        self.Q = 0.1**2
         if 'Q' in input_dict:
             self.Q = input_dict['Q']
 
@@ -59,6 +59,9 @@ class SteadyRunner(CommonRunner):
             for i in range(len(xs)):
                 ys[i] = self.model.step(xs[i], accept = False, age = -11.6e3)
 
+            print
+            print ("ys", ys)
+            print
             return ys
 
         self.ukf = ScalarUKF(self.precip_param_mu, self.precip_param_sigma2, F, H)

@@ -22,7 +22,7 @@ class PriorWriter(object):
         if 'param_names' in input_dict:
             # Number of parameters in state vector
             param_names = input_dict['param_names']
-            
+        
 
         
         

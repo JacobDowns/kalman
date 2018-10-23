@@ -108,7 +108,7 @@ if flowline == 'south2_seasonal':
     opt.optimize(Ls, skip = skip, min_err = min_err2, max_err = max_err2, out_dir = 'transform_long/south2_seasonal/opt1/')
 
 # north
-Ls = [470376.484307949, 442567.8103879995, 351952.38904440287, 313633.80185732414, 307167.25347258843, 300896.3448220249]
+Ls = [449441.8117461069, 409256.6118172061, 334915.6887022482, 302077.4579612268, 289091.57418598986, 289091.57418598986]
 
 if flowline == 'north1_seasonal':
     inputs['in_dir'] = 'transform_long/north1_seasonal/'

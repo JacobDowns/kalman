@@ -91,7 +91,3 @@ class Optimizer(object):
             plt.show()
 
         return m_p, P_p, mu, K, y, R
-
-
-                               
-

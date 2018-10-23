@@ -385,7 +385,6 @@ class ForwardIceModel(object):
         ### Take a step with the given delta_temp and precip param.
         ########################################################################
         if self.jumped:
-
             print "Jumped!"
 
             # If the margin position just jumped then try a fixed domain solve
@@ -421,6 +420,7 @@ class ForwardIceModel(object):
 
             # Update previous solutions
             self.assigner_inv.assign([self.un_temp, self.u2n_temp, self.H0_c_temp, self.H0_temp, self.L0_temp], self.U)
+            
 
         ### Accept the step by updating time
         ####################################################################

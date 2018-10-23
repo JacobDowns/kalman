@@ -6,26 +6,20 @@ import seaborn as sns
 
 plt.rcParams.update({'font.size': 16})
 
-
-current_palette = np.array(sns.color_palette())
-#current_palette = np.array(sns.color_palette("muted", 10)[1:])
-current_palette = current_palette[[0,2,3]]
-#sns.palplot(current_palette)
-#plt.show()
-#quit()
+fig = plt.figure(figsize=(10,12))
+#current_palette = sns.color_palette()
+current_palette = sns.color_palette()
 
 ### Prior mean
-##########################################################################
-
+####################################################
 N = 45
-x = np.zeros(N)
-ts = (-11.6e3 + np.linspace(0., 11590, N)) / 1000.
+#x = np.zeros(N)
+ts = -11.6e3 + np.linspace(0., 11590, N)
 chi = np.linspace(0., 1., len(ts))
 x = 0.45*np.ones(len(ts)) - 0.45*(chi)**4
 
-
 ### Prior covariance
-##########################################################################
+####################################################
 
 delta = 250e3
 # Covariance matrix
@@ -36,23 +30,7 @@ P[range(N-1), range(1,N)] = -1.
 P = delta*P
 P = np.linalg.inv(P)
 
-
-### Sigma points
-##########################################################################
-
-# Sigma point indexes 
-#indexes = [0, 30, 45 + 7 + 15, 15, 45 + 7]
-indexes = [0, 45 + 20, 15]
-# Generate Julier sigma points
-points = JulierSigmaPoints(N, kappa=N)
-sigma_points = points.sigma_points(x, P)
-
-
-### Prior plot
-##########################################################################
-
-"""
-plt.subplot(3,1,1)
+plt.subplot(2,1,1)
 
 plt.title('(a)')
 
@@ -60,62 +38,59 @@ current_palette = sns.color_palette("deep", 12)
 samples = np.random.multivariate_normal(x, P, 11)
 
 for i in range(samples.shape[0]):
-    plt.plot(ts, samples[i], ms = 2, linewidth = 1.5, color = current_palette[i])
+    plt.plot(ts, samples[i], ms = 2, linewidth = 1.5, color = current_palette[i], marker = 'o')
 
 plt.grid(color='slategray', linestyle=':', linewidth=0.75)
 plt.xlim([ts.min(), ts.max()])
-plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')"""
+plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
+#plt.show()
 
 
-### Sigma points plot
+
+plt.subplot(2,1,2)
+
+plt.title('(b)')
+
+### Compute sigma points
 ##########################################################################
+# Generate Julier sigma points
+points = JulierSigmaPoints(N, kappa=N)
+sigma_points = points.sigma_points(x, P)
+linestyles = [':', '--', ':', '--', ':', '--', '--', '-']
 
-fig, ax1 = plt.subplots(figsize=(8,6.5))
 j = 0
+#[0, N+28, 24, N+20, 16, N+12, 8, N + 4]
+
+
+
+#indexes = np.array(zip([0, 15, 30], [45 + 15, 45 + 30])).flatten()  #[0, N+36, 27, N+18, 18]
+indexes = [0, 15, 45 + 15, 30, 45 + 30]
+print indexes
+#quit()
 labels = [r'$\chi_{{{}}}$'.format(index) for index in indexes]
+alphas = [0.9, 0.9, 0.9, 0.9, 0.9]
+dashes = [(5, 0), (5, 0), (5, 0), (5, 0), (5, 0)]
+
 for i in indexes:
     print i
-    ax1.plot(ts, sigma_points[i], linewidth = 2.75, marker = 'o', ms = 3,  color = current_palette[j], label = labels[j])
+    plt.plot(ts, sigma_points[i], linewidth = 1.5, marker = 'o', ms = 2,  color = current_palette[j], label = labels[j])
     j += 1
 
 plt.xlim([ts.min(), ts.max()])
-ax1.set_ylim([0., 0.475])
+#plt.ylim([-0.021, 0.021])
+#plt.show()
 plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
+
+#handles, labels = plt.gca().get_legend_handles_labels()
+#order = [0, 4, 2, 3, 1]
+#plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 3)
+plt.legend()
+
+#plt.yticks([-0.02, -0.01, 0., 0.01, 0.02])
+#plt.xticks([-10., -6., -2.])
+#plt.grid(True)
+plt.grid(color='slategray', linestyle=':', linewidth=0.75)
 plt.xlabel('Age (ka BP)')
 
-handles, labels = plt.gca().get_legend_handles_labels()
-#order = [0, 3, 1, 4, 2]
-#order = [0, 1, 2]
-#ax1.legend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 1)
-#ax1.grid(color='slategray', linestyle=':', linewidth=0.75)
-#plt.text(-7., 0.25, r'$\mathcal{Y}_i = \mathcal{F}(\chi_i)$', fontsize=14)
-#plt.text(-6.6, 0.275, r'$\Downarrow$', fontsize=30)
-#plt.text(-6.6, 0.2, r'$\Downarrow$', fontsize=30)
-
-plt.text(-6.2, 0.31, r'$\chi_i$', fontsize=21, horizontalalignment = 'center', verticalalignment = 'center')
-plt.text(-6.4, 0.25, r'$\Downarrow$', fontsize=33, horizontalalignment = 'center', verticalalignment = 'center')
-plt.text(-6.2, 0.2, r'$\mathcal{Y}_i = \mathcal{F}(\chi_i)$', fontsize=21, horizontalalignment = 'center', verticalalignment = 'center')
-
-
-### Transformed sigma points plot
-##########################################################################
-
-ax2 = ax1.twinx()
-ts = np.loadtxt('transform_long/center2_seasonal/age_0.txt') / 1000.
-j = 0
-labels = [r'$\mathcal{{Y}}_{{{}}}$'.format(index) for index in indexes]
-for i in indexes:
-    Ls = np.loadtxt('transform_long/center2_seasonal/Y_{}.txt'.format(i)) / 1000.
-    ax2.plot(ts, Ls, linewidth = 2.75, color = current_palette[j], label = labels[j], alpha = 1., dashes = (4,1))
-    j += 1
-plt.xlim([ts.min(), ts.max()])
-ax2.set_ylabel('Glacier Length (km)')
-ax2.set_ylim([290., 410.])
-#plt.grid(color='slategray', linestyle=':', linewidth=0.75)
-#plt.xlabel('Age (ka BP)')
-#plt.ylabel('Glacier Length (km)')
 plt.tight_layout()
-handles, labels = plt.gca().get_legend_handles_labels()
-#ax2.legend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 3)
-
 plt.savefig('sigmas.png', dpi=700)

@@ -15,7 +15,7 @@ current_palette = np.array(sns.color_palette())
 ##########################################################################
 
 N = 45
-x = np.zeros(N)
+x = np.zeros(N)    
 ts = (-11.6e3 + np.linspace(0., 11590, N)) / 1000.
 chi = np.linspace(0., 1., len(ts))
 x = np.zeros(len(ts)) #0.45*np.ones(len(ts)) - 0.45*(chi)**4

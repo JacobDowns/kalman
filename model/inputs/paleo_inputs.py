@@ -202,11 +202,10 @@ class PaleoInputs(CommonInputs):
             # Fraction of precip. that falls as snow
             snowfall_frac = self.pdd_calc.get_acc_frac(temp_vec)    
             # Compute snowfall for the month in m.w.e
-            total_snowfall += precip_vec * (1./12.) * snowfall_frac            
+            total_snowfall += precip_vec * (1./12.) * snowfall_frac
             
         # Save total snowfall for plotting
         self.precip_func.vector()[:] = total_snowfall
-        
 
 
         ### Compute SMB from total snowfall and pdds
@@ -243,8 +242,8 @@ class PaleoInputs(CommonInputs):
         smb = (accumulation - ablation) * (10./9.)
 
         self.adot.vector()[:] = smb
-        dolfin.plot(self.adot)
-        plt.show()
+        #dolfin.plot(self.precip_func)
+        #plt.show()
         
 
     # Update inputs that change with glacier length and time
