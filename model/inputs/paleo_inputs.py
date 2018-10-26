@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 
 """
-Inputs for paleo run.
+Inputs for a paleo ice sheet model run. 
 """
 
 class PaleoInputs(CommonInputs):
