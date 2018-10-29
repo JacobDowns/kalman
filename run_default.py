@@ -1,34 +1,18 @@
 import numpy as np
-import sys
 from model.transient_runner import *
-from scipy.interpolate import interp1d
 
 """ 
-Perform a model run with a delta P of 0.
+Perform a model run with a delta P = 0.
 """
 
 ### Model inputs
 #######################################################
 
-"""
 # Input dictionary
 inputs = {}
 # Input file name
-inputs['in_file'] = 'paleo_inputs/north_steady_seasonal.h5'
-out_dir = 'paleo_runs/north_seasonal/'
-# Time step
-inputs['dt'] = 1./3.
-# Number of model time steps
-inputs['N'] = 4300*3
-# Tuned basal traction
-inputs['beta2'] = 1.6e-3
-"""
-
-# Input dictionary
-inputs = {}
-# Input file name
-inputs['in_file'] = 'paleo_inputs/north_steady_seasonal2.h5'
-out_dir = 'paleo_runs/north_seasonal/'
+inputs['in_file'] = 'paleo_inputs/center_steady_seasonal.h5'
+out_dir = 'default_runs/center/'
 # Time step
 inputs['dt'] = 1./3.
 # Number of model time steps

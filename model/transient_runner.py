@@ -1,4 +1,4 @@
-from common_runner import *
+from model.common_runner import *
 import numpy as np
 
 class TransientRunner(CommonRunner):
@@ -43,10 +43,6 @@ class TransientRunner(CommonRunner):
             ages.append(age)
             # Precip param.
             precip_param = self.precip_param_func(age)
-
-            #if self.output:
-            #    print ("precip param.", precip_param)
-            #    print ("age", age)
 
             L = self.model.step(precip_param, accept = True)
             Ls.append(L)

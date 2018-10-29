@@ -3,8 +3,8 @@ import numpy as np
 from scipy.interpolate import UnivariateSpline
 import matplotlib.pyplot as plt
 import sys
-sys.path.append('/home/jake/kalman')
-
+#sys.path.append('/home/jake/kalman')
+print sys.path
 from model.forward_model.support.physical_constants import *
 
 """
@@ -24,9 +24,10 @@ class CommonInputs(object):
 
         # Load mesh
         self.mesh = Mesh()
-        input_file = HDF5File(self.mesh.mpi_comm(), input_file_name, "a")
+        input_file = HDF5File(self.mesh.mpi_comm(), input_file_name, "r")
         self.input_file = input_file
         input_file.read(self.mesh, "/mesh", False)
+        
         # Store mesh coordinates
         self.mesh_coords = self.mesh.coordinates()[:,0]
         # Define function spaces

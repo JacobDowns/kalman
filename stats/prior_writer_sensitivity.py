@@ -26,14 +26,15 @@ class PriorWriter(object):
         ###########################################################################
 
         # Parameter names
-        param_names = ['beta2', 'b', 'lambda_precip', 'lambda_ice', 'lambda_snow']
+        param_names = np.array(['beta2', 'b', 'lambda_precip', 'lambda_ice', 'lambda_snow'])
         # Parameter mean values
         x2 = np.array([1.6e-3, (3.5e-25*60**2*24*365)**(-1./3.), 0.07, 0.008, 0.005])
         # Inverse parameter variances 
         param_inv_vars = 1. / np.array([.1e-3**2, (0.75e-25*60**2*24*365)**(-1./3.), 0.005**2, 0.0005**2, 0.0005**2])
         # Number of params.
         N2 = 5
-
+        np.savetxt(out_dir + 'sensitivity_params.txt', param_names, fmt="%s")
+            
 
         ### Prior mean
         ###########################################################################
@@ -77,7 +78,7 @@ class PriorWriter(object):
         ##########################################################################
 
         # Generate Julier sigma points
-        points = JulierSigmaPoints(N, kappa=N)
+        points = JulierSigmaPoints(N, kappa=3-N)
         sigma_points = points.sigma_points(x, P)
       
         # Save the mean and covariance weights, as well as the sigma points
@@ -89,6 +90,3 @@ class PriorWriter(object):
             plt.plot(sigma_points[i][0:N1])
             print(sigma_points[i][N1:])
         plt.show()
-
-
-        print(sigma_points.shape)

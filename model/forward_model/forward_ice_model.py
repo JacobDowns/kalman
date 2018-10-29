@@ -1,10 +1,7 @@
-#import h5py
 from dolfin import *
 from support.physical_constants import *
 from support.momentum_form import *
-from support.momentum_form_fixed_domain import *
 from support.mass_form import *
-from support.mass_form_fixed_domain import *
 from support.length_form_marine import *
 import matplotlib.pyplot as plt
 
@@ -58,17 +55,7 @@ class ForwardIceModel(object):
         # For moving data between vector functions and scalar functions
         self.assigner_inv = FunctionAssigner([V_cg, V_cg, V_cg, V_dg, V_r], V)
         self.assigner     = FunctionAssigner(V, [V_cg, V_cg, V_cg, V_dg, V_r])
-
-        # Mixed element for fixed domain problem
-        E_V_f = MixedElement(E_cg, E_cg, E_cg, E_dg)
-        # Mixed space for fixed domain problem
-        V_f = FunctionSpace(self.mesh, E_V_f)
-        # Same for fixed domain problem
-        self.assigner_inv_f = FunctionAssigner([V_cg, V_cg, V_cg, V_dg], V_f)
-        self.assigner_f     = FunctionAssigner(V_f, [V_cg, V_cg, V_cg, V_dg])
-
         self.V = V
-        self.V_f = V_f
 
 
         ### Model unknowns + trial and test functions
@@ -85,15 +72,6 @@ class ForwardIceModel(object):
         ubar, udef, H_c, H, L = split(U)
         phibar, phidef, xsi_c, xsi, chi = split(Phi)
 
-        # Same stuff for fixed domain problem
-        U_f = Function(V_f)
-        dU_f = TrialFunction(V_f)
-        Phi_f = TestFunction(V_f)
-        # Split vector functions into scalar components
-        ubar_f, udef_f, H_c_f, H_f = split(U_f)
-        phibar_f, phidef_f, xsi_c_f, xsi_f = split(Phi_f)
-        # For fixed domain problem L is fixed
-        L_f = Constant(0.0)
 
         # Values of model variables at previous time step
         un = Function(V_cg)
@@ -103,28 +81,17 @@ class ForwardIceModel(object):
         L0 = Function(V_r)
 
         self.ubar = ubar
-        self.ubar_f = ubar_f
         self.udef = udef
-        self.udef_f = udef_f
         self.H_c = H_c
-        self.H_c_f = H_c_f
         self.H = H
-        self.H_f = H_f
         self.L = L
-        self.L_f = L_f
         self.phibar = phibar
-        self.phibar_f = phibar_f
         self.phidef = phidef
-        self.phidef_f = phidef_f
         self.xsi_c = xsi_c
-        self.xsi_c_f = xsi_c_f
         self.xsi = xsi
-        self.xsi_f = xsi_f
         self.chi = chi
         self.U = U
-        self.U_f = U_f
         self.Phi = Phi
-        self.Phi_f = Phi_f
         self.un = un
         self.u2n = u2n
         self.H0_c = H0_c
@@ -167,9 +134,6 @@ class ForwardIceModel(object):
         H0_c.assign(model_inputs.input_functions['H0_c'])
         # Initialize guesses for unknowns
         self.assigner.assign(U, [self.zero_guess, self.zero_guess, H0_c, H0, L0])
-        # Same stuff for fixed domain problem
-        self.L_f.assign(model_inputs.L_init)
-        self.assigner_f.assign(U_f, [self.zero_guess, self.zero_guess, H0_c, H0])
 
 
         ### Derived expressions
@@ -177,17 +141,11 @@ class ForwardIceModel(object):
 
         # Ice surface
         S = B + H_c
-        # Same for fixed domain problem
-        S_f = B + H_c_f
         # Ice surface as DG function
         S_dg = B + H
-        # Same for fixed domain problem
-        S_dg_f = B + H_f
         # Time derivatives
         dLdt = (L - L0) / dt
         dHdt = (H - H0) / dt
-        # Same for fixed domain problem
-        dHdt_f = (H_f - H0) / dt
         # Overburden pressure
         P_0 = Constant(self.constants['rho']*self.constants['g'])*H_c
         # Overburden fraction
@@ -196,11 +154,6 @@ class ForwardIceModel(object):
         P_w = P_frac*P_0
         # Effective pressure
         N = P_0 - P_w
-        # Effective pressure for fixed domain problem
-        P_0_f = Constant(self.constants['rho']*self.constants['g'])*H_c_f
-        # Overburden pressure fraction
-        P_w_f = P_frac*P_0_f
-        N_f = P_0_f - P_w_f
         # Sea level
         self.sea_level = Constant(self.constants['sea_level'])
         # Minimum ice thickness
@@ -215,16 +168,13 @@ class ForwardIceModel(object):
         self.precip_func = Function(self.V_cg)
 
         self.S = S
-        self.S_f = S_f
         self.dLdt = dLdt
         self.dHdt = dHdt
-        self.dHdt_f = dHdt_f
         self.dt = dt
         self.P_frac = P_frac
         self.P_0 = P_0
         self.P_w = P_w
         self.N = N
-        self.N_f = N_f
         
 
         ### Temporary variables that store variable values before a step is accepted
@@ -243,37 +193,6 @@ class ForwardIceModel(object):
         self.update_inputs(model_inputs.L_init, 0.)
         self.S0_c.assign(self.B + self.H0_c)
         self.update_inputs(model_inputs.L_init, 0.)
-
-
-        ### Thickness bounds
-        ########################################################################
-
-        # Bounds for snes_vi_rsls.  Only thickness bound is ever used.
-        thklim = 5.0
-
-        l_v_bound = interpolate(Constant(-1e10), V_cg)
-        u_v_bound = interpolate(Constant(1e10), V_cg)
-
-        l_thickc_bound = interpolate(Constant(0.0), V_cg)
-        u_thickc_bound = interpolate(Constant(1e10), V_cg)
-
-        l_thick_bound = interpolate(Constant(0.0), V_dg)
-        u_thick_bound = interpolate(Constant(1e10), V_dg)
-
-        l_r_bound = interpolate(Constant(-1e16), V_r)
-        u_r_bound = interpolate(Constant(1e16), V_r)
-
-        l_bound = Function(V)
-        u_bound = Function(V)
-
-        l_bound_f = Function(V_f)
-        u_bound_f = Function(V_f)
-
-        self.assigner.assign(l_bound,[l_v_bound]*2+[l_thickc_bound]+[l_thick_bound]+[l_r_bound])
-        self.assigner.assign(u_bound,[u_v_bound]*2+[u_thickc_bound]+[u_thick_bound]+[u_r_bound])
-
-        self.assigner_f.assign(l_bound_f,[l_v_bound]*2+[l_thickc_bound]+[l_thick_bound])
-        self.assigner_f.assign(u_bound_f,[u_v_bound]*2+[u_thickc_bound]+[u_thick_bound])
 
 
         ### Variational forms
@@ -300,25 +219,6 @@ class ForwardIceModel(object):
         J = derivative(R, U, dU)
 
 
-        ### Variational form for fixed domain problem
-        ########################################################################
-
-        # Momentum balance residual
-        momentum_form_f = MomentumFormFixedDomain(self)
-        R_momentum_f = momentum_form_f.R_momentum
-
-        # Continuous thickness residual
-        R_thickness_f = (H_c_f - H_f)*xsi_c_f*dx
-
-        # Mass balance residual
-        mass_form_f = MassFormFixedDomain(self)
-        R_mass_f = mass_form_f.R_mass
-
-        # Total residual
-        R_f = R_momentum_f + R_thickness_f + R_mass_f
-        J_f = derivative(R_f, U_f, dU_f)
-
-
         ### Problem setup
         ########################################################################
 
@@ -336,23 +236,9 @@ class ForwardIceModel(object):
                        'report' : False
                        }}
 
-        """
-        self.snes_params = {'nonlinear_solver': 'snes',
-                      'snes_solver': {
-                       'method' : 'vinewtonrsls',
-                       'relative_tolerance' : 5e-14,
-                       'absolute_tolerance' : 7e-5,
-                       'linear_solver': 'mumps',
-                       'maximum_iterations': 35,
-                       'report' : False
-                       }}"""
-
         # Variable length problem
         self.problem = NonlinearVariationalProblem(R, U, bcs=[], J=J, form_compiler_parameters = ffc_options)
-        #self.problem.set_bounds(l_bound, u_bound)
-        # Fixed domain problem
-        self.problem_f = NonlinearVariationalProblem(R_f, U_f, bcs=[], J=J_f, form_compiler_parameters = ffc_options)
-        #self.problem_f.set_bounds(l_bound_f, u_bound_f)
+        
 
         ### Setup the iterator for replaying a run
         ########################################################################
@@ -379,47 +265,30 @@ class ForwardIceModel(object):
 
     def step(self, precip_param = 0.0, accept = False, age = None):
         
-        # Update input fields that change with length
+        ### Update length variable inputs
+        ####################################################################
         self.update_inputs(float(self.L0), precip_param)
 
-        ### Take a step with the given delta_temp and precip param.
-        ########################################################################
-        if self.jumped:
-            print "Jumped!"
+        
+        ### Solve
+        ####################################################################
+        
+        try:
+            self.assigner.assign(self.U, [self.un, self.u2n, self.H0_c, self.H0, self.L0])
+            solver = NonlinearVariationalSolver(self.problem)
+            solver.parameters.update(self.snes_params)
+            solver.solve()
+        except:
+            self.assigner.assign(self.U, [self.zero_guess, self.zero_guess, self.H0_c, self.H0, self.L0])
+            solver = NonlinearVariationalSolver(self.problem)
+            solver.parameters.update(self.snes_params)
+            solver.parameters['newton_solver']['error_on_nonconvergence'] = False
+            solver.parameters['newton_solver']['relaxation_parameter'] = 0.85
+            solver.parameters['newton_solver']['report'] = False
+            solver.solve()
 
-            # If the margin position just jumped then try a fixed domain solve
-            try:
-                self.assigner_f.assign(self.U_f, [self.zero_guess, self.zero_guess, self.H0_c, self.H0])
-                solver = NonlinearVariationalSolver(self.problem_f)
-                solver.parameters.update(self.snes_params)
-                solver.solve()
-            except:
-                solver = NonlinearVariationalSolver(self.problem_f)
-                solver.parameters.update(self.snes_params)
-                solver.parameters['newton_solver']['error_on_nonconvergence'] = False
-                solver.parameters['newton_solver']['relaxation_parameter'] = 0.9
-                solver.parameters['newton_solver']['report'] = True
-                solver.solve()
-
-            self.assigner_inv_f.assign([self.un_temp, self.u2n_temp, self.H0_c_temp, self.H0_temp], self.U_f)
-        else :
-            # If the margin position didn't jump, just do a standard solve
-            try:
-                self.assigner.assign(self.U, [self.un, self.u2n, self.H0_c, self.H0, self.L0])
-                solver = NonlinearVariationalSolver(self.problem)
-                solver.parameters.update(self.snes_params)
-                solver.solve()
-            except:
-                self.assigner.assign(self.U, [self.zero_guess, self.zero_guess, self.H0_c, self.H0, self.L0])
-                solver = NonlinearVariationalSolver(self.problem)
-                solver.parameters.update(self.snes_params)
-                solver.parameters['newton_solver']['error_on_nonconvergence'] = False
-                solver.parameters['newton_solver']['relaxation_parameter'] = 0.85
-                solver.parameters['newton_solver']['report'] = False
-                solver.solve()
-
-            # Update previous solutions
-            self.assigner_inv.assign([self.un_temp, self.u2n_temp, self.H0_c_temp, self.H0_temp, self.L0_temp], self.U)
+        # Update previous solutions
+        self.assigner_inv.assign([self.un_temp, self.u2n_temp, self.H0_c_temp, self.H0_temp, self.L0_temp], self.U)
             
 
         ### Accept the step by updating time
@@ -429,51 +298,40 @@ class ForwardIceModel(object):
             # Update time
             self.t += float(self.dt)
             self.i += 1
+            self.assigner_inv.assign([self.un, self.u2n, self.H0_c, self.H0, self.L0], self.U)
 
-            if self.jumped:
-                self.jump_count += 1
+            
+            ### Avoid negative ice thicknesses by skipping the margin to very thin spots
+            ####################################################################
 
-                if self.jump_count == 2:
+            # Find locations where the ice is very thin
+            thin_indexes = np.where(self.H0_c.vector().get_local() < 15.)
+            # Find the inland most index
+            if len(thin_indexes[0]) > 0:
+                last_thin_index = thin_indexes[0][-1]
+
+                # Check if the last thin index is a ways inland of the margin
+                if last_thin_index > 0:
                     self.jumped = False
-                    self.jump_count = 0
+                    # In this case we set the terminus position to the thin spot
+                    chi_term = self.model_inputs.mesh_coords[::-1][last_thin_index]
+                    # New glacier length
+                    L_term = chi_term * float(self.L0)
+                    print("L jump from "+ str(float(self.L0)) + " to " + str(L_term))
+                    # Thickness needs to be reinterpolated
+                    xs = self.model_inputs.mesh_coords[::-1][last_thin_index:]
+                    Hcs = self.H0_c.vector().get_local()[last_thin_index:]
+                    Hs_interp = np.interp(self.model_inputs.mesh_coords*xs.max(), xs[::-1], Hcs[::-1])
+                    Hs_interp[-1] = 15.
+                    # Set the new domain length
+                    self.L0.assign(Constant(L_term))
+                    # Set the new ice thickness
+                    self.H0_c.vector()[:] = np.ascontiguousarray(Hs_interp[::-1])
+                    self.H0.assign(project(self.H0_c, self.V_dg))
+                    self.update_inputs(L_term, precip_param)
+                    self.update_inputs(L_term, precip_param)
 
-                self.assigner_inv_f.assign([self.un, self.u2n, self.H0_c, self.H0], self.U_f)
-            else:
-                self.assigner_inv.assign([self.un, self.u2n, self.H0_c, self.H0, self.L0], self.U)
-
-                ### Avoid negative ice thicknesses by skipping the margin to very thin spots
-                ####################################################################
-
-                # Find locations where the ice is very thin
-                thin_indexes = np.where(self.H0_c.vector().get_local() < 15.)
-                # Find the inland most index
-                if len(thin_indexes[0]) > 0:
-                    last_thin_index = thin_indexes[0][-1]
-
-                    # Check if the last thin index is a ways inland of the margin
-                    if last_thin_index > 0:
-                        self.jumped = False
-                        # In this case we set the terminus position to the thin spot
-                        chi_term = self.model_inputs.mesh_coords[::-1][last_thin_index]
-                        # New glacier length
-                        L_term = chi_term * float(self.L0)
-                        print "L jump from "+ str(float(self.L0)) + " to " + str(L_term)
-                        # Thickness needs to be reinterpolated
-                        xs = self.model_inputs.mesh_coords[::-1][last_thin_index:]
-                        Hcs = self.H0_c.vector().get_local()[last_thin_index:]
-                        Hs_interp = np.interp(self.model_inputs.mesh_coords*xs.max(), xs[::-1], Hcs[::-1])
-                        Hs_interp[-1] = 15.
-                        # Set the new domain length
-                        self.L0.assign(Constant(L_term))
-                        # Set the new ice thickness
-                        self.H0_c.vector()[:] = np.ascontiguousarray(Hs_interp[::-1])
-                        self.H0.assign(project(self.H0_c, self.V_dg))
-                        self.update_inputs(L_term, precip_param)
-                        self.update_inputs(L_term, precip_param)
-
-                        #self.jumped = True
-
-            print "real step: ", self.t, self.H0_c.vector().max(), self.H0_c.vector().get_local()[0], float(self.L0)
+            print("real step: ", self.t, self.H0_c.vector().max(), self.H0_c.vector().get_local()[0], float(self.L0))
             return float(self.L0)
         else :
             return float(self.L0_temp)

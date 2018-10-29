@@ -1,5 +1,5 @@
-from inputs.paleo_inputs import *
-from forward_model.forward_ice_model import *
+from model.inputs.paleo_inputs import *
+from model.forward_model.forward_ice_model import *
 
 class CommonRunner(object):
 
@@ -28,6 +28,7 @@ class CommonRunner(object):
             
         # Number of time steps
         self.N = input_dict['N']
+        
         # Output (print stuff)?
         self.output = True
         if 'output' in input_dict:
@@ -103,8 +104,6 @@ class CommonRunner(object):
         
         # Ice hardness
         if 'b' in input_dict:
-            print self.model_inputs.physical_constants['b']
-            print input_dict['b']
             self.model_inputs.physical_constants['b'] = input_dict['b']
             
         # Overburden pressure fraction
@@ -112,8 +111,11 @@ class CommonRunner(object):
             self.model_inputs.physical_constants['P_frac'] = input_dict['P_frac']
             
         # Model
-        print inputs
-        print self.model_inputs.physical_constants
+        print("Input Dictionary")
+        print(inputs)
+        print()
+        print("Constants Dictionary")
+        print(self.model_inputs.physical_constants)
         self.model = ForwardIceModel(self.model_inputs, self.out_dir, self.out_file)
         
         
