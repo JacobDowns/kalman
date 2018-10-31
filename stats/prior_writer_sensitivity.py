@@ -30,7 +30,7 @@ class PriorWriter(object):
         # Parameter mean values
         x2 = np.array([1.6e-3, (3.5e-25*60**2*24*365)**(-1./3.), 0.07, 0.008, 0.005])
         # Inverse parameter variances 
-        param_inv_vars = 1. / np.array([.1e-3**2, (0.75e-25*60**2*24*365)**(-1./3.), 0.005**2, 0.0005**2, 0.0005**2])
+        param_inv_vars = 1. / np.array([.2e-3**2, (1.5e-25*60**2*24*365)**(-1./3.), 0.01**2, 0.001**2, 0.001**2])
         # Number of params.
         N2 = 5
         np.savetxt(out_dir + 'sensitivity_params.txt', param_names, fmt="%s")
@@ -71,6 +71,7 @@ class PriorWriter(object):
         samples = np.random.multivariate_normal(x, P, 20)
         for i in range(samples.shape[0]):
             plt.plot(samples[i][0:N1])
+            print(samples[i][N1:])
         plt.show()
         
         
@@ -89,4 +90,8 @@ class PriorWriter(object):
         for i in range(len(sigma_points)):
             plt.plot(sigma_points[i][0:N1])
             print(sigma_points[i][N1:])
+
+        print(sigma_points[:,-4].min())
+        print(sigma_points[:,-4].max())
+        
         plt.show()

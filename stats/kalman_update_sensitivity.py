@@ -20,15 +20,12 @@ class KalmanUpdate(object):
         self.m_weights = m_weights
         # Covariance weights
         self.c_weights = c_weights
-
         # Dimensions of the sigma point
         self.N1 = self.X.shape[1]
         # Dimensions of the output vector
         self.N2 = self.Y.shape[1]
         # Dimension of joint distribution 
         self.N = self.N1 + self.N2
-        # Mean of full joint distribution
-        self.m_full = np.zeros(self.N)
 
 
     # Do a Kalman update step incorporating an measurement y, with
@@ -60,45 +57,45 @@ class KalmanUpdate(object):
         ### Build the mean and covariance of the full joint distribution
         ######################################################################
 
-        # Mean 
-        self.m_full[0:self.N1] = self.m
-        self.m_full[self.N1:] = mu
+        # Mean
+        m_full = np.zeros(self.N)
+        m_full[0:self.N1] = self.m
+        m_full[self.N1:] = mu
 
         # Covariance
-        self.P_full = np.block([[self.P, C], [C.T, S]])
+        P_full = np.block([[self.P, C], [C.T, S]])
 
 
-        ### Redefine the submatrices
+        ### Repartition the mean and covariance in order to compute
+        ### the correct conditional probability 
         ######################################################################
 
-        # Number of variables to condition on
+        # Number of conditional variables
         N_cond = len(y)
-        N_opt = self.N - N_cond
+        # Number of random variables
+        N_rand = self.N - N_cond
 
-        print(self.P_full.shape)
-        print(N_cond)
-        print(N_opt)
+        # Repartition
+        m = m_full[0:N_rand]
+        mu = m_full[N_rand:]
+        P = P_full[0:N_rand, 0:N_rand]
+        S = P_full[N_rand:, N_rand:]
+        C = P_full[0:N_rand,N_rand:]
 
-        P = self.P_full[0:N_opt, 0:N_opt]
-        S = self.P_full[N_opt:, N_opt:]
-        C = self.P_full[N_opt:,0:N_opt]
-
-        print(P)
-        print()
-        print(S)
-        print()
-        print(C)
-        print()
-        print(P.shape, S.shape, C.shape)
-        quit()
-        
 
         ### Compute Kalman gain, revised mean, and covariance
         ######################################################################
 
         K = np.dot(C, np.linalg.inv(S))
-        m_p = self.m + np.dot(K, y - mu)
-        P_p = self.P - np.dot(np.dot(K, S), K.T)
+        m_p = m + np.dot(K, y - mu)
+        P_p = P - np.dot(np.dot(K, S), K.T)
+        v = P_p[range(len(P_p)), range(len(P_p))]
 
+        print(m_p[-5:])
+        plt.plot(m_p[0:-5])
+        plt.plot(m_p[0:-5] + 2.0*np.sqrt(v)[0:-5])
+        plt.plot(m_p[0:-5] - 2.0*np.sqrt(v)[0:-5])
+        plt.show()
+        quit()
         return m_p, P_p, mu, K
 
