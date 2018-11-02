@@ -30,7 +30,7 @@ class PriorWriter(object):
         # Parameter mean values
         x2 = np.array([1.6e-3, (2.5e-25*60**2*24*365)**(-1./3.), 0.07, 0.008, 0.005])
         # Inverse parameter variances 
-        param_inv_vars = 1. / np.array([.33e-3**2, 89398.**2, 0.025**2, 0.001**2, 0.001**2])
+        param_inv_vars = 1. / np.array([.33e-3**2, 50398.**2, 0.025**2, 0.001**2, 0.001**2])
         # Number of params.
         N2 = 5
         np.savetxt(out_dir + 'sensitivity_params.txt', param_names, fmt="%s")
