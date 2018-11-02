@@ -1,5 +1,4 @@
 from stats.sigma_runner_sensitivity import *
-
 set_log_active(False)
 
 ### Set the run options

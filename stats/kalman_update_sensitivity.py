@@ -81,7 +81,7 @@ class KalmanUpdate(object):
         P = P_full[0:N_rand, 0:N_rand]
         S = P_full[N_rand:, N_rand:]
         C = P_full[0:N_rand,N_rand:]
-
+        
 
         ### Compute Kalman gain, revised mean, and covariance
         ######################################################################
