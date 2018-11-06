@@ -104,9 +104,10 @@ class PriorWriter(object):
         #print(sigma_points[:, -6:].min(axis = 0))
         #print(sigma_points[:, -6:].max(axis = 0))
 
-        print(sigma_points[:, -6:].argmin(axis = 0))
-        print(sigma_points[:, -6:].argmax(axis = 0))
-        
+        sigma_points[:, -6:].argmin(axis = 0)
+        sigma_points[:, -6:].argmax(axis = 0)
+
+        print(sigma,points(
         #print(np.median(sigma_points[:, -6:], axis = 0))
         
         #plt.show()

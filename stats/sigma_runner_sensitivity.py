@@ -70,9 +70,12 @@ class SigmaRunner(object):
 
                 # Set sensitivity params. 
                 for j in range(self.N2):
-                    inputs[self.sensitivity_params[j]] = param_vals[j]
+                    if self.sensitivity_params[j] == 'A':
+                        inputs['b'] = (param_vals[j]*60**2*24*365)**(-1./3.)
+                    else :
+                        inputs[self.sensitivity_params[j]] = param_vals[j]
 
-                    
+                
                 ### Perform model run 
                 #######################################################
 

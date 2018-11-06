@@ -78,9 +78,9 @@ class Optimizer(object):
         #############################################################
 
         # The vector to condition on
-        y_full  = np.zeros(len(y) + 5)
-        y_full[0:5] = self.m[-5:]
-        y_full[5:] = y
+        y_full  = np.zeros(len(y) + 6)
+        y_full[0:6] = self.m[-6:]
+        y_full[6:] = y
         ku = KalmanUpdate(self.m, self.P, self.X, self.Y[:,obs_indexes], self.m_weights, self.c_weights, obs_indexes)
         m_p, P_p, mu, K = ku.update(y_full, R)
 
