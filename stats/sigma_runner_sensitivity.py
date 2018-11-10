@@ -34,12 +34,36 @@ class SigmaRunner(object):
 
         # Input dictionary
         self.inputs = {}
-        # Input file name
-        self.inputs['in_file'] = input_dict['in_file']
         # Time step
         self.inputs['dt'] = 1./3.
         # Number of model time steps
         self.inputs['N'] = 11590*3
+
+        ### Use different steady states depending on the 
+        #######################################################
+
+        # The steady state index corresponding to each sigma point
+        steady_indexes = np.zeros(self.X.shape[0], dtype = int)
+        steady_indexes[self.X[:, -6:].argmin(axis = 0)] = range(1,7)
+        steady_indexes[self.X[:, -6:].argmax(axis = 0)] = range(7,13)
+        self.steady_indexes = steady_indexes
+
+        print(self.X[:, -6:].argmin(axis = 0))
+        print(self.X[:, -6:].argmax(axis = 0))
+
+        x0 = self.X[0, :]
+        x1 = self.X[102, :]
+        x2 = self.X[51, :]
+
+        plt.plot(x0[:-6])
+        plt.plot(x1[:-6])
+        plt.plot(x2[:-6])
+        plt.show()
+
+        #print(x1)
+        #print(x2)
+        
+        quit()
         
         
     # Run several sigma points
@@ -53,14 +77,16 @@ class SigmaRunner(object):
             #######################################################
             
             if not os.path.isfile(self.in_dir + 'Y_' + str(i) + '.txt'):
-                print(i)
+                print("i", i)
 
                 ### Load sigma point
                 #######################################################
 
                 # Copy the model input dictionary
                 inputs = copy.deepcopy(self.inputs)
-                # Load the full sigma point
+                # Input file
+                inputs['in_file'] = self.in_dir + 'steady_states/steady_' + str(self.steady_indexes[i]) + '.h5'
+                # Load the sigma point
                 X_i = self.X[i]
                 # Get the delta P function
                 delta_P = X_i[0:self.N1]
@@ -71,11 +97,12 @@ class SigmaRunner(object):
                 # Set sensitivity params. 
                 for j in range(self.N2):
                     if self.sensitivity_params[j] == 'A':
+                        print('A', param_vals[j])
                         inputs['b'] = (param_vals[j]*60**2*24*365)**(-1./3.)
                     else :
                         inputs[self.sensitivity_params[j]] = param_vals[j]
 
-                
+                        
                 ### Perform model run 
                 #######################################################
 

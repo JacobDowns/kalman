@@ -20,7 +20,6 @@ class KalmanUpdate(object):
         self.m_weights = m_weights
         # Covariance weights
         self.c_weights = c_weights
-
         # Dimensions of the sigma point
         self.N1 = self.X.shape[1]
         # Dimensions of the output vector
@@ -34,7 +33,6 @@ class KalmanUpdate(object):
     # Do a Kalman update step incorporating an measurement y, with
     # covariance R
     def update(self, y, R):
-
         ### Unscented transform computations
         ######################################################################
         
@@ -48,6 +46,10 @@ class KalmanUpdate(object):
             print(i)
             S += self.c_weights[i]*np.outer(self.Y[i] - mu, self.Y[i] - mu)
         S += R
+
+        plt.imshow(S)
+        plt.show()
+        #quit()
 
  
         # Compute predicted measurement covariance
@@ -74,10 +76,6 @@ class KalmanUpdate(object):
         # Number of variables to condition on
         N_cond = len(y)
         N_opt = self.N - N_cond
-
-        print(self.P_full.shape)
-        print(N_cond)
-        print(N_opt)
 
         P = self.P_full[0:N_opt, 0:N_opt]
         S = self.P_full[N_opt:, N_opt:]

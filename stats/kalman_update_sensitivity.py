@@ -38,7 +38,6 @@ class KalmanUpdate(object):
         # Compute predicted mean
         mu = np.dot(self.m_weights, self.Y)
 
-
         # Compute predicted measurement covariance
         S = np.zeros((self.Y.shape[1], self.Y.shape[1]))
         for i in range(len(self.c_weights)):
@@ -46,6 +45,17 @@ class KalmanUpdate(object):
             S += self.c_weights[i]*np.outer(self.Y[i] - mu, self.Y[i] - mu)
         S += R
 
+        np.savetxt('mu.txt', mu)
+        np.savetxt('S.txt', S)
+        #plt.imshow(S)
+        #plt.colorbar()
+        #plt.show()
+        plt.plot(2.*np.sqrt(S[range(len(S)), range(len(S))]))
+        plt.show()
+        #plt.imshow(S)
+        #plt.colorbar()
+        #plt.show()
+        quit()
  
         # Compute predicted measurement covariance
         C = np.zeros((self.X.shape[1], self.Y.shape[1]))
@@ -90,11 +100,15 @@ class KalmanUpdate(object):
         m_p = m + np.dot(K, y - mu)
         P_p = P - np.dot(np.dot(K, S), K.T)
         v = P_p[range(len(P_p)), range(len(P_p))]
-
-        print(m_p[-5:])
-        plt.plot(m_p[0:-5])
-        plt.plot(m_p[0:-5] + 2.0*np.sqrt(v)[0:-5])
-        plt.plot(m_p[0:-5] - 2.0*np.sqrt(v)[0:-5])
+        plt.imshow(P)
+        plt.colorbar()
+        plt.show()
+        quit()
+        
+        print(m_p[-6:])
+        plt.plot(m_p[0:-6])
+        plt.plot(m_p[0:-6] + 2.0*np.sqrt(v)[0:-6])
+        plt.plot(m_p[0:-6] - 2.0*np.sqrt(v)[0:-6])
         plt.show()
         quit()
         return m_p, P_p, mu, K

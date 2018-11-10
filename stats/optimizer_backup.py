@@ -54,7 +54,6 @@ class Optimizer(object):
         # Assumed observation covariance
         R = np.zeros((len(y), len(y)))
 
-        variance = 10e3
         
         # Set the error through time
         dif = (self.obs_ages[1:] - self.obs_ages[:-1])
@@ -66,7 +65,7 @@ class Optimizer(object):
         error_interp = interp1d(error_ts, error_vs, kind = 'linear', bounds_error = False)
         errors = error_interp(np.round(self.model_ages[obs_indexes], 0))
         R[range(R.shape[0]), range(R.shape[0])] = errors
-
+        
         #plt.plot(np.sqrt(errors))
         #plt.show()
         #quit()
