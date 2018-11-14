@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.interpolate import interp1d
-from kalman_update import *
+from stats.kalman_update import *
 import matplotlib.pyplot as plt
 
 class Optimizer(object):
@@ -14,13 +14,11 @@ class Optimizer(object):
         self.input_dict = input_dict
         # Input directory 
         self.in_dir = input_dict['in_dir']
-        # Observed ages 
-        self.obs_ages = np.array([-11.6e3, -10.2e3, -9.2e3, -8.2e3, -7.3e3, 0.])
         # Model time steps 
         self.model_ages = np.loadtxt(self.in_dir + 'age_0.txt')
         # Sigma points
         self.X = np.loadtxt(self.in_dir + 'X.txt')
-        # Sigma points run through 
+        # Transformed sigma points
         self.Y = np.loadtxt(self.in_dir + 'Y.txt')
         # Prior mean
         self.m = np.loadtxt(self.in_dir + 'prior_m.txt')
@@ -30,52 +28,30 @@ class Optimizer(object):
         self.m_weights = np.loadtxt(self.in_dir + 'm_weights.txt')
         # Load covariance weights
         self.c_weights = np.loadtxt(self.in_dir + 'c_weights.txt')
+        
+
+        ### Use a specially build measurement mean and covariance matrix
+        #############################################################
+        
+        # Measurement ages
+        self.meas_ages = np.loadtxt('paleo_inputs/y_ages.txt')
+        # Measurement mean
+        self.meas_y = input_dict['y']
+        # Measurement covariance
+        self.meas_Py = input_dict['Py']
+        # Measurement indexes
+        self.meas_indexes = range(0, len(self.model_ages), 25*3)
+        # Restrict transformed sigma points
+        self.Y = self.Y[:,self.meas_indexes]
 
 
     # Do the Kalman update to incorporate the measurement and correct the prior mean
-    def optimize(self, obs_Ls, sparse_obs = False, skip = 5, min_err = 5000.**2, max_err = 50000.**2, out_dir = None):
-
-        ### Generate observation vector
-        #############################################################
-
-        obs_indexes = range(len(self.model_ages))[::skip]
-        if sparse_obs:
-            # Include only the real observations (don't linearly interpolate)
-            obs_indexes = [abs(self.model_ages - obs_age).argmin() for obs_age in self.obs_ages]
-            
-        # Interpolate the observations 
-        L_interp = interp1d(self.obs_ages, obs_Ls, kind = 'linear')
-        y = L_interp(np.round(self.model_ages[obs_indexes], 0))
-        
-
-        ### Generate measurement covariance matrix
-        #############################################################
-
-        # Assumed observation covariance
-        R = np.zeros((len(y), len(y)))
-
-        variance = 10e3
-        
-        # Set the error through time
-        dif = (self.obs_ages[1:] - self.obs_ages[:-1])
-        dif /= dif.max()
-        dif *= max_err
-        error_ts = np.array([-11.6e3, -10.9e3, -10.2e3, -9.7e3, -9.2e3, -8.7e3, -8.2e3, -7.75e3, -7.3e3, -3650.0, 0.])
-        #error_vs = np.array([min_err,  max_err,  min_err,   max_err,  min_err,   max_err,  min_err,   max_err,  min_err, max_err, min_err])
-        error_vs = np.array([min_err,  dif[0],  min_err,   dif[1],  min_err,   dif[2],  min_err,   dif[3],  min_err, dif[4], min_err])
-        error_interp = interp1d(error_ts, error_vs, kind = 'linear', bounds_error = False)
-        errors = error_interp(np.round(self.model_ages[obs_indexes], 0))
-        R[range(R.shape[0]), range(R.shape[0])] = errors
-
-        #plt.plot(np.sqrt(errors))
-        #plt.show()
-        #quit()
-        
+    def optimize(self, out_dir = None):
 
         ### Do the Kalman update
         #############################################################
-        ku = KalmanUpdate(self.m, self.P, self.X, self.Y[:,obs_indexes], self.m_weights, self.c_weights, obs_indexes)
-        m_p, P_p, mu, K = ku.update(y, R)
+        ku = KalmanUpdate(self.m, self.P, self.X, self.Y, self.m_weights, self.c_weights)
+        m_p, P_p, mu, K = ku.update(self.meas_y, self.meas_Py)
 
         # Variance
         v = P_p[range(len(P_p)), range(len(P_p))]
@@ -84,8 +60,8 @@ class Optimizer(object):
             np.savetxt(out_dir + 'mu.txt', mu)
             np.savetxt(out_dir + 'opt_m.txt', m_p)
             np.savetxt(out_dir + 'opt_P.txt', P_p)
-            np.savetxt(out_dir + 'y.txt', y)
-            #np.savetxt(out_dir + 'R.txt', R)
+            np.savetxt(out_dir + 'y.txt', self.meas_y)
+            np.savetxt(out_dir + 'Py.txt', self.meas_Py)
             np.savetxt(out_dir + 'v.txt', v)
 
             plt.plot(m_p)
@@ -93,4 +69,4 @@ class Optimizer(object):
             plt.plot(m_p - 2.0*np.sqrt(v))
             plt.show()
 
-        return m_p, P_p, mu, K, y, R
+        return m_p, P_p, mu, K, self.meas_y, self.meas_Py

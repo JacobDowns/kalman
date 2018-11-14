@@ -36,8 +36,6 @@ class SigmaRunner(object):
         self.inputs['dt'] = 1./3.
         # Number of model time steps
         self.inputs['N'] = 11590*3
-        # Delta temp. function
-        self.inputs['delta_temp_func'] = input_dict['delta_temp_func']
         
 
     # Run several sigma points

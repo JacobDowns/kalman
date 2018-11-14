@@ -2,13 +2,8 @@ import numpy as np
 import sys
 from model.transient_runner import *
 from scipy.interpolate import interp1d
-
 set_log_active(False)
 
-
-""" 
-Perform a model run with an optimized delta temp.
-"""
 
 ### Model inputs
 #######################################################
@@ -56,4 +51,3 @@ np.savetxt(in_dir + '/' + opt_dir + '/opt_age.txt', ages)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_L.txt', Ls)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_H.txt', Hs)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_p.txt', Ps)
-

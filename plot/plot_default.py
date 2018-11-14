@@ -8,10 +8,6 @@ matplotlib.rcParams.update({'font.size': 16})
 current_palette = sns.color_palette("RdBu_r", 12)
 fig = plt.figure(figsize=(12,16))
 
-
-
-
-
 data = np.loadtxt('paleo_data/buizert_full.txt')
 years = -data[:,0][::-1]
 temps_ann = data[:,1][::-1]
