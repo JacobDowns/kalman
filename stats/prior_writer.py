@@ -13,11 +13,12 @@ class PriorWriter(object):
         if 'N' in input_dict:
             N = input_dict['N']
         else :
-            N = 87
+            N = 45
+
         # Delta temp. grid years
-        dt_years = -11.6e3 + np.linspace(0., 11590, N)
+        start_age = -11.62e3 - 66.
+        dt_years = start_age + np.linspace(0., abs(start_age), N)
         np.savetxt(out_dir + 'sigma_ts.txt', dt_years)
-        
 
         ### Define prior mean
         ###########################################################################
@@ -27,7 +28,7 @@ class PriorWriter(object):
             x = np.loadtxt(input_dict['x'])
         else :
             chi = np.linspace(0., 1., len(dt_years))
-            x = 1.4*np.ones(len(dt_years)) - 1.4*chi**6
+            x = .42*np.ones(len(dt_years)) - 0.42*chi**6
 
 
         ### Define prior covariance 

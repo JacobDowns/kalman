@@ -35,7 +35,7 @@ class SigmaRunner(object):
         # Time step
         self.inputs['dt'] = 1./3.
         # Number of model time steps
-        self.inputs['N'] = 11590*3
+        self.inputs['N'] = int(abs(self.sigma_ts.max() - self.sigma_ts.min()))*3
         
 
     # Run several sigma points

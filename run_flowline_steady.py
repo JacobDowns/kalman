@@ -20,7 +20,7 @@ if flowline == 'south':
     inputs['L_mu'] = 424778.
 if flowline == 'center':
     inputs['in_file'] = 'paleo_inputs/center_steady.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/center_steady'
+    inputs['steady_file_name'] = 'paleo_inputs/center_steady_seasonal'
     inputs['L_mu'] = 406893.    
     
 ### Model inputs

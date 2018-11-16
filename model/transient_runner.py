@@ -15,11 +15,6 @@ class TransientRunner(CommonRunner):
         if 'precip_param_func' in input_dict:
             self.precip_param_func = input_dict['precip_param_func']
             
-        # Starting age
-        self.start_age = -11.6e3
-        if 'start_age' in input_dict:
-            self.start_age = input_dict['start_age']
-            
         # Snapshot interval : write out thickness vector periodically
         self.snapshot_interval = 1000
         if 'snapshot_interval' in input_dict:
