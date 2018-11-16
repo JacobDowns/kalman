@@ -58,7 +58,7 @@ class PaleoInputs(CommonInputs):
             self.beta2 = input_dict['beta2']
 
         # Start age
-        self.start_age = -11.62e3 - 66.
+        self.start_age = -11.6e3
         if 'start_age' in input_dict:
             self.start_age = input_dict['start_age']
 
@@ -100,17 +100,38 @@ class PaleoInputs(CommonInputs):
         self.pdd_calc = PDDCalculator(self.pdd_var)
 
         
-        ### Load Buizert seasonal temp. anomalies
+        ### Load delta temp. record
         ########################################################################
-        
-        dt_years = np.loadtxt('paleo_data/buizert_ages.txt')
-        dt_vals = np.loadtxt('paleo_data/buizert_dts.txt')
 
-        # Interpolate the anomalies
-        self.dt_functions = []
-        for i in range(12):
-            self.dt_functions.append(interp1d(dt_years, dt_vals[:,i], kind = 'linear'))
+        # What dt reconstruction to use?
+        self.delta_temp_record = 'buizert'
+        # Use seasonal or annual delta temp. record?
+        self.seasonality = True
+        
+        #if self.delta_temp_record == 'buizert' and 'seasonality' in input_dict:
+        #    self.seasonality = input_dict['seasonality']
+
+        if self.delta_temp_record == 'buizert':
+            data = np.loadtxt('paleo_data/buizert_full.txt')
+            years = -data[:,0][::-1]
+            temps_ann = data[:,1][::-1]
+            temps_djf = data[:,2][::-1]
+            temps_mam = data[:,3][::-1]
+            temps_jja = data[:,4][::-1]
+            temps_son = data[:,5][::-1]
+
+            self.delta_temp_ann = interp1d(years, temps_ann - temps_ann[-1], kind = 'linear')
+            self.delta_temp_djf = interp1d(years, temps_djf - temps_djf[-1], kind = 'linear')
+            self.delta_temp_mam = interp1d(years, temps_mam - temps_mam[-1], kind = 'linear')
+            self.delta_temp_jja = interp1d(years, temps_jja - temps_jja[-1], kind = 'linear')
+            self.delta_temp_son = interp1d(years, temps_son - temps_son[-1], kind = 'linear')
+        else:
+            data = np.loadtxt('paleo_data/jensen_dye3.txt')
+            years = data[:,0] - 2000.0
+            temps = data[:,1]
             
+            self.delta_temp_ann = interp1d(years, temps_ann - temps_ann[-1], kind = 'linear')
+
         
     """
     Adot expression used by the model.
@@ -133,10 +154,23 @@ class PaleoInputs(CommonInputs):
         ### Delta temp. to use for each month
         ########################################################################
 
-        monthly_dts = [self.dt_functions[i](age) for i in range(12)]
-        
+        if self.delta_temp_record == 'buizert' and self.seasonality:
+            dt_djf = self.delta_temp_djf(age)
+            dt_mam = self.delta_temp_mam(age)
+            dt_jja = self.delta_temp_jja(age)
+            dt_son = self.delta_temp_son(age)
+        else :
+            dt_ann = self.delta_temp_ann(age)
+            dt_djf = dt_ann
+            dt_mam = dt_ann
+            dt_jja = dt_ann
+            dt_son = dt_ann   
+                 
+        monthly_dts = [dt_djf, dt_djf, dt_mam, dt_mam, dt_mam, dt_jja,\
+                       dt_jja, dt_jja, dt_son, dt_son, dt_son, dt_djf]
+
         print ("Age", age)
-        print ("Delta", monthly_dts)
+        print ("Delta", dt_djf, dt_mam, dt_jja, dt_son)
         print ("Precip", precip_param)
             
 

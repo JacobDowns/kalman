@@ -75,7 +75,7 @@ class CommonRunner(object):
             self.seasonality = input_dict['seasonality']
 
         # Start age
-        self.start_age = -11.6e3
+        self.start_age = -11.62e3 - 66.
         if 'start_age' in input_dict:
             self.start_age = input_dict['start_age']
             

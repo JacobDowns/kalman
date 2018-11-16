@@ -44,6 +44,9 @@ class Optimizer(object):
         # Restrict transformed sigma points
         self.Y = self.Y[:,self.meas_indexes]
 
+        plt.plot(np.sqrt(self.meas_Py[range(len(self.meas_Py)), range(len(self.meas_Py))]))
+        plt.show()
+
 
     # Do the Kalman update to incorporate the measurement and correct the prior mean
     def optimize(self, out_dir = None):

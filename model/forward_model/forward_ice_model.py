@@ -263,7 +263,7 @@ class ForwardIceModel(object):
         self.precip_func.assign(self.model_inputs.precip_func)
 
 
-    def step(self, precip_param = 0.0, accept = False, age = None):
+    def step(self, precip_param = 0.0, accept = False):
         
         ### Update length variable inputs
         ####################################################################

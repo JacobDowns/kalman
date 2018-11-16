@@ -67,12 +67,12 @@ class PriorWriter(object):
         sigma_points = points.sigma_points(x, P)
 
         # Save the mean and covariance weights, as well as the sigma points
-        np.savetxt(out_dir + 'm_weights.txt', points.weights()[0])
-        np.savetxt(out_dir + 'c_weights.txt', points.weights()[1])
+        np.savetxt(out_dir + 'm_weights.txt', points.Wm)
+        np.savetxt(out_dir + 'c_weights.txt', points.Wc)
         np.savetxt(out_dir + 'X.txt', sigma_points)
 
         for i in range(len(sigma_points)):
-            print i
+            print(i)
             plt.plot(sigma_points[i])
 
         plt.show()

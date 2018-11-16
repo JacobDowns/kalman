@@ -15,30 +15,13 @@ inputs = {}
 
 # Input file name
 if flowline == 'south':
-    inputs['in_file'] = 'paleo_inputs/south_paleo_steady_11_6.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/south_steady'
-    inputs['L_mu'] = 424778.
-if flowline == 'south_seasonal':
-    inputs['in_file'] = 'paleo_inputs/south_paleo_steady_11_6.h5'
+    inputs['in_file'] = 'paleo_inputs/south_steady.h5'
     inputs['steady_file_name'] = 'paleo_inputs/south_steady_seasonal'
     inputs['L_mu'] = 424778.
 if flowline == 'center':
-    inputs['in_file'] = 'paleo_inputs/center_paleo_steady_11_6.h5'
+    inputs['in_file'] = 'paleo_inputs/center_steady.h5'
     inputs['steady_file_name'] = 'paleo_inputs/center_steady'
-    inputs['L_mu'] = 406893.
-if flowline == 'center_seasonal':
-    inputs['in_file'] = 'paleo_inputs/center_paleo_steady_11_6.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/center_steady_seasonal'
-    inputs['L_mu'] = 406893.
-if flowline == 'north':
-    inputs['in_file'] = 'paleo_inputs/north_paleo_steady_11_6.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/north_steady'
-    inputs['L_mu'] = 443746.
-if flowline == 'north_seasonal':
-    inputs['in_file'] = 'paleo_inputs/north_seasonal2.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/north_steady_seasonal2'
-    inputs['L_mu'] = 449441.
-    
+    inputs['L_mu'] = 406893.    
     
 ### Model inputs
 #######################################################
@@ -49,8 +32,6 @@ inputs['dt'] = 3.
 inputs['N'] = 9000
 # Tuned basal traction
 inputs['beta2'] = 1.6e-3
-# Start age 
-inputs['start_age'] = -11.5e3
 
 
 ### Perform model run 

@@ -57,7 +57,7 @@ class SteadyRunner(CommonRunner):
             ys = np.zeros_like(xs)
 
             for i in range(len(xs)):
-                ys[i] = self.model.step(xs[i], accept = False, age = -11.6e3)
+                ys[i] = self.model.step(xs[i], accept = False)
 
             print
             print ("ys", ys)
@@ -86,7 +86,7 @@ class SteadyRunner(CommonRunner):
                 print "opt precip weight", precip_param, precip_param_sigma2
 
             # Do a step with the optimal param.
-            L = self.model.step(precip_param, accept = True, age = -11.6e3)
+            L = self.model.step(precip_param, accept = True)
             Ls.append(L)
 
             if self.output:
