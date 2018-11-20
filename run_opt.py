@@ -18,10 +18,8 @@ opt_dir = sys.argv[2]
 inputs['in_file'] = in_dir + '/steady.h5'
 # Time step
 inputs['dt'] = 1./3.
-# Number of model time steps
-inputs['N'] = 11580*3
 # Starting age
-inputs['start_age'] = -11.6e3
+#inputs['start_age'] = -11.6e3
 # Tuned basal traction
 inputs['beta2'] = 1.6e-3
 
@@ -35,7 +33,8 @@ precip_param_opt = np.loadtxt(in_dir + '/' + opt_dir  + '/opt_m.txt')
 v = np.loadtxt(in_dir + '/' + opt_dir  + '/v.txt')
 # Interpolated delta temp. function 
 inputs['precip_param_func'] = interp1d(sigma_ts, precip_param_opt, kind = 'linear')
-
+# Number of model time steps
+inputs['N'] = int(abs(sigma_ts.min())*3)
 plt.plot(sigma_ts, precip_param_opt)
 plt.plot(sigma_ts, precip_param_opt + 2.*np.sqrt(v))
 plt.plot(sigma_ts, precip_param_opt - 2.*np.sqrt(v))

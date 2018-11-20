@@ -28,7 +28,7 @@ class PriorWriter(object):
             x = np.loadtxt(input_dict['x'])
         else :
             chi = np.linspace(0., 1., len(dt_years))
-            x = .42*np.ones(len(dt_years)) - 0.42*chi**6
+            x = .42*np.ones(len(dt_years)) - 0.42*chi**4
 
 
         ### Define prior covariance 
