@@ -17,7 +17,7 @@ inputs['in_file'] = in_dir + 'steady.h5'
 # Integer index
 inputs['index'] = index
 # Number of runs
-inputs['runs'] = 2
+inputs['runs'] = 1
 
 ### Run some sigma points through the model
 ###############################################################

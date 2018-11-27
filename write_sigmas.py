@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import os.path
+import os.path 
 
-in_dir = 'transform_long/south1_new/'
+in_dir = 'transform_long/south3_minimal/'
 X = np.loadtxt(in_dir + 'X.txt')
 Y0 = np.loadtxt(in_dir + 'Y_0.txt')
 Y = np.zeros((X.shape[0], len(Y0)))
