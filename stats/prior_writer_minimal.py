@@ -28,7 +28,7 @@ class PriorWriter(object):
             x = np.loadtxt(input_dict['x'])
         else :
             chi = np.linspace(0., 1., len(dt_years))
-            x = .42*np.ones(len(dt_years)) - 0.42*chi**4
+            x = .45*np.ones(len(dt_years)) - 0.45*chi**2
 
 
         ### Define prior covariance 
@@ -74,7 +74,7 @@ class PriorWriter(object):
         ##############################################
 
         # Compute X matrix where each row is a sigma point
-        w_0 = 0.1
+        w_0 = 0.5
         alpha = np.sqrt((1. - w_0) / N)
         C = np.linalg.cholesky(np.diag(np.ones(N), 0) - (alpha**2)*np.ones((N, N)))
         W = np.diag(np.diag(np.linalg.multi_dot([w_0*(alpha**2)*np.linalg.inv(C), np.ones((N,N)), np.linalg.inv(C.T)])), 0)

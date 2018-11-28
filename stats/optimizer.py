@@ -54,7 +54,7 @@ class Optimizer(object):
         ### Do the Kalman update
         #############################################################
         ku = KalmanUpdate(self.m, self.P, self.X, self.Y, self.m_weights, self.c_weights)
-        m_p, P_p, mu, K = ku.update(self.meas_y, self.meas_Py)
+        m_p, P_p, mu, K, y_v = ku.update(self.meas_y, self.meas_Py)
 
         # Variance
         v = P_p[range(len(P_p)), range(len(P_p))]
@@ -66,6 +66,7 @@ class Optimizer(object):
             np.savetxt(out_dir + 'y.txt', self.meas_y)
             np.savetxt(out_dir + 'Py.txt', self.meas_Py)
             np.savetxt(out_dir + 'v.txt', v)
+            np.savetxt(out_dir + 'y_v.txt', y_v)
 
             plt.plot(m_p)
             plt.plot(m_p + 2.0*np.sqrt(v))
