@@ -3,7 +3,7 @@ import numpy as np
 from scipy.interpolate import interp1d
 import seaborn as sns
 import matplotlib
-matplotlib.rcParams.update({'font.size': 16})
+matplotlib.rcParams.update({'font.size': 18})
 
 fig = plt.figure(figsize=(9,6))
 ax = fig.add_subplot(111)

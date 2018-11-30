@@ -4,51 +4,104 @@ from scipy.interpolate import interp1d
 import seaborn as sns
 import matplotlib
 
-Ls_center = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725, 279753.70997966686])
-Ls_south  = np.array([424777.2650658561, 394942.08036138373, 332430.9181651594, 303738.499327732, 296659.0156905292, 284686.5963970118])
+matplotlib.rcParams.update({'font.size': 18})
+fig = plt.figure(figsize=(14,14))
 
-age = np.loadtxt('transform/center2/opt1/opt_age.txt')
-L = np.loadtxt('transform/center2/opt1/opt_L.txt')
-v = np.loadtxt('transform/center2/opt1/y_v.txt')
-#L1 = np.loadtxt('transform/center2/opt1/opt_L.txt')
-meas_indexes = range(0, len(age), 25*3)
+# Center 
+L1_obs = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725, 279753.70997966686]) / 1e3
+# south
+L2_obs  = np.array([424777.2650658561, 394942.08036138373, 332430.9181651594, 303738.499327732, 296659.0156905292, 284686.5963970118]) / 1e3
+
+# Model ages
+ages = np.loadtxt('transform/center2_new/opt1/opt_age.txt')
+# Optimized lengths + errors
+L1 = np.loadtxt('transform/center2_new/opt1/opt_L.txt') / 1e3
+v1 = np.loadtxt('transform/center2_new/opt1/y_v.txt') / 1e3
+L2 = np.loadtxt('transform/south2_new/opt1/opt_L.txt') / 1e3
+v2 = np.loadtxt('transform/south2_new/opt1/y_v.txt') / 1e3
+
+yc = np.loadtxt('paleo_inputs/y_c3.txt') / 1e3
+ys = np.loadtxt('paleo_inputs/y_s3.txt') / 1e3
+
+# Measurement ages
+meas_indexes = range(0, len(ages), 25*3)
+y_ages = ages[meas_indexes]
+# Observation ages
+obs_ages = np.array([-11686.0, -10416.0, -9156.0, -8196.0, -7366.0, 0.])
+# Observation variances
+obs_sigmas = np.array([0.4, 0.2, 0.2, 0.3, 0.3, 0.1])*1e3 / 2.
 
 
-y_age = np.loadtxt('paleo_inputs/y_ages.txt')
-y_c = np.loadtxt('paleo_inputs/y_c1.txt')
-y_s = np.loadtxt('paleo_inputs/y_s1.txt')
-Py_c = np.loadtxt('paleo_inputs/Py_c1.txt')
-Py_s = np.loadtxt('paleo_inputs/Py_s1.txt')
+### Plot center
+#################################################
+ax = plt.subplot(2,1,1)
+plt.title('(a)')
 
-plt.subplot(2,1,1)
-plt.plot(age, L, 'k')
-plt.plot(age[meas_indexes], L[meas_indexes]-v, 'k--')
-plt.plot(age[meas_indexes], L[meas_indexes]+v, 'k--')
-#plt.plot(y_age, y_c, 'k')
-#plt.plot(y_age, y_c - v1, 'k')
-#plt.plot(y_age, y_c + v1, 'k')
+for i in [0, 1, 2, 3, 4]:
+    plt.plot([ages.min(), ages.max()], [L1_obs[i], L1_obs[i]], 'gray', linestyle=':', alpha = 0.9, lw = 2)
 
-for i in [0,1,2,3,4]:
+plt.plot(ages, L1, 'k', lw=3.5)
+plt.plot(y_ages, yc, 'k--', lw=3.5)
+#plt.plot(age[meas_indexes], y_c, 'k--', lw = 3)
+#plt.grid(color='slategray', linestyle=':', linewidth=3, axis='x')
+
+#plt.fill_between(y_ages, L1[meas_indexes]-v1, L1[meas_indexes]+v1,
+#                     color='gray', alpha=.5)
+#plt.fill_between(y_ages, L1[meas_indexes]-2.*v1, L1[meas_indexes]+2.*v1,
+#                     color='gray', alpha=.5)
+
+plt.xlim([ages.min(), ages.max()])
+plt.ylabel('Glacier Length (km)')
+
+"""
+for i in [1,2,3,4]:
     index = np.where(L > Ls_center[i])[0].max()
     time = age[index]
     print(time)
-
-
-obs_ts = np.array([-11686.0, -10416.0, -9156.0, -8196.0, -7366.0, 0.])
-# Observation variances
-obs_sigmas = np.array([0.4, 0.2, 0.2, 0.3, 0.3, 0.1])*1000. / 2.
-
-for i in range(len(obs_ts)):
-    plt.plot(obs_ts[i], Ls_center[i], 'ro')
-    plt.plot([obs_ts[i] - obs_sigmas[i], obs_ts[i] + obs_sigmas[i]], [Ls_center[i], Ls_center[i]], 'ko-')
+    #plt.plot(time, Ls_center[i], 'rd', ms = 10)
 """
-plt.subplot(2,1,2)
-plt.plot(age, L2, 'r')
-plt.plot(y_age, y_s, 'k')
-plt.plot(y_age, y_s - v2, 'k')
-plt.plot(y_age, y_s + v2, 'k')
+
+for i in range(len(obs_ages) - 1):
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'r', lw = 3.5, ms = 6, alpha = 0.75)
+    plt.plot(obs_ages[i], L1_obs[i], 'ro', ms = 10)
+
+plt.plot(obs_ages[-1]-20., L1_obs[-1], 'ro', ms = 10)
+
+ticks = ax.get_xticks()
+ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
+
+
+### Plot south
+#################################################
+ax = plt.subplot(2,1,2)
+plt.title('(b)')
+
+for i in [0, 1, 2, 3, 4]:
+    plt.plot([ages.min(), ages.max()], [L2_obs[i], L2_obs[i]], 'gray', linestyle=':', alpha = 0.9, lw = 2)
+
+plt.plot(ages, L2, 'k', lw=3.5)
+plt.plot(y_ages, ys, 'k--', lw=3.5)
+
+plt.xlim([ages.min(), ages.max()])
+
 """
+for i in [1,2,3,4]:
+    index = np.where(L > Ls_center[i])[0].max()
+    time = age[index]
+    print(time)"""
+
+for i in range(len(obs_ages) - 1):
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], 'r', lw = 3.5, ms = 6, alpha = 0.75)
+    plt.plot(obs_ages[i], L2_obs[i], 'ro', ms = 10)
+
+plt.plot(obs_ages[-1]-20., L2_obs[-1], 'ro', ms = 10)
+
+ticks = ax.get_xticks()
+ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
+
+plt.ylabel('Glacier Length (km)')
+plt.xlabel('Age (ka BP)')
+plt.tight_layout()
+plt.savefig('fit_final.png', dpi=500)    
 plt.show()
-
-
 
