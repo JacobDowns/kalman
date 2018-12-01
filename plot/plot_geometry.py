@@ -22,7 +22,7 @@ plot_moraine('7_3_limit.p', 'c', label = '7.3 Moraine')
 plot_moraine('7_3_moraine.p', 'c')"""
 
 matplotlib.rcParams.update({'font.size': 20})
-fig = plt.figure(figsize=(12,14))
+fig = plt.figure(figsize=(10,11))
 current_palette = sns.color_palette()
 #sns.palplot(current_palette)
 #plt.show()

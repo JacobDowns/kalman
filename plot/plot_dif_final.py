@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib
 
 matplotlib.rcParams.update({'font.size': 18})
-fig = plt.figure(figsize=(14,14))
+fig = plt.figure(figsize=(10,10))
 
 # Center 
 L1_obs = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725, 279753.70997966686]) / 1e3
@@ -41,7 +41,7 @@ for i in [0, 1, 2, 3, 4]:
     plt.plot([ages.min(), ages.max()], [L1_obs[i], L1_obs[i]], 'gray', linestyle=':', alpha = 0.9, lw = 2)
 
 plt.plot(ages, L1, 'k', lw=3.5)
-plt.plot(y_ages, yc, 'k--', lw=3.5)
+#plt.plot(y_ages, yc, 'k--', lw=3.5)
 #plt.plot(age[meas_indexes], y_c, 'k--', lw = 3)
 #plt.grid(color='slategray', linestyle=':', linewidth=3, axis='x')
 
@@ -62,9 +62,12 @@ for i in [1,2,3,4]:
 """
 
 for i in range(len(obs_ages) - 1):
-    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'r', lw = 3.5, ms = 6, alpha = 0.75)
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'k', lw = 5, ms = 6, alpha = 1.)
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'r', lw = 3.5, ms = 6, alpha = 1.)
+    plt.plot(obs_ages[i], L1_obs[i], 'ko', ms = 12)
     plt.plot(obs_ages[i], L1_obs[i], 'ro', ms = 10)
 
+plt.plot(obs_ages[-1]-20., L1_obs[-1], 'ko', ms = 12)
 plt.plot(obs_ages[-1]-20., L1_obs[-1], 'ro', ms = 10)
 
 ticks = ax.get_xticks()
@@ -80,7 +83,7 @@ for i in [0, 1, 2, 3, 4]:
     plt.plot([ages.min(), ages.max()], [L2_obs[i], L2_obs[i]], 'gray', linestyle=':', alpha = 0.9, lw = 2)
 
 plt.plot(ages, L2, 'k', lw=3.5)
-plt.plot(y_ages, ys, 'k--', lw=3.5)
+#plt.plot(y_ages, ys, 'k--', lw=3.5)
 
 plt.xlim([ages.min(), ages.max()])
 
@@ -91,9 +94,12 @@ for i in [1,2,3,4]:
     print(time)"""
 
 for i in range(len(obs_ages) - 1):
-    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], 'r', lw = 3.5, ms = 6, alpha = 0.75)
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], 'k', lw = 5, ms = 6, alpha = 1.)
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], 'r', lw = 3.5, ms = 6, alpha = 1.)
+    plt.plot(obs_ages[i], L2_obs[i], 'ko', ms = 12)
     plt.plot(obs_ages[i], L2_obs[i], 'ro', ms = 10)
 
+plt.plot(obs_ages[-1]-20., L2_obs[-1], 'ko', ms = 12)
 plt.plot(obs_ages[-1]-20., L2_obs[-1], 'ro', ms = 10)
 
 ticks = ax.get_xticks()
@@ -103,5 +109,5 @@ plt.ylabel('Glacier Length (km)')
 plt.xlabel('Age (ka BP)')
 plt.tight_layout()
 plt.savefig('fit_final.png', dpi=500)    
-plt.show()
+#plt.show()
 

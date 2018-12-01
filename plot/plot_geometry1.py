@@ -21,8 +21,8 @@ plot_moraine('8_2_moraine.p', 'maroon')
 plot_moraine('7_3_limit.p', 'c', label = '7.3 Moraine')
 plot_moraine('7_3_moraine.p', 'c')"""
 
-matplotlib.rcParams.update({'font.size': 20})
-fig = plt.figure(figsize=(12,9))
+matplotlib.rcParams.update({'font.size': 18})
+fig = plt.figure(figsize=(10,8))
 current_palette = sns.color_palette()
 #sns.palplot(current_palette)
 #plt.show()
@@ -50,6 +50,7 @@ plt.plot([obs_Ls[3], obs_Ls[3]], [-1000., 5000.], 'k', lw = 3, dashes = (2,1), l
 plt.plot([obs_Ls[4], obs_Ls[4]], [-1000., 5000.], 'k', lw = 3, dashes = (2,1), label = '7.3')
 plt.plot([obs_Ls[5], obs_Ls[5]], [-1000., 5000.], color = current_palette[3], lw = 3, dashes = (2,1), label = '0')
 
+plt.plot(xs, surface.compute_vertex_values(), color = 'k', linewidth = 4.7)
 plt.plot(xs, surface.compute_vertex_values(), color = current_palette[0], linewidth = 3.5)
 plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 
@@ -81,6 +82,7 @@ plt.plot([obs_Ls[3], obs_Ls[3]], [-1000., 5000.], 'k', lw = 3, dashes = (2,1), l
 plt.plot([obs_Ls[4], obs_Ls[4]], [-1000., 5000.], 'k', lw = 3, dashes = (2,1), label = '7.3')
 plt.plot([obs_Ls[5], obs_Ls[5]], [-1000., 5000.], color = current_palette[3], lw = 3, dashes = (2,1), label = '0')
 
+plt.plot(xs, surface.compute_vertex_values(), color = 'k', linewidth = 4.7)
 plt.plot(xs, surface.compute_vertex_values(), color = current_palette[0], linewidth = 3.5)
 plt.plot(xs, bed.compute_vertex_values(), 'k', linewidth = 3.5)
 
@@ -91,4 +93,4 @@ ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
 plt.ylabel('Elevation (m)')
 plt.xlabel(r'Along Flow Length (km)')
 plt.tight_layout()
-plt.savefig('geo.png', dpi=700)
+plt.savefig('geo.png', dpi=500)

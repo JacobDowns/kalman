@@ -4,9 +4,9 @@ from scipy.interpolate import interp1d
 import matplotlib
 import seaborn as sns
 
-matplotlib.rcParams.update({'font.size': 16})
+matplotlib.rcParams.update({'font.size': 18})
 current_palette = sns.color_palette("RdBu_r", 12)
-fig = plt.figure(figsize=(12,16))
+fig = plt.figure(figsize=(10,16))
 
 data = np.loadtxt('paleo_data/buizert_full.txt')
 years = -data[:,0][::-1]
@@ -114,4 +114,4 @@ plt.grid(True)
 plt.xlabel('Age (ka BP)')
 
 plt.tight_layout()
-plt.savefig('seasonal_default.png', dpi=550)
+plt.savefig('seasonal_default.png', dpi=500)

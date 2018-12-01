@@ -11,12 +11,12 @@ Perform a model run with a delta P = 0.
 # Input dictionary
 inputs = {}
 # Input file name
-inputs['in_file'] = 'paleo_inputs/south_steady_seasonal.h5'
-out_dir = 'default_runs/south/'
+inputs['in_file'] = 'paleo_inputs/center_steady_seasonal.h5'
+out_dir = 'default_runs/center/'
 # Time step
 inputs['dt'] = 1./3.
 # Number of time steps (this is dumb)
-inputs['N'] = 4300*3#35058
+inputs['N'] = 4400*3#35058
 # Tuned basal traction
 inputs['beta2'] = 1.6e-3
 

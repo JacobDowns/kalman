@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib
 matplotlib.rcParams.update({'font.size': 16})
 
-fig = plt.figure(figsize=(10,7))
+fig = plt.figure(figsize=(9,5))
 ax = fig.add_subplot(111)
 
 current_palette =  sns.color_palette()#sns.color_palette("deep", 8)
@@ -22,22 +22,17 @@ p2 = np.loadtxt('transform/south2_new/opt1/opt_m.txt')
 p1t = np.loadtxt('transform/center2_new/opt1/opt_p.txt')/ L1
 p2t = np.loadtxt('transform/south2_new/opt1/opt_p.txt') / L2
 
-plt.plot(ages, p1, color = 'k', marker = 'o', lw = 4.3, ms=10)
-plt.plot(ages, p1, color = current_palette[0], marker = 'o', lw = 3.5, ms=8, label = 'North')
-plt.plot(ages1, p1t, color = 'k', lw = 3, alpha = 0.8)
-plt.plot(ages1, p1t, color = current_palette[0], lw = 2.5, alpha = 0.8)
-
-plt.plot(ages, p2, color = 'k', marker = 'o', lw = 4.3, ms=10)
-plt.plot(ages, p2, color = current_palette[3], marker = 'o', lw = 3.5, ms=8, label = 'South')
-plt.plot(ages1, p2t, color = 'k', lw = 3, alpha = 0.8)
-plt.plot(ages1, p2t, color = current_palette[3], lw = 2.5, alpha = 0.8)
+#plt.plot(ages, p1, color = current_palette[0], marker = 'o', lw = 2, ms=5, label = 'North')
+plt.plot(ages1, p1t, color = current_palette[0], lw = 3, alpha = 0.9, label = 'North Flowline')
+#plt.plot(ages, p2, color = current_palette[3], marker = 'o', lw = 2, ms=5, label = 'South')
+plt.plot(ages1, p2t, color = current_palette[3], lw = 3, alpha = 0.9, label = 'South Flowline')
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 
 plt.xlabel('Age (ka BP)')
-plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
-plt.xlim([ages.min(), ages.max()])
+plt.ylabel(r'Avg. Precip. (m.w.e. a$^{-1}$)')
+plt.xlim([ages.min(), -7000.])
 #plt.plot(ages, p2, 'r')
-ax.set_xticks([-11600, -10000., -8000, -6000.,-4000., -2000., 0.])
+ax.set_xticks([-11600, -10000., -8000, -7000.])
 ticks = ax.get_xticks()
 #rint ticks
 plt.grid(color='slategray', linestyle=':', linewidth=1)
@@ -46,5 +41,5 @@ labels[0] = '11.6'
 plt.legend()
 ax.set_xticklabels(labels)
 plt.tight_layout()
-plt.savefig('deltap_final.png', dpi = 500)
+plt.savefig('deltap_poster.png', dpi = 500)
 plt.show()
