@@ -12,7 +12,7 @@ Perform a model run with a delta P = 0.
 inputs = {}
 # Input file name
 inputs['in_file'] = 'paleo_inputs/center_steady_seasonal.h5'
-out_dir = 'default_runs/center/'
+out_dir = 'default_runs/center1/'
 # Time step
 inputs['dt'] = 1./3.
 # Number of time steps (this is dumb)
