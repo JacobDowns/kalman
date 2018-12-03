@@ -58,7 +58,7 @@ class PaleoInputs(CommonInputs):
             self.beta2 = input_dict['beta2']
 
         # Start age
-        self.start_age = -11.62e3 - 66.
+        self.start_age = -11.62e3 + 66.
         if 'start_age' in input_dict:
             self.start_age = input_dict['start_age']
 
