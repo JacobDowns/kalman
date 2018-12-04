@@ -12,91 +12,28 @@ inputs = {}
 
 if flowline == 'center1':
     inputs['in_dir'] = 'transform/center1/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_c1.txt')
-    inputs['Py'] = 0.25*np.loadtxt('paleo_inputs/Py_c1.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_cf.txt')
+    inputs['Py'] = 0.1*np.loadtxt('paleo_inputs/Py_cf.txt')
     opt = Optimizer(inputs)
     opt.optimize(out_dir = 'transform/center1/opt1/')
 
-if flowline == 'center1_opt2':
-    inputs['in_dir'] = 'transform/center1/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_c2.txt')
-    inputs['Py'] = 0.25*np.loadtxt('paleo_inputs/Py_c2.txt')
+if flowline == 'south1':
+    inputs['in_dir'] = 'transform/south1/'
+    inputs['y'] = np.loadtxt('paleo_inputs/y_sf.txt')
+    inputs['Py'] = 0.1*np.loadtxt('paleo_inputs/Py_sf.txt')
     opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/center1/opt2/')
-
-if flowline == 'center1_opt3':
-    inputs['in_dir'] = 'transform/center1/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_c3.txt')
-    inputs['Py'] = 0.25*np.loadtxt('paleo_inputs/Py_c3.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/center1/opt3/')
-
-if flowline == 'center1_opt4':
-    inputs['in_dir'] = 'transform/center1/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_c3.txt')
-    inputs['Py'] = 0.1*np.loadtxt('paleo_inputs/Py_c3.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/center1/opt4/')
+    opt.optimize(out_dir = 'transform/south1/opt1/')
 
 if flowline == 'center2':
     inputs['in_dir'] = 'transform/center2/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_c3.txt')
-    inputs['Py'] = np.loadtxt('paleo_inputs/Py_c3.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_cf.txt')
+    inputs['Py'] = np.loadtxt('paleo_inputs/Py_cf.txt')
     opt = Optimizer(inputs)
     opt.optimize(out_dir = 'transform/center2/opt1/')
 
-if flowline == 'center2_opt2':
-    inputs['in_dir'] = 'transform/center2/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_c3.txt')
-    inputs['Py'] = 0.5*np.loadtxt('paleo_inputs/Py_c3.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/center2/opt2/')
-
-if flowline == 'south1_opt2':
-    inputs['in_dir'] = 'transform/south1/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_s2.txt')
-    inputs['Py'] = 0.25*np.loadtxt('paleo_inputs/Py_s2.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/south1/opt2/')
-
-if flowline == 'south1_opt3':
-    inputs['in_dir'] = 'transform/south1/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_s3.txt')
-    inputs['Py'] = 0.25*np.loadtxt('paleo_inputs/Py_s3.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/south1/opt3/')
-
-if flowline == 'south1_opt4':
-    inputs['in_dir'] = 'transform/south1/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_s3.txt')
-    inputs['Py'] = 0.1*np.loadtxt('paleo_inputs/Py_s3.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/south1/opt4/')
-    
-if flowline == 'south1':
-    inputs['in_dir'] = 'transform/center1/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_c1.txt')
-    inputs['Py'] = 0.5*np.loadtxt('paleo_inputs/Py_c1.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/center1/opt1/')
-
 if flowline == 'south2':
     inputs['in_dir'] = 'transform/south2/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_s3.txt')
-    inputs['Py'] = np.loadtxt('paleo_inputs/Py_s3.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_sf.txt')
+    inputs['Py'] = np.loadtxt('paleo_inputs/Py_sf.txt')
     opt = Optimizer(inputs)
     opt.optimize(out_dir = 'transform/south2/opt1/')
-
-if flowline == 'center2_new':
-    inputs['in_dir'] = 'transform/center2_new/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_c3.txt')
-    inputs['Py'] = np.loadtxt('paleo_inputs/Py_c3.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/center2_new/opt1/')
-
-if flowline == 'south2_new':
-    inputs['in_dir'] = 'transform/south2_new/'
-    inputs['y'] = np.loadtxt('paleo_inputs/y_s3.txt')
-    inputs['Py'] = np.loadtxt('paleo_inputs/Py_s3.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform/south2_new/opt1/')

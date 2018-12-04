@@ -16,7 +16,7 @@ class PriorWriter(object):
             N = 45
 
         # Delta temp. grid years
-        start_age = -11.62e3 - 66.
+        start_age = -11.62e3 + 66.
         dt_years = start_age + np.linspace(0., abs(start_age), N)
         np.savetxt(out_dir + 'sigma_ts.txt', dt_years)
 
