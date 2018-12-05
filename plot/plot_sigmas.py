@@ -16,7 +16,7 @@ N = 45
 #x = np.zeros(N)
 ts = -11.6e3 + np.linspace(0., 11590, N)
 chi = np.linspace(0., 1., len(ts))
-x = 0.45*np.ones(len(ts)) - 0.45*(chi)**4
+x = 0.2*np.ones(len(ts)) - 0.2*(chi)**4
 
 ### Prior covariance
 ####################################################

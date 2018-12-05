@@ -22,7 +22,7 @@ class SigmaRunner(object):
         # Load sigma times
         self.sigma_ts = np.loadtxt(self.in_dir + 'sigma_ts.txt')
         # Model input file
-        self.input_file = input_dict['in_file'] 
+        self.input_file = input_dict['in_file']
 
         
         ### Model inputs

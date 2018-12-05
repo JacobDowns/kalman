@@ -42,7 +42,7 @@ plt.legend(loc = 4)
 #################################################################
 
 # Observation ages
-obs_ages = np.array([-11686.0, -10416.0, -9156.0, -8196.0, -7366.0, 0.])
+obs_ages = np.array([-11554., -10284., -9024., -8064., -7234., 0.])
 # Observation variances
 obs_sigmas = np.array([0.4, 0.2, 0.2, 0.3, 0.3, 0.1])*1e3 / 2.
 # Center 
