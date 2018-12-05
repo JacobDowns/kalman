@@ -17,11 +17,11 @@ ages = np.loadtxt('transform_final/center2/opt1/opt_age.txt')
 # Optimized lengths + errors
 L1 = np.loadtxt('transform_final/center2/opt1/opt_L.txt') / 1e3
 v1 = np.loadtxt('transform_final/center2/opt1/y_v.txt') / 1e3
-L2 = np.loadtxt('transform/south2_new/opt1/opt_L.txt') / 1e3
-v2 = np.loadtxt('transform/south2_new/opt1/y_v.txt') / 1e3
+L2 = np.loadtxt('transform_final/south2/opt1/opt_L.txt') / 1e3
+v2 = np.loadtxt('transform_final/south2/opt1/y_v.txt') / 1e3
 
 yc = np.loadtxt('paleo_inputs/y_cf.txt') / 1e3
-ys = np.loadtxt('paleo_inputs/y_s3.txt') / 1e3
+ys = np.loadtxt('paleo_inputs/y_sf.txt') / 1e3
 
 # Measurement ages
 meas_indexes = range(0, len(ages), 25*3)
@@ -41,7 +41,7 @@ for i in [0, 1, 2, 3, 4]:
     plt.plot([ages.min(), ages.max()], [L1_obs[i], L1_obs[i]], 'gray', linestyle=':', alpha = 0.9, lw = 2)
 
 plt.plot(ages, L1, 'k', lw=3.5)
-plt.plot(y_ages, yc, 'k--', lw = 2)
+#plt.plot(y_ages, yc, 'k--', lw = 2)
 #plt.plot(y_ages, yc, 'k--', lw=3.5)
 #plt.plot(age[meas_indexes], y_c, 'k--', lw = 3)
 #plt.grid(color='slategray', linestyle=':', linewidth=3, axis='x')
@@ -78,7 +78,7 @@ ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
 ### Plot south
 #################################################
 ax = plt.subplot(2,1,2)
-"""
+
 plt.title('(b)')
 
 for i in [0, 1, 2, 3, 4]:
@@ -102,7 +102,7 @@ ticks = ax.get_xticks()
 ax.set_xticklabels([int(abs(tick / 1000.)) for tick in ticks])
 
 plt.ylabel('Glacier Length (km)')
-plt.xlabel('Age (ka BP)')"""
+plt.xlabel('Age (ka BP)')
     
 plt.tight_layout()
 plt.savefig('fit_final.png', dpi=500)    
