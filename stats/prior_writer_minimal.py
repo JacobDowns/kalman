@@ -19,7 +19,7 @@ class PriorWriter(object):
         # Delta temp. grid years
         start_age = -11.62e3 + 66.
         # + 1 to avoid interpolation issues...
-        dt_years = start_age + np.linspace(0., abs(start_age)+1., N)
+        dt_years = start_age + np.linspace(0.0, abs(start_age) - 100., N)
         np.savetxt(out_dir + 'sigma_ts.txt', dt_years)
 
         ### Define prior mean
@@ -30,7 +30,7 @@ class PriorWriter(object):
             x = np.loadtxt(input_dict['x'])
         else :
             chi = np.linspace(0., 1., len(dt_years))
-            x = .45*np.ones(len(dt_years)) - 0.45*chi**2
+            x = 0.33 - (0.33 / 0.25)*(chi-0.5)**2
 
 
         ### Define prior covariance 

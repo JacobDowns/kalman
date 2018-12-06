@@ -34,7 +34,7 @@ class Optimizer(object):
         #############################################################
         
         # Measurement ages
-        self.meas_ages = np.loadtxt('paleo_inputs/y_ages.txt')
+        self.meas_ages = np.loadtxt('paleo_inputs/y_ages_uw.txt')
         # Measurement mean
         self.meas_y = input_dict['y']
         # Measurement covariance
@@ -43,6 +43,10 @@ class Optimizer(object):
         self.meas_indexes = range(0, len(self.model_ages), 25*3)
         # Restrict transformed sigma points
         self.Y = self.Y[:,self.meas_indexes]
+
+
+        print(self.model_ages.max())
+        quit()
 
         plt.plot(np.sqrt(self.meas_Py[range(len(self.meas_Py)), range(len(self.meas_Py))]))
         plt.show()

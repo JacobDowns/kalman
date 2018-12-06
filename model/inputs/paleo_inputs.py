@@ -103,8 +103,8 @@ class PaleoInputs(CommonInputs):
         ### Load Buizert seasonal temp. anomalies
         ########################################################################
         
-        dt_years = np.loadtxt('paleo_data/buizert_ages.txt')
-        dt_vals = np.loadtxt('paleo_data/buizert_dts.txt')
+        dt_years = np.loadtxt('paleo_data/badgeley_ages.txt')
+        dt_vals = np.loadtxt('paleo_data/badgeley_dts.txt')
 
         # Interpolate the anomalies
         self.dt_functions = []
