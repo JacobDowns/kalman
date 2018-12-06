@@ -15,8 +15,8 @@ L2_obs  = np.array([424777.2650658561, 394942.08036138373, 332430.9181651594, 30
 # Model ages
 ages = np.loadtxt('transform_final/center2/opt1/opt_age.txt')
 # Optimized lengths + errors
-L1 = np.loadtxt('transform_final/center2/opt1/opt_L.txt') / 1e3
-v1 = np.loadtxt('transform_final/center2/opt1/y_v.txt') / 1e3
+L1 = np.loadtxt('transform_final/center3/opt1/opt_L.txt') / 1e3
+v1 = np.loadtxt('transform_final/center3/opt1/y_v.txt') / 1e3
 L2 = np.loadtxt('transform_final/south2/opt1/opt_L.txt') / 1e3
 v2 = np.loadtxt('transform_final/south2/opt1/y_v.txt') / 1e3
 

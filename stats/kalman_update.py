@@ -48,6 +48,11 @@ class KalmanUpdate(object):
         S += R
         
         y_v = np.sqrt(S[range(len(S)), range(len(S))])
+
+        #plt.plot(y_v)
+        plt.imshow(S)
+        plt.show()
+        quit()
        
 
         # Compute predicted measurement covariance

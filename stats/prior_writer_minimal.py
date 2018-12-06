@@ -30,7 +30,7 @@ class PriorWriter(object):
             x = np.loadtxt(input_dict['x'])
         else :
             chi = np.linspace(0., 1., len(dt_years))
-            x = .45*np.ones(len(dt_years)) - 0.45*chi**2
+            x = .3*np.ones(len(dt_years)) - 0.3*chi**2
 
 
         ### Define prior covariance 
@@ -51,6 +51,10 @@ class PriorWriter(object):
         # Covariance 
         P = np.linalg.inv(Q)
 
+        plt.plot(2.0*np.sqrt(P[range(len(P)), range(len(P))]))
+        plt.show()
+        #quit()
+
         # Save prior mean and covariance
         np.savetxt(out_dir + 'prior_m.txt', x)
         np.savetxt(out_dir + 'prior_P.txt', P)
@@ -59,13 +63,13 @@ class PriorWriter(object):
         ### Plot samples from prior
         ##########################################################################
 
-        samples = np.random.multivariate_normal(x, P, 100)
+        samples = np.random.multivariate_normal(0.*x, P, 100)
 
         for i in range(samples.shape[0]):
             plt.plot(samples[i])
         plt.show()
 
-        
+
         ### Compute sigma points
         ##########################################################################
         # Generate Julier sigma points
@@ -105,11 +109,10 @@ class PriorWriter(object):
             P_n += w_i*np.outer(x_i - x, x_i - x)
             plt.plot(x_i)
 
-
         plt.show()
         print(abs(x_n - x).max())
         print(abs(P_n - P).max())
-        
+
         # Save the mean and covariance weights, as well as the sigma points
         np.savetxt(out_dir + 'm_weights.txt', weights)
         np.savetxt(out_dir + 'c_weights.txt', weights)

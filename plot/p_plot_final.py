@@ -16,10 +16,10 @@ ages1 = np.loadtxt('transform_final/center2/opt1/opt_age.txt')
 L1 = np.loadtxt('transform_final/center2/opt1/opt_L.txt')
 L2 = np.loadtxt('transform_final/south2/opt1/opt_L.txt')
 
-p1 = np.loadtxt('transform_final/center2/opt1/opt_m.txt')
+p1 = np.loadtxt('transform_final/center3/opt1/opt_m.txt')
 p2 = np.loadtxt('transform_final/south2/opt1/opt_m.txt')
 
-v1 = np.loadtxt('transform_final/center2/opt1/v.txt')
+v1 = np.loadtxt('transform_final/center3/opt1/v.txt')
 v2 = np.loadtxt('transform_final/south2/opt1/v.txt')
 
 p1t = np.loadtxt('transform_final/center2/opt1/opt_p.txt')/ L1
@@ -27,9 +27,9 @@ p2t = np.loadtxt('transform_final/south2/opt1/opt_p.txt') / L2
 
 plt.plot(ages, p1, color = 'k', marker = 'o', lw = 4.5, ms=10)
 plt.plot(ages, p1, color = current_palette[0], marker = 'o', lw = 3.5, ms=8, label = 'North')
-#plt.fill_between(ages, p1 - 2.0*np.sqrt(v1), p1 + 2.0*np.sqrt(v1), color = 'k', alpha = 0.5)
-plt.plot(ages1, p1t, color = 'k', lw = 3.2, alpha = 0.8)
-plt.plot(ages1, p1t, color = current_palette[0], lw = 2.5, alpha = 0.8)
+plt.fill_between(ages, p1 - 2.0*np.sqrt(v1), p1 + 2.0*np.sqrt(v1), color = 'k', alpha = 0.5)
+#plt.plot(ages1, p1t, color = 'k', lw = 3.2, alpha = 0.8)
+#plt.plot(ages1, p1t, color = current_palette[0], lw = 2.5, alpha = 0.8)
 
 plt.plot(ages, p2, color = 'k', marker = 'o', lw = 4.5, ms=10)
 plt.plot(ages, p2, color = current_palette[3], marker = 'o', lw = 3.2, ms=8, label = 'South')
