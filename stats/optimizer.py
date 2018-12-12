@@ -34,13 +34,13 @@ class Optimizer(object):
         #############################################################
         
         # Measurement ages
-        self.meas_ages = np.loadtxt('paleo_inputs/y_ages.txt')
+        self.meas_ages = input_dict['y_ages']        
         # Measurement mean
         self.meas_y = input_dict['y']
         # Measurement covariance
         self.meas_Py = input_dict['Py']
         # Measurement indexes
-        self.meas_indexes = range(0, len(self.model_ages), 25*3)
+        self.meas_indexes = list(range(0, len(self.model_ages), 25*3))
         # Restrict transformed sigma points
         self.Y = self.Y[:,self.meas_indexes]
 

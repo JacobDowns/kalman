@@ -65,7 +65,7 @@ class CommonRunner(object):
             self.b = input_dict['b']
             
         # Start age
-        self.start_age = -11.62e3 + 66.
+        self.start_age = -12e3
         if 'start_age' in input_dict:
             self.start_age = input_dict['start_age']
             

@@ -15,13 +15,13 @@ inputs = {}
 
 # Input file name
 if flowline == 'south':
-    inputs['in_file'] = 'paleo_inputs/south_steady.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/south_steady_seasonal'
-    inputs['L_mu'] = 424778.
+    inputs['in_file'] = 'paleo_inputs/south_steady_12_1.h5'
+    inputs['steady_file_name'] = 'paleo_inputs/south_steady_12_2'
+    inputs['L_mu'] = 424778. + 15e3
 if flowline == 'center':
-    inputs['in_file'] = 'paleo_inputs/center_steady.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/center_steady_seasonal'
-    inputs['L_mu'] = 406893.    
+    inputs['in_file'] = 'paleo_inputs/center_steady_12_1.h5'
+    inputs['steady_file_name'] = 'paleo_inputs/center_steady_12_2'
+    inputs['L_mu'] = 406893. + 15e3    
     
 ### Model inputs
 #######################################################
@@ -29,7 +29,7 @@ if flowline == 'center':
 # Time step
 inputs['dt'] = 3.
 # Number of model time steps
-inputs['N'] = 9000
+inputs['N'] = 3000
 # Tuned basal traction
 inputs['beta2'] = 1.6e-3
 

@@ -17,7 +17,7 @@ class PriorWriter(object):
             N = 45
 
         # Delta temp. grid years
-        start_age = -11.62e3 + 66.
+        start_age = -12e3
         # + 1 to avoid interpolation issues...
         dt_years = start_age + np.linspace(0., abs(start_age)+1., N)
         np.savetxt(out_dir + 'sigma_ts.txt', dt_years)
@@ -30,7 +30,7 @@ class PriorWriter(object):
             x = np.loadtxt(input_dict['x'])
         else :
             chi = np.linspace(0., 1., len(dt_years))
-            x = .3*np.ones(len(dt_years)) - 0.3*chi**2
+            x = .5*np.ones(len(dt_years)) - 0.5*chi**2
 
 
         ### Define prior covariance 
@@ -81,7 +81,7 @@ class PriorWriter(object):
         ##############################################
 
         # Compute X matrix where each row is a sigma point
-        w_0 = 0.5
+        w_0 = 0.75
         alpha = np.sqrt((1. - w_0) / N)
         C = np.linalg.cholesky(np.diag(np.ones(N), 0) - (alpha**2)*np.ones((N, N)))
         W = np.diag(np.diag(np.linalg.multi_dot([w_0*(alpha**2)*np.linalg.inv(C), np.ones((N,N)), np.linalg.inv(C.T)])), 0)
