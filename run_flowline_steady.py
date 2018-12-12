@@ -15,13 +15,13 @@ inputs = {}
 
 # Input file name
 if flowline == 'south':
-    inputs['in_file'] = 'paleo_inputs/south_steady_12_1.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/south_steady_12_2'
-    inputs['L_mu'] = 424778. + 15e3
+    inputs['in_file'] = 'paleo_inputs/south_steady_13.h5'
+    inputs['steady_file_name'] = 'paleo_inputs/south_steady_13_1'
+    inputs['L_mu'] = 424778. + 5e3
 if flowline == 'center':
-    inputs['in_file'] = 'paleo_inputs/center_steady_12_1.h5'
-    inputs['steady_file_name'] = 'paleo_inputs/center_steady_12_2'
-    inputs['L_mu'] = 406893. + 15e3    
+    inputs['in_file'] = 'paleo_inputs/center_steady_13.h5'
+    inputs['steady_file_name'] = 'paleo_inputs/center_steady_13_1'
+    inputs['L_mu'] = 406893. + 5e3    
     
 ### Model inputs
 #######################################################
