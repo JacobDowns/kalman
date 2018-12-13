@@ -34,7 +34,7 @@ v = np.loadtxt(in_dir + '/' + opt_dir  + '/v.txt')
 # Interpolated delta temp. function 
 inputs['precip_param_func'] = interp1d(sigma_ts, precip_param_opt, kind = 'linear')
 # Number of model time steps
-inputs['N'] = int(abs(sigma_ts.min())*3)
+inputs['N'] = int(abs(sigma_ts.max() - sigma_ts.min())*3)
 plt.plot(sigma_ts, precip_param_opt)
 plt.plot(sigma_ts, precip_param_opt + 2.*np.sqrt(v))
 plt.plot(sigma_ts, precip_param_opt - 2.*np.sqrt(v))
@@ -50,3 +50,5 @@ np.savetxt(in_dir + '/' + opt_dir + '/opt_age.txt', ages)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_L.txt', Ls)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_H.txt', Hs)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_p.txt', Ps)
+
+tr.model.write_steady_file('paleo_inputs/center_steady_start')

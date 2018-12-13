@@ -11,15 +11,13 @@ class PriorWriter(object):
         # Output directory
         out_dir = input_dict['out_dir']
         # State vector length 
-        if 'N' in input_dict:
-            N = input_dict['N']
-        else :
-            N = 45
-
-        # Delta temp. grid years
-        start_age = -12e3
+        N = input_dict['N']
+        # Start age
+        start_age = input_dict['start_age']
+        # End age
+        end_age = input_dict['end_age']
         # + 1 to avoid interpolation issues...
-        dt_years = start_age + np.linspace(0., abs(start_age)+1., N)
+        dt_years = np.linspace(start_age, end_age+1., N)
         np.savetxt(out_dir + 'sigma_ts.txt', dt_years)
 
         ### Define prior mean
@@ -27,7 +25,7 @@ class PriorWriter(object):
         
         if 'x' in input_dict:
             # Load a custom prior
-            x = np.loadtxt(input_dict['x'])
+            x = input_dict['x']
         else :
             chi = np.linspace(0., 1., len(dt_years))
             x = .5*np.ones(len(dt_years)) - 0.5*chi**2

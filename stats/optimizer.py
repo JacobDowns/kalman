@@ -37,10 +37,12 @@ class Optimizer(object):
         self.meas_ages = input_dict['y_ages']        
         # Measurement mean
         self.meas_y = input_dict['y']
+
+        dt = int(self.meas_ages[1] - self.meas_ages[0])
         # Measurement covariance
         self.meas_Py = input_dict['Py']
         # Measurement indexes
-        self.meas_indexes = list(range(0, len(self.model_ages), 25*3))
+        self.meas_indexes = list(range(0, len(self.model_ages), dt*3))
         # Restrict transformed sigma points
         self.Y = self.Y[:,self.meas_indexes]
 

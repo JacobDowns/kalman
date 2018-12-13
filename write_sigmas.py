@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 import os.path 
 
-in_dir = 'transform_early/center2_new/'
+in_dir = sys.argv[1]
 X = np.loadtxt(in_dir + 'X.txt')
 Y0 = np.loadtxt(in_dir + 'Y_0.txt')
 Y = np.zeros((X.shape[0], len(Y0)))

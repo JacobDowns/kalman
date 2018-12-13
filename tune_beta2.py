@@ -19,7 +19,7 @@ model_inputs = PaleoInputs('paleo_inputs/is_real.h5', inputs)
 model = ForwardIceModel(model_inputs, 'out', 'out')
 
 #dolfin.plot(model.H0_c)
-for i in range(200):
+for i in range(300):
     model.step(0., True)
 
 
