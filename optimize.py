@@ -10,34 +10,18 @@ inputs = {}
 ### Center
 #############################################################
 
-if flowline == 'center_init':
-    inputs['in_dir'] = 'transform_init/center/'
-    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages_init.txt')
-    inputs['y'] = np.loadtxt('paleo_inputs/y_init.txt')
-    inputs['Py'] = 0.1*np.loadtxt('paleo_inputs/Py_init.txt')
+if flowline == 'center1':
+    inputs['in_dir'] = 'transform_start/center1/'
+    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_c.txt')
+    inputs['Py'] = .1*np.loadtxt('paleo_inputs/Py_c.txt')
     opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform_init/center/opt1/')
+    opt.optimize(out_dir = 'transform_start/center1/opt1/')
 
-if flowline == 'center2_init':
-    inputs['in_dir'] = 'transform_init/center2/'
-    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages_init.txt')
-    inputs['y'] = np.loadtxt('paleo_inputs/y_init.txt')
-    inputs['Py'] = 0.1*np.loadtxt('paleo_inputs/Py_init.txt')
+if flowline == 'center2':
+    inputs['in_dir'] = 'transform_start/center2/'
+    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_c.txt')
+    inputs['Py'] = 1.*np.loadtxt('paleo_inputs/Py_c.txt')
     opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform_init/center2/opt1/')
-
-if flowline == 'center3_init':
-    inputs['in_dir'] = 'transform_init/center3/'
-    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages_init.txt')
-    inputs['y'] = np.loadtxt('paleo_inputs/y_init.txt')
-    inputs['Py'] = np.loadtxt('paleo_inputs/Py_init.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform_init/center3/opt1/')
-
-if flowline == 'center6_init':
-    inputs['in_dir'] = 'transform_init/center6/'
-    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages_init.txt')
-    inputs['y'] = np.loadtxt('paleo_inputs/y_init.txt')
-    inputs['Py'] = np.loadtxt('paleo_inputs/Py_init.txt')
-    opt = Optimizer(inputs)
-    opt.optimize(out_dir = 'transform_init/center6/opt1/')
+    opt.optimize(out_dir = 'transform_start/center2/opt1/')

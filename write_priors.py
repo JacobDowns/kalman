@@ -8,14 +8,16 @@ inputs = {}
 # Directory to write prior
 inputs['out_dir'] = sys.argv[1]
 # Sigma point times
-N = 10
-sigma_ts = np.linspace(-12554., -11554.+1., N)
+N = 44
+sigma_ts = np.linspace(-11554., 1., N)
 inputs['sigma_ts'] = sigma_ts
 # Set prior
 #inputs['x'] = 0.0*np.ones(N)
-inputs['x'] = np.loadtxt('transform_init/center5/opt1/opt_m.txt')
+chi = np.linspace(0., 1., N)
+#inputs['x'] = 0.5*(1. - chi)
+inputs['x'] = np.loadtxt('transform_start/center1/opt1/opt_m.txt')
 # Prior precision matrix
-delta = 1e3
+delta = 20e3
 Q = delta*np.asarray(poisson((N,)).todense())
 # Prior covariance
 inputs['Px'] = np.linalg.inv(Q)

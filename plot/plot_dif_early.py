@@ -13,15 +13,15 @@ L1_obs = np.array([426893, 406878.12855486432, 396313.20004890749, 321224.045322
 L2_obs  = np.array([424777.2650658561, 394942.08036138373, 332430.9181651594, 303738.499327732, 296659.0156905292, 284686.5963970118]) / 1e3
 
 # Model ages
-ages = np.loadtxt('transform_early/center1_new/opt2/opt_age.txt')
+ages = np.loadtxt('transform_start/center2/opt1/opt_age.txt')
 # Optimized lengths + errors
-L1 = np.loadtxt('transform_early/center1_new/opt2/opt_L.txt') / 1e3
+L1 = np.loadtxt('transform_start/center2/opt1/opt_L.txt') / 1e3
 #v1 = np.loadtxt('transform_early/center1/opt1/y_v.txt') / 1e3
-L2 = np.loadtxt('transform_early/center1_new/opt2/opt_L.txt') / 1e3
+L2 = np.loadtxt('transform_start/center2/opt1/opt_L.txt') / 1e3
 #v2 = np.loadtxt('transform_early/center2/opt2/y_v.txt') / 1e3
 
-yc = np.loadtxt('paleo_inputs/y_c1_e.txt') / 1e3
-ys = np.loadtxt('paleo_inputs/y_sf.txt') / 1e3
+yc = np.loadtxt('paleo_inputs/y_c.txt') / 1e3
+ys = np.loadtxt('paleo_inputs/y_s.txt') / 1e3
 
 # Measurement ages
 meas_indexes = range(0, len(ages), 25*3)
