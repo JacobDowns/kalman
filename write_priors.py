@@ -13,7 +13,7 @@ sigma_ts = np.linspace(-11554., 1., N)
 inputs['sigma_ts'] = sigma_ts
 # Set prior
 #inputs['x'] = 0.0*np.ones(N)
-chi = np.linspace(0., 1., N)
+#chi = np.linspace(0., 1., N)
 #inputs['x'] = 0.5*(1. - chi)
 inputs['x'] = np.loadtxt('transform_start/center1/opt1/opt_m.txt')
 # Prior precision matrix
