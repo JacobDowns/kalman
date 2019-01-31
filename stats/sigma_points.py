@@ -99,3 +99,12 @@ class SigmaPoints(object):
             Cf += w_c[i]*np.outer(X_new[i,:] - xf, X_new[i,:] - xf)"""
 
         return X_new, wm, wc
+
+
+    # Just take random draws from the distribution (for testing)
+    def __get_random_set__(self, num_draws):
+        samples = np.random.multivariate_normal(self.x, self.Pxx, num_draws)
+        w = np.ones(num_draws)
+        return samples, w, w
+        
+        

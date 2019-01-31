@@ -17,12 +17,13 @@ inputs['sigma_ts'] = sigma_ts
 #inputs['x'] = 0.5*(1. - chi)
 inputs['x'] = np.loadtxt('transform_start/center1/opt1/opt_m.txt')
 # Prior precision matrix
-delta = 20e3
+delta = 2.5e3
 Q = delta*np.asarray(poisson((N,)).todense())
 # Prior covariance
-inputs['Px'] = np.linalg.inv(Q)
+inputs['Pxx'] = np.linalg.inv(Q)
+#inputs['Pxx'] = np.loadtxt('transform_start/center2/opt/opt_P.txt')
 # The first weight for tuning
-inputs['w_0'] = 0.5
+inputs['w0'] = 0.5
                         
     
 pw = PriorWriter(inputs)
