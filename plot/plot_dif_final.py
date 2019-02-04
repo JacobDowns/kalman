@@ -13,15 +13,15 @@ L1_obs = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 2
 L2_obs  = np.array([424777.2650658561, 394942.08036138373, 332430.9181651594, 303738.499327732, 296659.0156905292, 284686.5963970118]) / 1e3
 
 # Model ages
-ages = np.loadtxt('transform_final/center2/opt1/opt_age.txt')
+ages = np.loadtxt('transform_start/center3/opt2/opt_age.txt')
 # Optimized lengths + errors
-L1 = np.loadtxt('transform_final/center3/opt1/opt_L.txt') / 1e3
-v1 = np.loadtxt('transform_final/center3/opt1/y_v.txt') / 1e3
-L2 = np.loadtxt('transform_final/south2/opt1/opt_L.txt') / 1e3
-v2 = np.loadtxt('transform_final/south2/opt1/y_v.txt') / 1e3
+L1 = np.loadtxt('transform_start/center3/opt2/opt_L.txt') / 1e3
+v1 = np.loadtxt('transform_start/center3/opt2/y_v.txt') / 1e3
+L2 = np.loadtxt('transform_start/south2/opt1/opt_L.txt') / 1e3
+v2 = np.loadtxt('transform_start/south2/opt1/y_v.txt') / 1e3
 
-yc = np.loadtxt('paleo_inputs/y_cf.txt') / 1e3
-ys = np.loadtxt('paleo_inputs/y_sf.txt') / 1e3
+yc = np.loadtxt('paleo_inputs/y_c.txt') / 1e3
+ys = np.loadtxt('paleo_inputs/y_s.txt') / 1e3
 
 # Measurement ages
 meas_indexes = range(0, len(ages), 25*3)
@@ -29,8 +29,8 @@ y_ages = ages[meas_indexes]
 # Observation ages
 obs_ages = np.array([-11554., -10284., -9024., -8064., -7234., 0.])
 # Observation variances
-obs_sigmas = np.array([0.4, 0.2, 0.2, 0.3, 0.3, 0.1])*1e3 / 2.
-g
+obs_sigmas = np.array([0.4, 0.2, 0.2, 0.3, 0.3, 0.1])*1e3/2.
+
 
 ### Plot center
 #################################################
@@ -41,7 +41,7 @@ for i in [0, 1, 2, 3, 4]:
     plt.plot([ages.min(), ages.max()], [L1_obs[i], L1_obs[i]], 'gray', linestyle=':', alpha = 0.9, lw = 2)
 
 plt.plot(ages, L1, 'k', lw=3.5)
-#plt.plot(y_ages, yc, 'k--', lw = 2)
+plt.plot(y_ages, yc, 'k--', lw = 2)
 #plt.plot(y_ages, yc, 'k--', lw=3.5)
 #plt.plot(age[meas_indexes], y_c, 'k--', lw = 3)
 #plt.grid(color='slategray', linestyle=':', linewidth=3, axis='x')
@@ -85,7 +85,7 @@ for i in [0, 1, 2, 3, 4]:
     plt.plot([ages.min(), ages.max()], [L2_obs[i], L2_obs[i]], 'gray', linestyle=':', alpha = 0.9, lw = 2)
 
 plt.plot(ages, L2, 'k', lw=3.5)
-#plt.plot(y_ages, ys, 'k--', lw=3.5)
+plt.plot(y_ages, ys, 'k--', lw=3.5)
 
 plt.xlim([ages.min(), ages.max()])
 
