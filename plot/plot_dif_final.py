@@ -8,20 +8,20 @@ matplotlib.rcParams.update({'font.size': 18})
 fig = plt.figure(figsize=(10,10))
 
 # Center 
-L1_obs = np.array([406878.12855486432, 396313.20004890749, 321224.04532276397, 292845.40895793668, 288562.44342502725, 279753.70997966686]) / 1e3
+L1_obs = np.array([406878, 396313, 321224, 292845, 288562, 279753]) / 1e3
 # south
-L2_obs  = np.array([424777.2650658561, 394942.08036138373, 332430.9181651594, 303738.499327732, 296659.0156905292, 284686.5963970118]) / 1e3
+L2_obs  = np.array([424777, 394942, 332430, 303738, 296659, 284686]) / 1e3
 
 # Model ages
-ages = np.loadtxt('transform_final/center2/opt1/opt_age.txt')
+ages = np.loadtxt('../transform_final/center2/opt1/opt_age.txt')
 # Optimized lengths + errors
-L1 = np.loadtxt('transform_final/center2/opt1/opt_L.txt') / 1e3
-v1 = np.loadtxt('transform_final/center2/opt1/y_v.txt') / 1e3
-L2 = np.loadtxt('transform_final/south2/opt1/opt_L.txt') / 1e3
-v2 = np.loadtxt('transform_final/south2/opt1/y_v.txt') / 1e3
+L1 = np.loadtxt('../transform_final/center2/opt1/opt_L.txt') / 1e3
+v1 = np.loadtxt('../transform_final/center2/opt1/y_v.txt') / 1e3
+L2 = np.loadtxt('../transform_final/south2/opt1/opt_L.txt') / 1e3
+v2 = np.loadtxt('../transform_final/south2/opt1/y_v.txt') / 1e3
 
-yc = np.loadtxt('paleo_inputs/y_c.txt') / 1e3
-ys = np.loadtxt('paleo_inputs/y_s.txt') / 1e3
+yc = np.loadtxt('../paleo_inputs/y_c.txt') / 1e3
+ys = np.loadtxt('../paleo_inputs/y_s.txt') / 1e3
 
 # Measurement ages
 meas_indexes = range(0, len(ages), 25*3)
@@ -105,6 +105,6 @@ plt.ylabel('Glacier Length (km)')
 plt.xlabel('Age (ka BP)')
     
 plt.tight_layout()
-plt.savefig('fit_final.png', dpi=500)    
+plt.savefig('images/fit_final.png', dpi=500)    
 #plt.show()
 

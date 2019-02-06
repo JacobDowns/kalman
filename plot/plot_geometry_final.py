@@ -30,7 +30,7 @@ current_palette = sns.color_palette()
 
 ### Center
 ################################################################################
-model_inputs = PaleoInputs('paleo_inputs/center_steady_seasonal.h5', {})
+model_inputs = PaleoInputs('transform_final/center1/steady.h5', {})
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 xs = model_inputs.mesh.coordinates() * model_inputs.L_init
@@ -62,7 +62,7 @@ plt.ylabel('Elevation (m)')
 
 ### South
 ################################################################################
-model_inputs = PaleoInputs('paleo_inputs/south_steady_seasonal.h5', {})
+model_inputs = PaleoInputs('transform_final/south1/steady.h5', {})
 model = ForwardIceModel(model_inputs, "out", "paleo")
 
 xs = model_inputs.mesh.coordinates() * model_inputs.L_init
