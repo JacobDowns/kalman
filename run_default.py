@@ -16,7 +16,7 @@ out_dir = 'default_runs/south1/'
 # Time step
 inputs['dt'] = 1./3.
 # Number of time steps (this is dumb)
-inputs['N'] = 4400*3#35058
+inputs['N'] = 4400*3
 # Tuned basal traction
 inputs['beta2'] = 1.6e-3
 

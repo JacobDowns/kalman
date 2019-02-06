@@ -26,6 +26,14 @@ if flowline == 'center2':
     opt = Optimizer(inputs)
     opt.optimize(out_dir = 'transform_final/center2/opt1/')
 
+if flowline == 'center3':
+    inputs['in_dir'] = 'transform_final/center3/'
+    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_c.txt')
+    inputs['Py'] = 1.*np.loadtxt('paleo_inputs/Py_c.txt')
+    opt = Optimizer(inputs)
+    opt.optimize(out_dir = 'transform_final/center3/opt1/')
+
 
 ### South
 #############################################################

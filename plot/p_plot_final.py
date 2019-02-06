@@ -18,6 +18,14 @@ L2 = np.loadtxt('../transform_final/south2/opt1/opt_L.txt')
 
 p1 = np.loadtxt('../transform_final/center2/opt1/opt_m.txt')
 p2 = np.loadtxt('../transform_final/south2/opt1/opt_m.txt')
+p3 = np.loadtxt('../transform_final/center3/opt1/opt_m.txt')
+
+plt.plot(p1, 'k')
+plt.plot(p3, 'r')
+plt.show()
+
+
+quit()
 
 v1 = np.loadtxt('../transform_final/center2/opt1/v.txt')
 v2 = np.loadtxt('../transform_final/south2/opt1/v.txt')
