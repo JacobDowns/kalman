@@ -34,6 +34,22 @@ if flowline == 'center3':
     opt = Optimizer(inputs)
     opt.optimize(out_dir = 'transform_final/center3/opt1/')
 
+if flowline == 'center3_high':
+    inputs['in_dir'] = 'transform_final/center3_high/'
+    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_c.txt')
+    inputs['Py'] = 1.*np.loadtxt('paleo_inputs/Py_c.txt')
+    opt = Optimizer(inputs)
+    opt.optimize(out_dir = 'transform_final/center3_high/opt1/')
+
+if flowline == 'center3_low':
+    inputs['in_dir'] = 'transform_final/center3_low/'
+    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_c.txt')
+    inputs['Py'] = 1.*np.loadtxt('paleo_inputs/Py_c.txt')
+    opt = Optimizer(inputs)
+    opt.optimize(out_dir = 'transform_final/center3_low/opt1/')
+
 
 ### South
 #############################################################
@@ -53,3 +69,19 @@ if flowline == 'south2':
     inputs['Py'] = 1.*np.loadtxt('paleo_inputs/Py_s.txt')
     opt = Optimizer(inputs)
     opt.optimize(out_dir = 'transform_final/south2/opt1/')
+
+if flowline == 'south2_high':
+    inputs['in_dir'] = 'transform_final/south2_high/'
+    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_s.txt')
+    inputs['Py'] = 1.*np.loadtxt('paleo_inputs/Py_s.txt')
+    opt = Optimizer(inputs)
+    opt.optimize(out_dir = 'transform_final/south2_high/opt1/')
+
+if flowline == 'south2_low':
+    inputs['in_dir'] = 'transform_final/south2_low/'
+    inputs['y_ages'] = np.loadtxt('paleo_inputs/y_ages.txt')
+    inputs['y'] = np.loadtxt('paleo_inputs/y_s.txt')
+    inputs['Py'] = 1.*np.loadtxt('paleo_inputs/Py_s.txt')
+    opt = Optimizer(inputs)
+    opt.optimize(out_dir = 'transform_final/south2_low/opt1/')
