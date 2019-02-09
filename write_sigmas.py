@@ -15,9 +15,9 @@ for i in range(X.shape[0]):
         X_i = X[i, :]
         Y[i,:] = Y_i
 
-        print(X_i)
-        print()
-        print(Y_i)
+        print(X_i[-5:])
+        #print()
+        print(Y_i.max())
         print ()
         plt.plot(Y_i)
     else:

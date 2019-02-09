@@ -21,10 +21,10 @@ class SigmaRunner(object):
         self.num_sigma_points = self.X.shape[0]
         # Load sigma times
         self.sigma_ts = np.loadtxt(self.in_dir + 'sigma_ts.txt')
-        self.N1 = len(self.sigma_ts)
+        self.n = len(self.sigma_ts)
         # Load sensitivity parameter names
         self.sensitivity_params = np.loadtxt(self.in_dir + 'sensitivity_params.txt', dtype = str)
-        self.N2 = len(self.sensitivity_params)
+        self.n_p = len(self.sensitivity_params)
         # Model input file
         self.input_file = input_dict['in_file']
         
@@ -34,42 +34,18 @@ class SigmaRunner(object):
 
         # Input dictionary
         self.inputs = {}
+        # Input file name
+        self.inputs['in_file'] = input_dict['in_file']
         # Time step
         self.inputs['dt'] = 1./3.
         # Number of model time steps
-        self.inputs['N'] = 11590*3
-
-        ### Use different steady states depending on the 
-        #######################################################
-
-        # The steady state index corresponding to each sigma point
-        steady_indexes = np.zeros(self.X.shape[0], dtype = int)
-        steady_indexes[self.X[:, -6:].argmin(axis = 0)] = range(1,7)
-        steady_indexes[self.X[:, -6:].argmax(axis = 0)] = range(7,13)
-        self.steady_indexes = steady_indexes
-
-        print(self.X[:, -6:].argmin(axis = 0))
-        print(self.X[:, -6:].argmax(axis = 0))
-
-        x0 = self.X[0, :]
-        x1 = self.X[102, :]
-        x2 = self.X[51, :]
-
-        plt.plot(x0[:-6])
-        plt.plot(x1[:-6])
-        plt.plot(x2[:-6])
-        plt.show()
-
-        #print(x1)
-        #print(x2)
-        
-        quit()
+        self.inputs['N'] = int(abs(self.sigma_ts.max() - self.sigma_ts.min()))*3
         
         
     # Run several sigma points
     def run(self):
 
-        # Run several delta temp. sigma points through the forward model
+        # Run several sigma points
         for i in range(self.index*self.runs, min(self.num_sigma_points, self.index*self.runs + self.runs)):
             print(i)
            
@@ -84,25 +60,19 @@ class SigmaRunner(object):
 
                 # Copy the model input dictionary
                 inputs = copy.deepcopy(self.inputs)
-                # Input file
-                inputs['in_file'] = self.in_dir + 'steady_states/steady_' + str(self.steady_indexes[i]) + '.h5'
                 # Load the sigma point
                 X_i = self.X[i]
                 # Get the delta P function
-                delta_P = X_i[0:self.N1]
+                delta_P = X_i[0:self.n]
                 inputs['precip_param_func'] = interp1d(self.sigma_ts, delta_P, kind = 'linear')
                 # Get the sensitivity param. values
-                param_vals = X_i[self.N1:]
+                param_vals = X_i[self.n:]
 
                 # Set sensitivity params. 
-                for j in range(self.N2):
-                    if self.sensitivity_params[j] == 'A':
-                        print('A', param_vals[j])
-                        inputs['b'] = (param_vals[j]*60**2*24*365)**(-1./3.)
-                    else :
-                        inputs[self.sensitivity_params[j]] = param_vals[j]
+                for j in range(self.n_p):
+                    inputs[self.sensitivity_params[j]] = param_vals[j]
 
-                        
+
                 ### Perform model run 
                 #######################################################
 
