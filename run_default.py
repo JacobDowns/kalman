@@ -11,7 +11,7 @@ Perform a model run with a delta P = 0.
 # Input dictionary
 inputs = {}
 # Input file name
-inputs['in_file'] = 'paleo_inputs/south_steady_seasonal.h5'
+inputs['in_file'] = 'transform_final/south1/steady.h5'
 out_dir = 'default_runs/south1/'
 # Time step
 inputs['dt'] = 1./3.

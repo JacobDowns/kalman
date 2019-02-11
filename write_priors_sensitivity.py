@@ -12,7 +12,7 @@ N = 44
 sigma_ts = np.linspace(-11554., 1., N)
 inputs['sigma_ts'] = sigma_ts
 # Set prior
-inputs['x'] = np.loadtxt('transform_final/center3/opt1/opt_m.txt')
+inputs['x'] = np.loadtxt('transform_final/south2/opt1/opt_m.txt')
 # Prior precision matrix
 delta = 7.5e3
 Q = delta*np.asarray(poisson((N,)).todense())

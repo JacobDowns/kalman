@@ -6,7 +6,7 @@ from scipy.interpolate import interp1d
 
 class KalmanUpdate(object):
 
-    def __init__(self, prior_m, prior_P, X, Y, m_weights, c_weights, obs_indexes):
+    def __init__(self, prior_m, prior_P, X, Y, m_weights, c_weights):
 
         # Prior mean
         self.m = prior_m
@@ -47,15 +47,7 @@ class KalmanUpdate(object):
 
         np.savetxt('mu.txt', mu)
         np.savetxt('S.txt', S)
-        #plt.imshow(S)
-        #plt.colorbar()
-        #plt.show()
-        plt.plot(2.*np.sqrt(S[range(len(S)), range(len(S))]))
-        plt.show()
-        #plt.imshow(S)
-        #plt.colorbar()
-        #plt.show()
-        quit()
+        
  
         # Compute predicted measurement covariance
         C = np.zeros((self.X.shape[1], self.Y.shape[1]))
@@ -99,17 +91,7 @@ class KalmanUpdate(object):
         K = np.dot(C, np.linalg.inv(S))
         m_p = m + np.dot(K, y - mu)
         P_p = P - np.dot(np.dot(K, S), K.T)
-        v = P_p[range(len(P_p)), range(len(P_p))]
-        plt.imshow(P)
-        plt.colorbar()
-        plt.show()
-        quit()
-        
-        print(m_p[-6:])
-        plt.plot(m_p[0:-6])
-        plt.plot(m_p[0:-6] + 2.0*np.sqrt(v)[0:-6])
-        plt.plot(m_p[0:-6] - 2.0*np.sqrt(v)[0:-6])
-        plt.show()
-        quit()
+        v = np.diag(P_p)
+    
         return m_p, P_p, mu, K
 

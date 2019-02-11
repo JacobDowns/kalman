@@ -30,7 +30,7 @@ class Optimizer(object):
         self.c_weights = np.loadtxt(self.in_dir + 'c_weights.txt')
         
 
-        ### Use a specially build measurement mean and covariance matrix
+        ### Use a specially built measurement mean and covariance matrix
         #############################################################
         
         # Measurement ages
