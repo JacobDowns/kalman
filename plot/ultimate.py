@@ -32,12 +32,12 @@ dt_dj = np.loadtxt('../paleo_data/jensen_dye3.txt')
 ages_dj = (dt_dj[:,0] - 1950.)
 dt_dj = dt_dj[:,1]
 dt_dj -= dt_dj[-1]
-dt_dj = dt_dj[:, None].repeat(12, axis=1).T
+dt_dj = dt_dj[:, None].repeat(12, axis=1)
 
-"""
+
 np.savetxt('../paleo_data/jensen_ages.txt', ages_dj)
 np.savetxt('../paleo_data/jensen_dts.txt', dt_dj)
-"""
+quit()
 
 dt_avg = np.zeros(len(dt_years))
 for i in range(12):

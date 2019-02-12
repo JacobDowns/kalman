@@ -33,6 +33,8 @@ inputs['dt'] = 3.
 inputs['N'] = 5000
 # Tuned basal traction
 inputs['beta2'] = 1.6e-3
+# Start age
+inputs['start_age'] = -11.62e3 + 66. - 1000.
 
 
 ### Perform model run 
