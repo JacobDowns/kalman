@@ -56,6 +56,7 @@ class SigmaRunner(object):
                 # Interpolated delta temp
                 X_i = self.sigma_points[i]
                 inputs['precip_param_func'] = interp1d(self.sigma_ts, X_i, kind = 'linear')
+                inputs['start_age'] = self.sigma_ts[0]
                 
 
                 ### Perform model run 

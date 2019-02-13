@@ -18,7 +18,7 @@ start = -11.6
 ############################################################
 
 ax = fig.add_subplot(3,1,1)
-ax.axvspan(-10., -8., alpha=0.33, color='gray')
+#ax.axvspan(-10., -8., alpha=0.33, color='gray')
 current_palette = sns.color_palette("coolwarm", 12)
 
 indexes = [0, 1, 2, 3, 4, 5, 6,  7,  8, 9, 10, 11]
@@ -35,9 +35,9 @@ dt_dj -= dt_dj[-1]
 dt_dj = dt_dj[:, None].repeat(12, axis=1)
 
 
-np.savetxt('../paleo_data/jensen_ages.txt', ages_dj)
-np.savetxt('../paleo_data/jensen_dts.txt', dt_dj)
-quit()
+#np.savetxt('../paleo_data/jensen_ages.txt', ages_dj)
+#np.savetxt('../paleo_data/jensen_dts.txt', dt_dj)
+#quit()
 
 dt_avg = np.zeros(len(dt_years))
 for i in range(12):
@@ -47,14 +47,13 @@ for i in range(12):
     dt_avg += (1./12.)*dt_vals[i]
 
 dt_smooth = signal.convolve(dt_vals[i], ksmooth, mode = 'same')
-#plt.plot(dt_years, dt_smooth, color = 'w', lw = 5.5)
+plt.plot(dt_years, dt_smooth, color = 'w', lw = 5.5)
 plt.plot(dt_years, dt_smooth, color = 'k', lw = 3)
-plt.plot(ages_dj, dt_dj, color = 'k', lw = 3)
-
+#plt.plot(ages_dj, dt_dj, color = 'k', lw = 3)
 
 
 plt.xlim([start, 0.])
-plt.ylim([-10., 5.])
+plt.ylim([-12.75, 3.5])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 plt.ylabel(r'$\Delta T$ ($^{\circ}$ C)')
 
@@ -63,7 +62,7 @@ plt.ylabel(r'$\Delta T$ ($^{\circ}$ C)')
 ##########################################################
 
 ax = fig.add_subplot(3,1,2)
-ax.axvspan(-10., -8., alpha=0.33, color='gray')
+#ax.axvspan(-10., -8., alpha=0.33, color='gray')
 current_palette =  sns.color_palette()
 
 data1 = DataLoader('../transform_final/center3/', 'opt1/')
@@ -98,7 +97,7 @@ plt.plot(data2.ages, data2.precip, color = current_palette[3], lw = 2.)
 #plt.plot(data3.sigma_ages, data3.deltap, color = 'k', marker = 'o', lw = 2.25, ms=6, label = 'North')
 #plt.fill_between(data3.sigma_ages, data3.deltap_l, data3.deltap_u, color = 'gray', alpha = 0.75)
 
-plt.ylim([-0.05, 0.65])
+plt.ylim([-0.05, 1.1])
 plt.xlim([start, 0.])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
@@ -109,7 +108,7 @@ plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
 ##########################################################
 
 ax = plt.subplot(3,1,3)
-ax.axvspan(-10., -8., alpha=0.33, color='gray')
+#ax.axvspan(-10., -8., alpha=0.33, color='gray')
 
 # Center 
 L1_obs = np.array([406878, 396313, 321224, 292845, 288562, 279753]) / 1e3
@@ -126,8 +125,19 @@ plt.plot(data1.ages, data1.L, color = current_palette[0], lw = 4, label = 'North
 plt.plot(data2.ages, data2.L, color = 'k', lw = 5)
 plt.plot(data2.ages, data2.L, color = current_palette[3], lw = 4, label = 'South')
 
+for i in range(len(obs_ages) - 1):
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'k', lw = 5, ms = 6, alpha = 1.)
+    #plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], color = current_palette[0], lw = 2, ms = 6, alpha = 1.)
+    plt.plot(obs_ages[i], L1_obs[i], 'ko', ms = 10)
+    #plt.plot(obs_ages[i], L1_obs[i], 'ro', ms = 10)
 
-plt.ylim([275, 360])
+for i in range(len(obs_ages) - 1):
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], 'k', lw = 5, ms = 6, alpha = 1.)
+    #plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], color = current_palette[3], lw = 2, ms = 6, alpha = 1.)
+    plt.plot(obs_ages[i], L2_obs[i], 'ko', ms = 10)
+    #plt.plot(obs_ages[i], L2_obs[i], 'ro', ms = 10)
+
+plt.ylim([275, 430])
 plt.xlim([start, 0.])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 
