@@ -24,11 +24,11 @@ class PriorWriter(object):
         ###########################################################################
 
         # Parameter names
-        param_names = np.array(['beta2', 'lambda_precip', 'lambda_ice', 'lambda_snow', 'P_frac'])
+        param_names = np.array(['beta2', 'lambda_precip', 'lambda_ice', 'lambda_snow', 'P_frac', 'pdd_var'])
         # Parameter mean values
-        x_p = np.array([1.6e-3, 0.07, 0.008, 0.005, 0.85])
+        x_p = np.array([1.6e-3, 0.07, 0.008, 0.005, 0.85, 5.5])
         # Inverse parameter variances 
-        param_vars = np.diag(np.array([.25e-3**2, 0.02**2, 0.001**2, 0.001**2, .025**2]))
+        param_vars = np.diag(np.array([.25e-3**2, 0.02**2, 0.001**2, 0.001**2, .025**2, 0.2**2]))
         # Number of params.
         n_p = len(param_names)
         np.savetxt(out_dir + 'sensitivity_params.txt', param_names, fmt="%s")

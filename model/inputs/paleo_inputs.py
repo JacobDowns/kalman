@@ -103,8 +103,8 @@ class PaleoInputs(CommonInputs):
         ### Load Buizert seasonal temp. anomalies
         ########################################################################
         
-        dt_years = np.loadtxt('paleo_data/jensen_ages.txt')
-        dt_vals = np.loadtxt('paleo_data/jensen_dts.txt')
+        dt_years = np.loadtxt('paleo_data/dj_ages_seasonal.txt')
+        dt_vals = np.loadtxt('paleo_data/dj_dts_seasonal.txt')
 
         print(dt_years.shape)
         print(dt_vals.shape)
