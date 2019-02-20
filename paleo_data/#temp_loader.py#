@@ -43,6 +43,7 @@ for i in range(12):
     dj_seasonal[:,i] = l.d_avg_interp(ts) + offset
     plt.plot(dj_seasonal[:,i])
 
+    
 plt.plot(l.d_avg_interp(ts), 'k', lw = 3)
 plt.show()
 np.savetxt('dj_ages_seasonal.txt', ts)

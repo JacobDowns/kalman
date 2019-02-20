@@ -9,19 +9,19 @@ inputs = {}
 inputs['out_dir'] = sys.argv[1]
 # Sigma point times
 N = 44
-sigma_ts = np.linspace(-11554., 1., N)
+sigma_ts = np.linspace(-11554., 0., N)
 inputs['sigma_ts'] = sigma_ts
 # Set prior
 #inputs['x'] = 0.2*np.ones(N)
 chi = np.linspace(0., 1., N)
-inputs['x'] = 0.5*(1.-chi**4)
-#inputs['x'] = np.loadtxt('transform_dj_seasonal/center1_1/opt1/opt_m.txt')
+#inputs['x'] = 0.33*(1.-chi)*chi+0.2
+inputs['x'] = np.loadtxt('transform_dj_seasonal/center2/opt1/opt_m.txt')
 # Prior precision matrix
-delta = 15e3
+delta = 7.5e3
 Q = delta*np.asarray(poisson((N,)).todense())
 # Prior covariance
 inputs['Pxx'] = np.linalg.inv(Q)
 # The first weight for tuning
 inputs['w0'] = 0.5
-                           
+
 pw = PriorWriter(inputs)

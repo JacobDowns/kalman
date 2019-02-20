@@ -54,4 +54,4 @@ np.savetxt(in_dir + '/' + opt_dir + '/opt_L.txt', Ls)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_H.txt', Hs)
 np.savetxt(in_dir + '/' + opt_dir + '/opt_p.txt', Ps)
 
-tr.model.write_steady_file('paleo_inputs/center_steady_dj_seasonal')
+#tr.model.write_steady_file('paleo_inputs/south_steady_dj_seasonal')

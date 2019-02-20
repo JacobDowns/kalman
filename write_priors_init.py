@@ -12,8 +12,8 @@ N = 10
 sigma_ts = np.linspace(-12554., -11554.+1., N)
 inputs['sigma_ts'] = sigma_ts
 # Set prior
-#inputs['x'] = 0.5*np.ones(N)
-inputs['x'] = np.loadtxt('transform_dj_seasonal/south_init1/opt1/opt_m.txt')
+#inputs['x'] = 0.33*np.ones(N)
+inputs['x'] = np.loadtxt('transform_dj_seasonal/south2_init/opt1/opt_m.txt')
 # Prior precision matrix
 delta = 1e3
 Q = delta*np.asarray(poisson((N,)).todense())

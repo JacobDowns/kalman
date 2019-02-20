@@ -29,36 +29,12 @@ b_ages = np.loadtxt('../paleo_data/buizert_ages.txt')
 b_dts  = np.loadtxt('../paleo_data/buizert_dts.txt').T
 b_avg = b_dts.mean(axis = 0)
 
-d_ages = np.loadtxt('../paleo_data/dj_ages.txt')
-d_dts = np.loadtxt('../paleo_data/dj_dts.txt')
-d_interp = interp1d(d_ages, d_dts)
+d_ages = np.loadtxt('../paleo_data/dj_ages_seasonal.txt')
+d_dts = np.loadtxt('../paleo_data/dj_dts_seasonal.txt')
+d_avg = d_dts.mean(axis = 0)
+#d_interp = interp1d(d_ages, d_dts)
 
-
-
-
-
-quit()
-
-dt_dj = interp1d(ages_dj, dt_dj)(dt_years)
-
-quit()
-
-
-for i in range(12):
-    #plt.plot(dt_years, dt_vals[i], color = current_palette[indexes[i]])
-    plt.plot(dt_years, dt_vals[i], color = current_palette[indexes[i]])
-plt.plot(dt_years, dt_avg, 'k', lw = 3)
-plt.xlim([-12., 0.])
-plt.show()
-quit()
-
-dt_avg = np.zeros(len(dt_years))
-for i in range(12):
-    dt_smooth = signal.convolve(dt_vals[i], ksmooth, mode = 'same') #savgol_filter(dt_vals[i], 21, 2, mode = 'constant')
-    #plt.plot(dt_years, dt_smooth, color = 'k', lw = 2, alpha = 1)
-    #plt.plot(dt_years, dt_smooth, color = current_palette[indexes[i]], lw = 1.4, alpha = 1.)
-    dt_avg += (1./12.)*dt_vals[i]
-
+"""
 dt_smooth = signal.convolve(dt_vals[i], ksmooth, mode = 'same')
 plt.plot(dt_years, dt_smooth, color = 'w', lw = 5.5)
 plt.plot(dt_years, dt_smooth, color = 'k', lw = 3, label = 'Buizert Dye-3')
@@ -70,6 +46,7 @@ plt.xlim([start, 0.])
 plt.ylim([-12.75, 3.5])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 plt.ylabel(r'$\Delta T$ ($^{\circ}$ C)')
+"""
 
 
 ### Optimized delta P
