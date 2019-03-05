@@ -23,10 +23,11 @@ class DataLoader(object):
             self.L = np.loadtxt(in_dir + 'opt_L.txt') / 1e3
         except :
             pass
+
         # Mean
         self.deltap = np.loadtxt(in_dir + 'opt_m.txt')
+        
         # Precipitation
-
         self.precip = None
         try:
             self.precip = (np.loadtxt(in_dir + 'opt_p.txt') / (self.L*1e3))

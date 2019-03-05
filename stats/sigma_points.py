@@ -83,22 +83,59 @@ class SigmaPoints(object):
 
         X_new = (Pxx_sqrt @ X.T).T + x
 
-        
-        """
-        # Check sigma point statistics
-
-        xf = np.zeros(n)
-        Cf = np.zeros((n,n))
-
-        # Mean 
-        for i in range(N):
-            xf += w_m[i]*X_new[i,:]
-
-        # Covariance
-        for i in range(N):
-            Cf += w_c[i]*np.outer(X_new[i,:] - xf, X_new[i,:] - xf)"""
-
         return X_new, wm, wc
+
+
+    # Get sigma points and weights for a fifth order cubature filter
+    def get_fifth_order_set(self, r = np.sqrt(3.)):
+
+        # Dimension
+        N = self.n
+        x = self.x
+
+        ### Generate Weights
+        ########################################################
+
+        # Coordinate for the first symmetric set
+        r1 = (r*np.sqrt(N-4.))/np.sqrt(N - r**2 - 1.)
+        # First symmetric set weight
+        w2 = (4. - N) / (2. * r1**4)
+        # Second symmetric set weight
+        w3 = 1. / (4. * r**4)
+        # Center point weight
+        w1 = 1. - 2.*N*w2 - 2.*N*(N-1)*w3
+        # Vector of weights
+        w = np.block([w1, np.repeat(w2, 2*N), np.repeat(w3, 2*N*(N-1))])
+
+
+        ### Generate Points
+        ########################################################
+        
+        # First fully symmetric set
+        X0 = r1*np.eye(N)
+        X0_s = np.block([X0, -X0])
+        
+        # Second fully symmetric set
+        X1 = r*np.eye(N)
+        indexes_i = []
+        indexes_j = []
+        for i in range(1,N):
+            indexes_i.append(np.repeat([i],i))
+            indexes_j.append(np.arange(0,i))
+        indexes_i = np.concatenate(indexes_i).ravel()
+        indexes_j = np.concatenate(indexes_j).ravel()
+        P1 = X1[indexes_i, :].T + X1[indexes_j, :].T
+        P2 = X1[indexes_i, :].T - X1[indexes_j, :].T
+        X1_s = np.block([P1, P2, -P1, -P2])
+
+        # Full set of points (columns are points)
+        X = np.block([np.zeros(N)[:,None], X0_s, X1_s])
+
+        # Change variables
+        X = x[:,None].repeat(2*N**2 + 1, axis = 1) + self.Pxx_sqrt@X
+
+        return X.T, w, w
+
 
 
     # Just take random draws from the distribution (for testing)

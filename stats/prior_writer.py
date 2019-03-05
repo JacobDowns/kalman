@@ -33,13 +33,16 @@ class PriorWriter(object):
         ##############################################
 
         points = SigmaPoints(x, Pxx)
-        X, wm, wc = points.get_minimal_set(inputs['w0'])
+        #X, wm, wc = points.get_minimal_set(inputs['w0'])
+        X, wm, wc = points.get_fifth_order_set(inputs['w0'])
         # points.__get_random_set__(N + 1)
-        
+
+        #print(X)
+        #quit()
         x_n = np.zeros(N)
         P_n = np.zeros((N,N))
         # Plot the sigma points and check the mean and covariance
-        for i in range(N+1):
+        for i in range(len(X)):
             wm_i = wm[i]
             wc_i = wc[i]
             x_i = X[i]
