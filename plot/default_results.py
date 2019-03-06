@@ -13,13 +13,14 @@ matplotlib.rcParams.update({'font.size': 18})
 fig = plt.figure(figsize=(12,13))
 ksmooth = signal.hann(7) / signal.hann(7).sum()
 start = -11.6
-end = -9.5
+end = -10.
 
 
 ### Buizert temp.
 ############################################################
 
-ax = fig.add_subplot(2,1,1)
+ax = fig.add_subplot(3,1,1)
+ax.set_title('(a)')
 #ax.xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
 
 current_palette = sns.color_palette("coolwarm", 12)
@@ -38,7 +39,7 @@ for i in range(12):
 
 plt.plot(d_ages, d_avg, 'k', lw = 3)
 plt.xlim([start, end])
-plt.ylim([-12., 5.])
+plt.ylim([-12., 3.])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 plt.ylabel(r'$\Delta T$ ($^{\circ}$ C)')
 
@@ -51,11 +52,11 @@ L2 = np.loadtxt('../default_runs/south1/opt_L.txt') / 1e3
 plt.xticks([-11.5, -11., -10.5, -10.])
 
 
-### Glacier lengths
+### Glacier Length North
 ##########################################################
 
-ax = plt.subplot(2,1,2)
-
+ax = plt.subplot(3,1,2)
+ax.set_title('(b)')
 # Center 
 L1_obs = np.array([406878, 396313, 321224, 292845, 288562, 279753]) / 1e3
 # south
@@ -68,36 +69,43 @@ obs_sigmas = np.array([0.4, 0.2, 0.2, 0.3, 0.3, 0.1])/2.
 plt.plot(ages, L1, color = 'k', lw = 6.5) 
 plt.plot(ages, L1, color = current_palette[0], lw = 4.5, label = 'North')
 
-plt.plot(ages, L2, color = 'k', lw = 6.5) 
-plt.plot(ages, L2, color = current_palette[3], lw = 4.5, label = 'South')
-
 plt.xlim([start, 0.])
 
 for i in range(len(obs_ages) - 1):
-    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'k', lw = 3.5, ms = 4, alpha = 0.9)
-    #plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], color = current_palette[0], lw = 2, ms = 6, alpha = 1.)
-    plt.plot(obs_ages[i], L1_obs[i], 'ko', ms = 8)
-    #plt.plot(obs_ages[i], L1_obs[i], 'ro', ms = 10)
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'k', lw = 5.5, ms = 4, alpha = 0.9)
+    plt.plot(obs_ages[i], L1_obs[i], 'ko', ms = 10)
 
 plt.plot(obs_ages[-1], L1_obs[-1], 'ko', ms = 10)
+plt.ylim([300, 420])
+plt.xlim([start, end])
+plt.grid(color='slategray', linestyle=':', linewidth=1)
+plt.xticks([-11.5, -11., -10.5, -10.])
+plt.ylabel('Glacier Length (km)')
 
+
+### Glacier Length South
+##########################################################
+
+
+ax = plt.subplot(3,1,3)
+ax.set_title('(c)')
+plt.plot(ages, L2, color = 'k', lw = 6.5) 
+plt.plot(ages, L2, color = current_palette[3], lw = 4.5, label = 'South')
 
 for i in range(len(obs_ages) - 1):
-    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], 'k', lw = 3.5, ms = 4, alpha = 0.9)
-    #plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], color = current_palette[3], lw = 2, ms = 6, alpha = 1.)
-    plt.plot(obs_ages[i], L2_obs[i], 'ko', ms = 8)
-    #plt.plot(obs_ages[i], L2_obs[i], 'ro', ms = 10)
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], 'k', lw = 5.5, ms = 4, alpha = 0.9)
+    plt.plot(obs_ages[i], L2_obs[i], 'ko', ms = 10)
 
 plt.plot(obs_ages[-1], L2_obs[-1], 'ko', ms = 10)
 
-plt.ylim([300, 435])
+plt.ylim([300, 440])
 plt.xlim([start, end])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
-
 plt.xticks([-11.5, -11., -10.5, -10.])
 plt.ylabel('Glacier Length (km)')
 plt.xlabel('Age (ka BP)')
-plt.legend()
+
+
 plt.tight_layout()
 
 plt.savefig('images/default_results.png', dpi=500)  

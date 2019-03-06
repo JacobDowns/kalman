@@ -10,7 +10,7 @@ from data_loader import DataLoader
 matplotlib.rcParams.update({'font.size': 18})
 
 fig = plt.figure(figsize=(12,13))
-ksmooth = signal.hann(11) / signal.hann(11).sum()
+ksmooth = signal.hann(13) / signal.hann(13).sum()
 start = -10.
 
 
@@ -18,6 +18,7 @@ start = -10.
 ############################################################
 
 ax = fig.add_subplot(3,1,1)
+ax.set_title('(a)')
 #ax.axvspan(-10., -8., alpha=0.33, color='gray')
 current_palette = sns.color_palette("coolwarm", 12)
 
@@ -34,7 +35,9 @@ ages_dj = -(data[:,0]*1e3)
 dt_dj = data[:,1]
 dt_dj -= dt_dj[0]
 
+
 dt_avg = np.zeros(len(dt_years))
+plt.fill_between([-10., -6.], [-30., -30.], [30., 30.], color = 'gray', alpha = 0.3)
 for i in range(12):
     dt_smooth = signal.convolve(dt_vals[i], ksmooth, mode = 'same') #savgol_filter(dt_vals[i], 21, 2, mode = 'constant')
     plt.plot(dt_years, dt_smooth, color = 'k', lw = 2.1, alpha = 1.)
@@ -43,8 +46,11 @@ for i in range(12):
 
 #dt_smooth = signal.convolve(dt_vals[i], ksmooth, mode = 'same')
 plt.plot(dt_years, dt_avg, color = 'w', lw = 3)
-plt.plot(dt_years, dt_avg, color = 'k', lw = 2.5)
+plt.plot(dt_years, dt_avg, 'k', lw = 2.5)
 #plt.plot(ages_dj / 1e3, dt_dj, color = 'k', lw = 3)
+
+
+
 
 
 plt.xlim([start, 0.])
@@ -57,11 +63,14 @@ plt.ylabel(r'$\Delta T$ ($^{\circ}$ C)')
 ##########################################################
 
 ax = fig.add_subplot(3,1,2)
+ax.set_title('(b)')
 #ax.axvspan(-10., -8., alpha=0.33, color='gray')
 current_palette =  sns.color_palette()
 
 data1 = DataLoader('../transform_final/center3/', 'opt1/')
 data2 = DataLoader('../transform_final/south2/', 'opt1/')
+
+plt.fill_between([-10., -6.], [-30., -30.], [30., 30.], color = 'gray', alpha = 0.3)
 
 # North
 plt.plot(data1.sigma_ages, data1.deltap, color = 'k', marker = 'o', lw = 3.5, ms=8)
@@ -86,6 +95,7 @@ plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
 ##########################################################
 
 ax = plt.subplot(3,1,3)
+ax.set_title('(c)')
 #ax.axvspan(-10., -8., alpha=0.33, color='gray')
 
 # Center 
@@ -96,6 +106,8 @@ L2_obs  = np.array([424777, 394942, 332430, 303738, 296659, 284686]) / 1e3
 obs_ages = np.array([-11554., -10284., -9024., -8064., -7234., 0.]) / 1e3
 # Observation variances
 obs_sigmas = np.array([0.4, 0.2, 0.2, 0.3, 0.3, 0.1])/2.
+
+plt.fill_between([-10., -6.], [-1e6, -1e6], [1e6, 1e6], color = 'gray', alpha = 0.3)
 
 plt.plot(data1.ages, data1.L, color = 'k', lw = 5)
 plt.plot(data1.ages, data1.L, color = current_palette[0], lw = 4, label = 'North')
