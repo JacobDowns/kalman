@@ -10,8 +10,8 @@ from matplotlib.ticker import FormatStrFormatter
 
 matplotlib.rcParams.update({'font.size': 18})
 
-fig = plt.figure(figsize=(12,13))
-ksmooth = signal.hann(7) / signal.hann(7).sum()
+fig = plt.figure(figsize=(12,8.66))
+ksmooth = signal.hann(5) / signal.hann(5).sum()
 start = -11.6
 end = -10.
 
@@ -19,7 +19,7 @@ end = -10.
 ### Buizert temp.
 ############################################################
 
-ax = fig.add_subplot(3,1,1)
+ax = fig.add_subplot(2,1,1)
 ax.set_title('(a)')
 #ax.xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
 
@@ -55,7 +55,7 @@ plt.xticks([-11.5, -11., -10.5, -10.])
 ### Glacier Length North
 ##########################################################
 
-ax = plt.subplot(3,1,2)
+ax = plt.subplot(2,1,2)
 ax.set_title('(b)')
 # Center 
 L1_obs = np.array([406878, 396313, 321224, 292845, 288562, 279753]) / 1e3
@@ -72,21 +72,22 @@ plt.plot(ages, L1, color = current_palette[0], lw = 4.5, label = 'North')
 plt.xlim([start, 0.])
 
 for i in range(len(obs_ages) - 1):
-    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'k', lw = 5.5, ms = 4, alpha = 0.9)
-    plt.plot(obs_ages[i], L1_obs[i], 'ko', ms = 10)
+    plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'k', lw = 5.5, ms = 4, alpha = 0.8)
+    plt.plot(obs_ages[i], L1_obs[i], 'ko', ms = 12)
 
-plt.plot(obs_ages[-1], L1_obs[-1], 'ko', ms = 10)
-plt.ylim([300, 420])
+#plt.plot(obs_ages[-1], L1_obs[-1], 'ko', ms = 10)
+plt.ylim([280, 425])
 plt.xlim([start, end])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 plt.xticks([-11.5, -11., -10.5, -10.])
 plt.ylabel('Glacier Length (km)')
+plt.xlabel('Age (ka BP)')
 
 
 ### Glacier Length South
 ##########################################################
 
-
+"""
 ax = plt.subplot(3,1,3)
 ax.set_title('(c)')
 plt.plot(ages, L2, color = 'k', lw = 6.5) 
@@ -104,7 +105,7 @@ plt.grid(color='slategray', linestyle=':', linewidth=1)
 plt.xticks([-11.5, -11., -10.5, -10.])
 plt.ylabel('Glacier Length (km)')
 plt.xlabel('Age (ka BP)')
-
+"""
 
 plt.tight_layout()
 

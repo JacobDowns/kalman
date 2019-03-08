@@ -84,6 +84,7 @@ class PaleoInputs(CommonInputs):
         if self.beta2:
             input_options['beta2'] = self.beta2
 
+
         super(PaleoInputs, self).__init__(input_file_name, input_options)
 
         # Initialize the inputs with the correct initial length
@@ -138,9 +139,9 @@ class PaleoInputs(CommonInputs):
 
         monthly_dts = [self.dt_functions[i](age) for i in range(12)]
         
-        print ("Age", age)
-        print ("Delta", monthly_dts)
-        print ("Precip", precip_param)
+        #print ("Age", age)
+        #print ("Delta", monthly_dts)
+        #print ("Precip", precip_param)
             
 
         ### Compute monthly pdd's and precip.

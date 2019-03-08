@@ -16,7 +16,7 @@ class TransientRunner(CommonRunner):
             self.precip_param_func = input_dict['precip_param_func']
             
         # Snapshot interval : write out thickness vector periodically
-        self.snapshot_interval = 1000
+        self.snapshot_interval = 100000
         if 'snapshot_interval' in input_dict:
             self.snapshot_interval = input_dict['snapshot_interval']
 
@@ -39,11 +39,20 @@ class TransientRunner(CommonRunner):
             # Precip param.
             precip_param = self.precip_param_func(age)
 
-            L = self.model.step(precip_param, accept = True)
+            output = (j % 500*3) == 0
+            
+            L = self.model.step(precip_param, accept = True, output = False)
             Ls.append(L)
             Ps.append(assemble(self.model.precip_func*dx)*L)
 
-            if j % self.snapshot_interval == 0:
-                Hs.append(self.model.H0.vector().get_local())
+
+            #if j % 1000 == 0:
+            #    all_objects = muppy.get_objects()
+            #    sum1 = summary.summarize(all_objects)
+            #    summary.print_(sum1)
+                
+            
+            #if j % self.snapshot_interval == 0:
+            #    Hs.append(self.model.H0.vector().get_local())
 
         return np.array(ages), np.array(Ls), np.array(Hs), np.array(Ps)

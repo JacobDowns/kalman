@@ -5,7 +5,7 @@ import os.path
 
 in_dir = sys.argv[1]
 X = np.loadtxt(in_dir + 'X.txt')
-Y0 = np.loadtxt(in_dir + 'Y_0.txt')
+Y0 = np.loadtxt(in_dir + 'Y_1.txt')
 Y = np.zeros((X.shape[0], len(Y0)))
 
 for i in range(X.shape[0]):

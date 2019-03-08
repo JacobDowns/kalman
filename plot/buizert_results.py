@@ -9,15 +9,16 @@ from data_loader import DataLoader
 
 matplotlib.rcParams.update({'font.size': 18})
 
-fig = plt.figure(figsize=(12,13))
+fig = plt.figure(figsize=(12,16))
 ksmooth = signal.hann(13) / signal.hann(13).sum()
-start = -10.
+start = -11.
+end = -3.
 
 
 ### Buizert temp.
 ############################################################
 
-ax = fig.add_subplot(3,1,1)
+ax = fig.add_subplot(4,1,1)
 ax.set_title('(a)')
 #ax.axvspan(-10., -8., alpha=0.33, color='gray')
 current_palette = sns.color_palette("coolwarm", 12)
@@ -53,8 +54,8 @@ plt.plot(dt_years, dt_avg, 'k', lw = 2.5)
 
 
 
-plt.xlim([start, 0.])
-plt.ylim([-7., 4.])
+plt.xlim([start, end])
+plt.ylim([-9., 4.])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 plt.ylabel(r'$\Delta T$ ($^{\circ}$ C)')
 
@@ -62,7 +63,7 @@ plt.ylabel(r'$\Delta T$ ($^{\circ}$ C)')
 ### Optimized delta P
 ##########################################################
 
-ax = fig.add_subplot(3,1,2)
+ax = fig.add_subplot(4,1,2)
 ax.set_title('(b)')
 #ax.axvspan(-10., -8., alpha=0.33, color='gray')
 current_palette =  sns.color_palette()
@@ -75,27 +76,59 @@ plt.fill_between([-10., -6.], [-30., -30.], [30., 30.], color = 'gray', alpha = 
 # North
 plt.plot(data1.sigma_ages, data1.deltap, color = 'k', marker = 'o', lw = 3.5, ms=8)
 plt.plot(data1.sigma_ages, data1.deltap, color = current_palette[0], marker = 'o', lw = 2.25, ms=6, label = 'North')
-plt.plot(data1.ages, data1.precip, color = 'k', lw = 3.)
-plt.plot(data1.ages, data1.precip, color = current_palette[0], lw = 2.)
+#plt.plot(data1.ages, data1.precip, color = 'k', lw = 3.)
+#plt.plot(data1.ages, data1.precip, color = current_palette[0], lw = 2.)
 
 # South
 plt.plot(data2.sigma_ages, data2.deltap, color = 'k', marker = 'o', lw = 3.5, ms=8)
 plt.plot(data2.sigma_ages, data2.deltap, color = current_palette[3], marker = 'o', lw = 2.25, ms=6, label = 'North')
-plt.plot(data2.ages, data2.precip, color = 'k', lw = 3.)
-plt.plot(data2.ages, data2.precip, color = current_palette[3], lw = 2.)
+#plt.plot(data2.ages, data2.precip, color = 'k', lw = 3.)
+#plt.plot(data2.ages, data2.precip, color = current_palette[3], lw = 2.)
 
-plt.ylim([-0.05, 0.75])
-plt.xlim([start, 0.])
+plt.ylim([-0.05, 0.7])
+plt.xlim([start, end])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 plt.ylabel(r'$\Delta P$ (m.w.e. a$^{-1}$)')
 
+
+### Snowfall
+##########################################################
+ax = plt.subplot(4,1,3)
+ax.set_title('(c)')
+
+plt.fill_between([-10., -6.], [-1e6, -1e6], [1e6, 1e6], color = 'gray', alpha = 0.3)
+
+plt.plot(data2.ages, (data2.precip / data2.precip[-1])*100., color = 'k', lw = 3.)
+plt.plot(data1.ages, (data1.precip / data2.precip[-1])*100., color = 'k', lw = 3.)
+
+plt.plot(data2.ages, (data2.precip / data2.precip[-1])*100., color = current_palette[3], lw = 2.)
+plt.plot(data1.ages, (data1.precip / data2.precip[-1])*100., color = current_palette[0], lw = 2.)
+
+plt.plot(data1.ages, data1.ages**0, color = 'k', linestyle='--', lw = 4)
+
+"""
+indexes = np.logical_and(data2.ages >= -10., data2.ages <= -6.)
+print((data2.precip[indexes]/data2.precip[-1]).mean())
+print()
+print((data2.precip[indexes]/data2.precip[-1]).max())
+print((data1.precip[indexes]/data1.precip[-1]).max())
+quit()
+
+indexes = data2.ages >= -6.
+print((data2.precip[indexes]/data2.precip[-1]).mean())
+"""
+
+plt.grid(color='slategray', linestyle=':', linewidth=1)
+plt.xlim([start, end])
+plt.ylim([70., 210.])
+plt.ylabel('Snowfall (% of modern)')
 
 
 ### Glacier lengths
 ##########################################################
 
-ax = plt.subplot(3,1,3)
-ax.set_title('(c)')
+ax = plt.subplot(4,1,4)
+ax.set_title('(d)')
 #ax.axvspan(-10., -8., alpha=0.33, color='gray')
 
 # Center 
@@ -127,8 +160,8 @@ for i in range(len(obs_ages) - 1):
     plt.plot(obs_ages[i], L2_obs[i], 'ko', ms = 10)
     #plt.plot(obs_ages[i], L2_obs[i], 'ro', ms = 10)
 
-plt.ylim([275, 390])
-plt.xlim([start, 0.])
+plt.ylim([275, 410])
+plt.xlim([start, end])
 plt.grid(color='slategray', linestyle=':', linewidth=1)
 
 

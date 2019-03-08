@@ -1,10 +1,9 @@
 from model.forward_model.forward_ice_model import *
 from model.transient_runner import *
 import numpy as np
-import sys
-import os
-import matplotlib.pyplot as plt
 import copy
+import os
+
 
 class SigmaRunner(object):
 
@@ -68,3 +67,5 @@ class SigmaRunner(object):
                 np.savetxt(self.in_dir + '/age_' + str(i) + '.txt', ages)
                 np.savetxt(self.in_dir + '/Y_' + str(i) + '.txt', Ls)
                 np.savetxt(self.in_dir + '/H_' + str(i) + '.txt', Hs)
+
+                del model_runner

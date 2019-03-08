@@ -22,21 +22,41 @@ class PriorWriter(object):
         ### Plot samples from prior
         ##########################################################################
 
+        """
         samples = np.random.multivariate_normal(x, Pxx, 100)
 
-        for i in range(samples.shape[0]):
+        for i in range(100):
             plt.plot(samples[i])
         plt.show()
-
+        """
         
         ### Compute a minimal set of sigma points
         ##############################################
 
+        print(x.shape)
+        print(Pxx.shape)
         points = SigmaPoints(x, Pxx)
+        #quit()
         #X, wm, wc = points.get_minimal_set(inputs['w0'])
         X, wm, wc = points.get_fifth_order_set(inputs['w0'])
         # points.__get_random_set__(N + 1)
 
+
+        branches = [[ np.array([v]) for v in np.unique(X[:,0]) ]]
+
+
+        branches = []
+    
+        for i in range(1,45):
+            x = len(np.unique(X[:, 0:i], axis = 0))
+            print(x)
+            branches.append(x)
+
+        branches = np.array(branches)
+        print()
+        print(branches.sum() / (X.shape[0]*X.shape[1]))
+        quit()
+    
         #print(X)
         #quit()
         x_n = np.zeros(N)

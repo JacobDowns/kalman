@@ -263,7 +263,7 @@ class ForwardIceModel(object):
         self.precip_func.assign(self.model_inputs.precip_func)
 
 
-    def step(self, precip_param = 0.0, accept = False):
+    def step(self, precip_param = 0.0, accept = False, output = False):
         
         ### Update length variable inputs
         ####################################################################
@@ -331,7 +331,8 @@ class ForwardIceModel(object):
                     self.update_inputs(L_term, precip_param)
                     self.update_inputs(L_term, precip_param)
 
-            print("real step: ", self.t, self.H0_c.vector().max(), self.H0_c.vector().get_local()[0], float(self.L0))
+            if output:
+                print("real step: ", self.t, self.H0_c.vector().max(), self.H0_c.vector().get_local()[0], float(self.L0))
             return float(self.L0)
         else :
             return float(self.L0_temp)

@@ -22,6 +22,6 @@ Q = delta*np.asarray(poisson((N,)).todense())
 # Prior covariance
 inputs['Pxx'] = np.linalg.inv(Q)
 # The first weight for tuning
-inputs['w0'] = 0.5
+inputs['w0'] = 0.5#1.5
 
 pw = PriorWriter(inputs)

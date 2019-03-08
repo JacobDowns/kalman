@@ -89,6 +89,8 @@ class SigmaPoints(object):
     # Get sigma points and weights for a fifth order cubature filter
     def get_fifth_order_set(self, r = np.sqrt(3.)):
 
+        print(self.n)
+
         # Dimension
         N = self.n
         x = self.x
@@ -135,7 +137,6 @@ class SigmaPoints(object):
         X = x[:,None].repeat(2*N**2 + 1, axis = 1) + self.Pxx_sqrt@X
 
         return X.T, w, w
-
 
 
     # Just take random draws from the distribution (for testing)
