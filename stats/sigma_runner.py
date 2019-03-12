@@ -41,6 +41,7 @@ class SigmaRunner(object):
     def run(self):
         # Copy the model input dictionary
         inputs = copy.deepcopy(self.inputs)
+        
 
         # Run several delta temp. sigma points through the forward model
         for i in range(self.index*self.runs, min(self.num_sigma_points, self.index*self.runs + self.runs)):

@@ -22,6 +22,6 @@ delta = 5e3
 Q = delta*np.asarray(poisson((N,)).todense())
 # Prior covariance
 inputs['Pxx'] = np.linalg.inv(Q)
-inputs['w0'] = 3.
+inputs['w0'] = 1.
 
 pw = PriorWriter(inputs)

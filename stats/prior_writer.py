@@ -37,11 +37,11 @@ class PriorWriter(object):
         print(Pxx.shape)
         points = SigmaPoints(x, Pxx)
         #quit()
-        #X, wm, wc = points.get_minimal_set(inputs['w0'])
-        X, wm, wc = points.get_fifth_order_set(inputs['w0'])
+        X, wm, wc = points.get_minimal_set(inputs['w0'])
+        #X, wm, wc = points.get_fifth_order_set(inputs['w0'])
         # points.__get_random_set__(N + 1)
 
-
+        """
         branches = [[ np.array([v]) for v in np.unique(X[:,0]) ]]
 
 
@@ -55,7 +55,7 @@ class PriorWriter(object):
         branches = np.array(branches)
         print()
         print(branches.sum() / (X.shape[0]*X.shape[1]))
-        quit()
+        """
     
         #print(X)
         #quit()

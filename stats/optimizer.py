@@ -61,6 +61,10 @@ class Optimizer(object):
         # Variance
         v = P_p[range(len(P_p)), range(len(P_p))]
 
+        #plt.plot(v)
+        #plt.show()
+        #quit()
+
         if out_dir:
             np.savetxt(out_dir + 'mu.txt', mu)
             np.savetxt(out_dir + 'opt_m.txt', m_p)

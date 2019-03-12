@@ -40,12 +40,24 @@ class KalmanUpdate(object):
         # Compute predicted mean
         mu = np.dot(self.m_weights, self.Y)
 
+        print(self.m_weights.sum())
+        plt.plot(mu)
+        plt.show()
+        quit()
+
+
         # Compute predicted measurement covariance
         S = np.zeros((self.Y.shape[1], self.Y.shape[1]))
         for i in range(len(self.c_weights)):
             print(i)
             S += self.c_weights[i]*np.outer(self.Y[i] - mu, self.Y[i] - mu)
+            print(np.isnan(self.Y[i]).any())
+
+
+        plt.plot(np.diag(S))
+        plt.show()
         S += R
+        quit()
         
         y_v = np.sqrt(S[range(len(S)), range(len(S))])
        

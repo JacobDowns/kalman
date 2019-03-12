@@ -50,13 +50,17 @@ ax = fig.add_subplot(4,1,2)
 current_palette =  sns.color_palette()
 
 data1 = DataLoader('../transform_dj_seasonal/center3/', 'opt1/')
-#data2 = DataLoader('../transform_dj_seasonal/south2/', 'opt1/')
+data2 = DataLoader('../transform_dj_seasonal/south/', 'opt1/')
 
 plt.fill_between([-8.5, -3.], [-1e6, -1e6], [1e6, 1e6], color = 'gray', alpha = 0.3)
 
 # North
 plt.plot(data1.sigma_ages, data1.deltap, color = 'k', marker = 'o', lw = 3.5, ms=8)
 plt.plot(data1.sigma_ages, data1.deltap, color = current_palette[0], marker = 'o', lw = 2.25, ms=6, label = 'North')
+
+# South
+plt.plot(data2.sigma_ages, data2.deltap, color = 'k', marker = 'o', lw = 3.5, ms=8)
+plt.plot(data2.sigma_ages, data2.deltap, color = current_palette[3], marker = 'o', lw = 2.25, ms=6, label = 'North')
 
 plt.ylim([-0.05, .55])
 plt.xlim([start, 0.])
@@ -76,6 +80,10 @@ plt.fill_between([-8.5, -3.], [-1e6, -1e6], [1e6, 1e6], color = 'gray', alpha = 
 # North
 plt.plot(data1.ages, data1.precip / data1.precip[-1], color = 'k', lw = 3.)
 plt.plot(data1.ages, data1.precip / data1.precip[-1], color = current_palette[0], lw = 2.)
+
+# South
+plt.plot(data2.ages, data2.precip / data2.precip[-1], color = 'k', lw = 3.)
+plt.plot(data2.ages, data2.precip / data2.precip[-1], color = current_palette[3], lw = 2.)
 
 plt.ylim([0.25, 1.6])
 plt.xlim([start, 0.])
@@ -102,8 +110,8 @@ plt.plot(data1.ages, data1.L, color = 'k', lw = 5)
 plt.plot(data1.ages, data1.L, color = current_palette[0], lw = 4, label = 'North')
 plt.xlim([start, 0.])
 
-#plt.plot(data2.ages, data2.L, color = 'k', lw = 5)
-#plt.plot(data2.ages, data2.L, color = current_palette[3], lw = 4, label = 'South')
+plt.plot(data2.ages, data2.L, color = 'k', lw = 5)
+plt.plot(data2.ages, data2.L, color = current_palette[3], lw = 4, label = 'South')
 
 for i in range(len(obs_ages) - 1):
     plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L1_obs[i], L1_obs[i]], 'k', lw = 5, ms = 6, alpha = 1.)
@@ -114,7 +122,6 @@ for i in range(len(obs_ages) - 1):
 plt.plot(obs_ages[-1], L1_obs[-1], 'ko', ms = 10)
 
 
-"""
 for i in range(len(obs_ages) - 1):
     plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], 'k', lw = 5, ms = 6, alpha = 1.)
     #plt.plot([obs_ages[i] - 2.0*obs_sigmas[i], obs_ages[i] + 2.0*obs_sigmas[i]], [L2_obs[i], L2_obs[i]], color = current_palette[3], lw = 2, ms = 6, alpha = 1.)
@@ -122,7 +129,6 @@ for i in range(len(obs_ages) - 1):
     #plt.plot(obs_ages[i], L2_obs[i], 'ro', ms = 10)
 
 plt.plot(obs_ages[-1], L2_obs[-1], 'ko', ms = 10)
-"""
 
 plt.ylim([275, 390])
 plt.xlim([start, 0.])
